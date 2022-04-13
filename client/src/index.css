@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+    .hello-tailwind{
+       @apply  text-[#235432] text-2xl font-bold  
+    }
+  }
