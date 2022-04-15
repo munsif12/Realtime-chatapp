@@ -7,13 +7,13 @@ function RegistrationForm({ showPassword, handleToggleShowPassword, regFormData,
                 <h1 className='hello-tailwind'>Sign Up</h1>
                 <FormControl invalid={regFormErr.name && true}>
                     <Input
-                        type="text" name="name" placeholder="Enter your username."
+                        type="text" name="name" placeholder="Enter your username." autoComplete='off'
                         value={regFormData.name}
                         onChange={handleChangeForBothLoginAndRegForm} />
                 </FormControl>
                 <FormControl invalid={regFormErr.email && true}>
                     <Input
-                        type="email" name="email" placeholder="jon@gmail.com"
+                        type="text" name="email" placeholder="jon@gmail.com" autoComplete='off'
                         value={regFormData.email}
                         onChange={handleChangeForBothLoginAndRegForm}
                     />
@@ -24,6 +24,7 @@ function RegistrationForm({ showPassword, handleToggleShowPassword, regFormData,
                             className="pr-16"
                             placeholder="Enter password"
                             name='password'
+                            autoComplete='off'
                             type={showPassword ? "text" : "password"}
                             value={regFormData.password}
                             onChange={handleChangeForBothLoginAndRegForm}
@@ -33,6 +34,14 @@ function RegistrationForm({ showPassword, handleToggleShowPassword, regFormData,
                                 {showPassword ? "Hide" : "Show"}
                             </Button>
                         </Input.RightElement>
+                    </Input.Group>
+                </FormControl>
+                <FormControl invalid={regFormErr.password && true}>
+                    <Input.Group>
+                        <label className="custom-file-upload">
+                            <Input type="file" name='profileImage' onChange={handleChangeForBothLoginAndRegForm} />
+                            Upload your profile image
+                        </label>
                     </Input.Group>
                 </FormControl>
                 <button onClick={submitBothLoginAndRegistrationForm}>Sign Up</button>
