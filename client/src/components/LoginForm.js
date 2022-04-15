@@ -8,7 +8,7 @@ function LoginForm({ showPassword, handleToggleShowPassword, loginFormData, logi
                 <h1>Sign In</h1>
                 <FormControl invalid={loginFormErr.name && true}>
                     <Input
-                        type="text" name="name" placeholder="Enter your username."
+                        type="text" name="name" placeholder="Enter your username." autoComplete='off'
                         value={loginFormData.name}
                         onChange={handleChangeForBothLoginAndRegForm} />
                 </FormControl>
@@ -18,6 +18,7 @@ function LoginForm({ showPassword, handleToggleShowPassword, loginFormData, logi
                             className="pr-16"
                             placeholder="Enter password"
                             name='password'
+                            autoComplete='off'
                             type={showPassword ? "text" : "password"}
                             value={loginFormData.password}
                             onChange={handleChangeForBothLoginAndRegForm}
