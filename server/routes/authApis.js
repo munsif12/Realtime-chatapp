@@ -2,13 +2,13 @@
 const express = require('express');
 
 const {
-    getAllChats,
-    getChat
-} = require('../controllers/chats');
+    login,
+    register
+} = require('../controllers/auth');
 
 const router = express.Router();
 
-router.get('/all', getAllChats);
-router.get('/:id', getChat);
+router.post('/login', login);
+router.post('/register', register);
 
 module.exports = router;

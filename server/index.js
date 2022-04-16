@@ -10,10 +10,11 @@ let PORT = process.env.PORT;
 
 //middlewares
 app.use(cors())
+app.use(express.json());
 
 // Routes
 app.get('/', (req, res) => {
-    res.send('Welcome to chat app!');
+    res.send('Welcome to Realtime-Chatapp!');
 });
 
 app.use('/api', routes);

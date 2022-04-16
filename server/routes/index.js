@@ -1,13 +1,12 @@
 const express = require('express');
-const ChatApis = require('./chatApis');
+const AuthApis = require('./authApis');
 const router = express.Router();
 
 router.get('/checkRoutes', async (req, res) => {
     res.status(200).json({ message: 'i am fine!' })
 });
 
-
-router.use('/chat', ChatApis);
+router.use('/auth', AuthApis);
 
 
 module.exports = router;
