@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, FormControl, Button } from "@vechaiui/react"
+import { Input, FormControl, Button, Image } from "@vechaiui/react"
 function RegistrationForm({ showPassword, handleToggleShowPassword, regFormData, regFormErr, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm }) {
     return (
         <div className="form-container sign-up-container">
@@ -36,14 +36,23 @@ function RegistrationForm({ showPassword, handleToggleShowPassword, regFormData,
                         </Input.RightElement>
                     </Input.Group>
                 </FormControl>
-                <FormControl invalid={regFormErr.password && true}>
-                    <Input.Group>
-                        <label className="custom-file-upload">
-                            <Input type="file" name='profileImage' onChange={handleChangeForBothLoginAndRegForm} />
-                            Upload your profile image
-                        </label>
-                    </Input.Group>
-                </FormControl>
+                <div className="imageUpload">
+                    <Image
+                        alt="bruce wayne"
+                        htmlWidth={100}
+                        htmlHeight={50}
+                        className="object-cover"
+                        src={regFormData.profileImage}
+                    />
+                    <FormControl invalid={regFormErr.password && true}>
+                        <Input.Group>
+                            <label className="custom-file-upload">
+                                <Input type="file" name='profileImage' onChange={handleChangeForBothLoginAndRegForm} />
+                                Upload your profile image
+                            </label>
+                        </Input.Group>
+                    </FormControl>
+                </div>
                 <button onClick={submitBothLoginAndRegistrationForm}>Sign Up</button>
             </form>
         </div>
