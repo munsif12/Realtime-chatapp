@@ -9,6 +9,7 @@ async function connectToDatabase() {
         console.log(`😀 Success: Database connected successfully.`);
     } catch (error) {
         console.log(`🤔 Error: Database connection error ${error.message}.`);
+        process.exit(1)
     }
 }
 module.exports = connectToDatabase;
