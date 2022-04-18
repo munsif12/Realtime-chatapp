@@ -1,15 +1,15 @@
 import React from 'react'
 import { Input, FormControl, Button } from "@vechaiui/react"
 
-function LoginForm({ showPassword, handleToggleShowPassword, loginFormData, loginFormErr, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm }) {
+function LoginForm({ showPassword, handleToggleShowPassword, loginFormData, loginFormErr, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm, isLoading }) {
     return (
         <div className="form-container sign-in-container">
             <form>
                 <h1>Sign In</h1>
                 <FormControl invalid={loginFormErr.name && true}>
                     <Input
-                        type="text" name="name" placeholder="Enter your username." autoComplete='off'
-                        value={loginFormData.name}
+                        type="text" name="email" placeholder="Enter your email." autoComplete='off'
+                        value={loginFormData.email}
                         onChange={handleChangeForBothLoginAndRegForm} />
                 </FormControl>
                 <FormControl invalid={loginFormErr.password && true}>
@@ -30,7 +30,7 @@ function LoginForm({ showPassword, handleToggleShowPassword, loginFormData, logi
                         </Input.RightElement>
                     </Input.Group>
                 </FormControl>
-                <button onClick={submitBothLoginAndRegistrationForm}>Sign In</button>
+                <button onClick={submitBothLoginAndRegistrationForm} disabled={isLoading}>{isLoading ? "Loading..." : "Sign Ip"}</button>
             </form>
         </div>
     )

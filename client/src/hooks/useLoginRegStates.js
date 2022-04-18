@@ -1,13 +1,19 @@
 import { useState } from "react";
-import uploadImageToCloudinary from "../helpers/uploadImageToCloudnary";
+import { useNavigate } from "react-router-dom";
+import uploadImageToCloudinary from "../config/uploadImageToCloudnary";
+import axios from "../config/axios";
 
-const useLoginRegStates = (url) => {
+const useLoginRegStates = () => {
+    const navigate = useNavigate();
+
     const [activeTab, setactiveTab] = useState('right-panel-active');
     const [showPassword, setShowPassword] = useState(false)
     const [regFormData, setRegFormData] = useState({ name: '', email: '', password: '', profileImage: "https://www.jobz.pk/images/pics/2020-09/503889_1_81445.png" })
-    const [loginFormData, setLoginFormData] = useState({ name: '', password: '' })
+    const [loginFormData, setLoginFormData] = useState({ email: 'chatapp.demo@gmail.com', password: 'demo' })
     const [regFormErr, setRegFormErr] = useState({})
     const [loginFormErr, setLoginFormErr] = useState({})
+    const [DbErrors, setDbErrors] = useState({ status: '', message: '' })
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleToggleShowPassword = () => setShowPassword(!showPassword);
     function validateRegistrationForm() {
@@ -20,23 +26,47 @@ const useLoginRegStates = (url) => {
     }
     function validateLoginForm() {
         let error = {}
-        if (!loginFormData.name) error.name = 'Name is required'
+        if (!loginFormData.email) error.email = 'Name is required'
         if (!loginFormData.password) error.password = 'Password is required'
         setLoginFormErr(error)
         return Object.keys(error).length > 0 ? false : true
     }
-    function submitBothLoginAndRegistrationForm(e) {
+    async function submitBothLoginAndRegistrationForm(e) {
         e.preventDefault()
         if (activeTab === 'right-panel-active') {
             if (validateRegistrationForm()) {
-                console.log(regFormData)
+                try {
+                    setIsLoading(true)
+                    setDbErrors({ status: '', message: '' })
+                    const { data } = await axios.post('/auth/register', regFormData);
+                    if (data.success) {
+                        localStorage.setItem('user', JSON.stringify(data.token))
+                    }
+                    setIsLoading(false)
+                    navigate('/chat')
+                } catch (error) {
+                    setIsLoading(false)
+                    setDbErrors({ status: error.response.status, message: error.response.data.message })
+                }
             }
-            else console.log(regFormErr)
         }
         else {
             if (validateLoginForm()) {
-                console.log(loginFormData)
-            } else console.log(loginFormErr)
+                try {
+                    setIsLoading(true)
+                    setDbErrors({ status: '', message: '' })
+                    const { data } = await axios.post('/auth/login', loginFormData);
+                    if (data.success) {
+                        localStorage.setItem('user', JSON.stringify(data.token))
+                    }
+                    setIsLoading(false)
+                    navigate('/chat')
+                } catch (error) {
+                    console.log(error.response)
+                    setIsLoading(false)
+                    setDbErrors({ status: error.response.status, message: error.response.data.message })
+                }
+            }
         }
     }
     async function handleChangeForBothLoginAndRegForm(e) {
@@ -71,11 +101,9 @@ const useLoginRegStates = (url) => {
         }
     }
 
-
-
     return [
-        activeTab, setactiveTab, showPassword, regFormData, loginFormData, regFormErr, loginFormErr,
-        handleToggleShowPassword, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm
+        isLoading, activeTab, setactiveTab, showPassword, regFormData, loginFormData, regFormErr, loginFormErr, DbErrors,
+        handleToggleShowPassword, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm,
     ];
 };
 

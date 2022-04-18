@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Input, FormControl, Button, Image } from "@vechaiui/react"
-function RegistrationForm({ showPassword, handleToggleShowPassword, regFormData, regFormErr, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm }) {
+function RegistrationForm({ showPassword, handleToggleShowPassword, regFormData, regFormErr, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm, isLoading, DbErrors }) {
+    useEffect(() => {
+        if (DbErrors.status === 400) {
+            alert(DbErrors.message)
+        }
+    }, [DbErrors]);
     return (
         <div className="form-container sign-up-container">
             <form>
@@ -53,7 +58,7 @@ function RegistrationForm({ showPassword, handleToggleShowPassword, regFormData,
                         </Input.Group>
                     </FormControl>
                 </div>
-                <button onClick={submitBothLoginAndRegistrationForm}>Sign Up</button>
+                <button onClick={submitBothLoginAndRegistrationForm} disabled={isLoading}>{isLoading ? "Loading..." : "Sign Up"}</button>
             </form>
         </div>
     )

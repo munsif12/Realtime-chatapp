@@ -1,21 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import axios from '../config/axios';
+import React from 'react'
 const Chat = () => {
-    const [chats, setChats] = useState([]);
-    const fetchChats = async () => {
-        const { data } = await axios.get('chat/all');
-        console.log(data)
-        setChats(data.chats);
-    }
-    useEffect(() => {
-        fetchChats()
-    }, []);
+
     return (
-        <div>{chats.map((chat, i) =>
-            <div key={i}>
-                <h1>{chat.chatName}</h1>
-            </div>
-        )}</div>
+        <div className='text-2xl'>Welcome to Chat</div>
     )
 }
 
