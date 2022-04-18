@@ -48,7 +48,6 @@ userSchema.methods.sanitize = function () {
 userSchema.pre('save', async function (next) {
     try {
         if (this.isNew) { //if new user --> dont hash while updating
-            console.log(this)
             this.password = await bcrypt.hash(this.password, 10);
         }
         next();

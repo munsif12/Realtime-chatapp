@@ -7,7 +7,7 @@ async function login(req, res) {
     try {
         if (!email || !password) {
             return res.status(400).json({
-                status: false,
+                success: false,
                 message: 'Please enter all fields'
             });
         }
@@ -15,7 +15,7 @@ async function login(req, res) {
         const userExists = await User.findOne({ email })
         if (!userExists) {
             return res.status(400).json({
-                status: false,
+                success: false,
                 message: 'Incorrect Email or password'
             });
         }
@@ -23,7 +23,7 @@ async function login(req, res) {
         const userVerified = await userExists.bcryptComparePassword(password);
         if (!userVerified) {
             return res.status(400).json({
-                status: false,
+                success: false,
                 message: 'Incorrect email or Password'
             });
         }
@@ -31,7 +31,7 @@ async function login(req, res) {
         SEND_SANITIZED_SUCCESS_RESPONSE(userExists.toObject(), res, 'login');
     } catch (error) {
         return res.status(500).json({
-            status: false,
+            success: false,
             message: error.message
         });
     }
