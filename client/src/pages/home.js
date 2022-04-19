@@ -7,7 +7,7 @@ import useLoginRegStates from '../hooks/useLoginRegStates';
 
 const Home = () => {
     const [
-        isLoading, activeTab, setactiveTab, showPassword, regFormData, loginFormData, regFormErr, loginFormErr, DbErrors,
+        activeTab, setactiveTab, showPassword, regFormData, loginFormData, regFormErr, loginFormErr,
         handleToggleShowPassword, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm
     ] = useLoginRegStates();
 
@@ -15,22 +15,18 @@ const Home = () => {
     return (
         <div className={`container ${activeTab} mainContainerLoginReg`} id='container'>
             <RegistrationForm
-                isLoading={isLoading}
                 showPassword={showPassword}
                 handleToggleShowPassword={handleToggleShowPassword}
                 regFormData={regFormData}
                 regFormErr={regFormErr}
-                DbErrors={DbErrors}
                 handleChangeForBothLoginAndRegForm={handleChangeForBothLoginAndRegForm}
                 submitBothLoginAndRegistrationForm={submitBothLoginAndRegistrationForm}
             />
             <LoginForm
-                isLoading={isLoading}
                 showPassword={showPassword}
                 handleToggleShowPassword={handleToggleShowPassword}
                 loginFormData={loginFormData}
                 loginFormErr={loginFormErr}
-                DbErrors={DbErrors}
                 handleChangeForBothLoginAndRegForm={handleChangeForBothLoginAndRegForm}
                 submitBothLoginAndRegistrationForm={submitBothLoginAndRegistrationForm}
             />

@@ -1,11 +1,25 @@
 import React, { useEffect } from 'react'
 import { Input, FormControl, Button, Image } from "@vechaiui/react"
-function RegistrationForm({ showPassword, handleToggleShowPassword, regFormData, regFormErr, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm, isLoading, DbErrors }) {
+import { useDispatch, useSelector } from 'react-redux'
+import { ClearError } from '../redux/slices/auth';
+import { useNavigate } from "react-router-dom";
+import { formTypes } from '../constant';
+function RegistrationForm({ showPassword, handleToggleShowPassword, regFormData, regFormErr, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm }) {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { loading: isLoading, formType, isLoggedIn, error } = useSelector(state => state.auth)
     useEffect(() => {
-        if (DbErrors.status === 400) {
-            alert(DbErrors.message)
+        if (formType === formTypes.REGISTER && error.status === 400) {
+            alert(error.message)
+            console.log(formType === formTypes.REGISTER && error.status === 400 && error.message)
         }
-    }, [DbErrors]);
+    }, [error, formType]);
+    useEffect(() => {
+        if (isLoggedIn) {
+            dispatch(ClearError());
+            navigate('/chat')
+        }
+    }, [isLoggedIn, navigate, dispatch]);
     return (
         <div className="form-container sign-up-container">
             <form>

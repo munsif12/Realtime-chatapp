@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import uploadImageToCloudinary from "../config/uploadImageToCloudnary";
-import axios from "../config/axios";
+import { login, register } from "../redux/slices/auth";
+import { useDispatch } from "react-redux";
 
 const useLoginRegStates = () => {
-    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [activeTab, setactiveTab] = useState('right-panel-active');
     const [showPassword, setShowPassword] = useState(false)
@@ -12,10 +12,8 @@ const useLoginRegStates = () => {
     const [loginFormData, setLoginFormData] = useState({ email: 'chatapp.demo@gmail.com', password: 'demo' })
     const [regFormErr, setRegFormErr] = useState({})
     const [loginFormErr, setLoginFormErr] = useState({})
-    const [DbErrors, setDbErrors] = useState({ status: '', message: '' })
-    const [isLoading, setIsLoading] = useState(false)
 
-    const handleToggleShowPassword = () => setShowPassword(!showPassword);
+    function handleToggleShowPassword() { setShowPassword(!showPassword) }
     function validateRegistrationForm() {
         let error = {}
         if (!regFormData.name) error.name = 'Name is required'
@@ -35,37 +33,12 @@ const useLoginRegStates = () => {
         e.preventDefault()
         if (activeTab === 'right-panel-active') {
             if (validateRegistrationForm()) {
-                try {
-                    setIsLoading(true)
-                    setDbErrors({ status: '', message: '' })
-                    const { data } = await axios.post('/auth/register', regFormData);
-                    if (data.success) {
-                        localStorage.setItem('user', JSON.stringify(data.token))
-                    }
-                    setIsLoading(false)
-                    navigate('/chat')
-                } catch (error) {
-                    setIsLoading(false)
-                    setDbErrors({ status: error.response.status, message: error.response.data.message })
-                }
+                dispatch(register(regFormData))
             }
         }
         else {
             if (validateLoginForm()) {
-                try {
-                    setIsLoading(true)
-                    setDbErrors({ status: '', message: '' })
-                    const { data } = await axios.post('/auth/login', loginFormData);
-                    if (data.success) {
-                        localStorage.setItem('user', JSON.stringify(data.token))
-                    }
-                    setIsLoading(false)
-                    navigate('/chat')
-                } catch (error) {
-                    console.log(error.response)
-                    setIsLoading(false)
-                    setDbErrors({ status: error.response.status, message: error.response.data.message })
-                }
+                dispatch(login(loginFormData));
             }
         }
     }
@@ -102,7 +75,7 @@ const useLoginRegStates = () => {
     }
 
     return [
-        isLoading, activeTab, setactiveTab, showPassword, regFormData, loginFormData, regFormErr, loginFormErr, DbErrors,
+        activeTab, setactiveTab, showPassword, regFormData, loginFormData, regFormErr, loginFormErr,
         handleToggleShowPassword, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm,
     ];
 };
