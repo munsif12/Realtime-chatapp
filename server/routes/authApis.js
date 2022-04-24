@@ -3,12 +3,13 @@ const express = require('express');
 
 const {
     login,
-    register
+    register,
+    checkToken
 } = require('../controllers/auth');
 
 const router = express.Router();
 
 router.post('/login', login);
 router.post('/register', register);
-
+router.get('/checkToken', checkToken);
 module.exports = router;
