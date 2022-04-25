@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@vechaiui/core": "^0.6.0",
     "@vechaiui/react": "^0.2.2",
+    "antd": "^4.20.0",
     "axios": "^0.26.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
