@@ -30,6 +30,8 @@ export const register = createAsyncThunk('auth/login', async (user, thunkAPI) =>
         });
         return data;
     } catch (err) {
+        console.log('----------')
+        console.log({ err })
         if (err.response && err.response.data) {
             return thunkAPI.rejectWithValue({
                 error: err.response.data,
@@ -42,6 +44,24 @@ export const register = createAsyncThunk('auth/login', async (user, thunkAPI) =>
         }
     }
 });
+export const checkToken = createAsyncThunk('auth/checkToken', async (thunkAPI) => {
+    try {
+        const { data } = await axios.get('/auth/checktoken');
+        return data;
+    } catch (err) {
+        if (err.response && err.response.data) {
+            return thunkAPI.rejectWithValue({
+                error: err.response.data,
+                status: err.response.status,
+            });
+        } else {
+            return thunkAPI.rejectWithValue({
+                error: "Network Error",
+            });
+        }
+    }
+});
+
 
 const authSlice = createSlice({
     name: "auth",
@@ -58,7 +78,6 @@ const authSlice = createSlice({
     },
     reducers: {
         ClearError: (state, action) => {
-            console.log('clearing error', action);
             state.error.status = '';
             state.error.success = false;
             state.error.message = '';
@@ -74,11 +93,14 @@ const authSlice = createSlice({
             state.user = action.payload.user;
             state.isLoggedIn = true;
             //set user to localStorege
-            localStorage.setItem('user', JSON.stringify(action.payload.user));
+            const { token, user } = action.payload;
+            localStorage.setItem('authToken', token)
+            localStorage.setItem('user', JSON.stringify(user));
         },
         [login.rejected]: (state, action) => {
             const { error, status } = action.payload;
             const addErrorStatus = { ...error, status };
+            console.log('------------------')
             state.loading = false;
             state.error = addErrorStatus;
             state.isLoggedIn = false;
@@ -92,7 +114,9 @@ const authSlice = createSlice({
             state.user = action.payload.user;
             state.isLoggedIn = true;
             //set user to localStorege
-            localStorage.setItem('user', JSON.stringify(action.payload.user));
+            const { token, user } = action.payload;
+            localStorage.setItem('authToken', token);
+            localStorage.setItem('user', JSON.stringify(user));
         },
         [register.rejected]: (state, action) => {
             const { error, status } = action.payload;
@@ -100,6 +124,20 @@ const authSlice = createSlice({
             state.loading = false;
             state.error = addErrorStatus;
             state.isLoggedIn = false;
+        },
+        [checkToken.pending]: (state) => {
+            state.loading = true;
+        },
+        [checkToken.fulfilled]: (state, action) => {
+            state.isLoggedIn = true;
+            state.user = action.payload.user;
+            state.loading = false;
+
+        },
+        [checkToken.rejected]: (state) => {
+            state.loading = false;
+            state.isLoggedIn = false;
+            state.user = {};
         }
     }
 })
