@@ -5,10 +5,10 @@
 
 
 @layer components {
-    .hello-tailwind{
-       @apply  text-[#235432] text-2xl font-bold  
-    }
+  .hello-tailwind {
+    @apply text-[#235432] text-2xl font-bold
   }
+}
 
 
 
@@ -17,11 +17,13 @@
 :root {
   --main-color: #6dd5ed;
   --secondary-color: #2193b0;
-  --gradient: linear-gradient(
-    135deg,
-    var(--main-color),
-    var(--secondary-color)
-  );
+  --wa-bg: #f0f2f5;
+  --white: #fff;
+  --bb: #dfe0e1;
+  --black: #000;
+  --gradient: linear-gradient(135deg,
+      var(--main-color),
+      var(--secondary-color));
 }
 
 * {
@@ -31,12 +33,232 @@
 body {
   background: #f6f5f7;
   font-family: "Nunito", sans-serif;
+
+  min-height: 100vh;
+  margin: 0px !important;
+}
+
+.auth {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.chatContainer {
   min-height: 100vh;
-  margin:  0px !important;
+  color: black;
+}
+
+.sidebar {
+  width: 30%;
+  flex-direction: column;
+  background-color: var(--wa-bg);
+}
+
+.sidebarHeader {
+  justify-content: space-between;
+  height: 9vh;
+  border-right: 1px solid #d7d7d7;
+}
+
+.settingVerticalEllipse,
+.settingMessage,
+.settingNotifica {
+  font-size: 24px;
+  color: #54656f;
+  padding: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+.dropDownSettings li {
+  padding-left: 15px !important;
+  padding-top: 13px !important;
+  padding-right: 50px !important;
+}
+
+.DrawergoBack {
+  padding-right: 45px !important;
+  cursor: pointer;
+}
+
+.dropDownSettings span {
+  font-size: 18px !important;
+  color: #54656f !important;
+
+}
+
+.ant-drawer-header-title {
+  all: unset !important;
+}
+
+.ant-drawer-header {
+  height: 110px !important;
+  background-color: #008069 !important;
+  display: flex;
+  justify-content: flex-start;
+  align-items: end;
+  padding-top: 12px;
+  padding-bottom: 20px;
+}
+
+.ant-drawer-title {
+  font-size: 22px !important;
+  color: White !important;
+}
+
+.ant-drawer-body {
+  padding: 0px !important;
+}
+
+.ant-drawer-body .form-control {
+  padding: 0px 15px;
+}
+
+.searchUserLists::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.searchUserLists::-webkit-scrollbar-track-piece {
+  background-color: #ffffff;
+}
+
+.searchUserLists::-webkit-scrollbar-thumb:vertical {
+  height: 30px;
+  background-color: #ced0d1;
+}
+
+.userSearchBox {
+  background-color: var(--white);
+  padding: 0px 16px;
+  height: 8vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid var(--bb);
+}
+
+.userSearchBox input,
+.ant-drawer-body input {
+  border: none !important;
+  background-color: var(--wa-bg);
+  padding: 10px !important;
+  border-radius: 5px !important;
+  width: 100% !important;
+
+}
+
+.usersList {
+  background-color: var(--white);
+  height: 83vh;
+  overflow-y: scroll;
+}
+
+.searchUserLists {
+  background-color: var(--white);
+  height: 78vh;
+  overflow-y: scroll;
+}
+
+.usersList::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.usersList::-webkit-scrollbar-track-piece {
+  background-color: #ffffff;
+}
+
+.usersList::-webkit-scrollbar-thumb:vertical {
+  height: 30px;
+  background-color: #ced0d1;
+}
+
+.userListItem {
+  height: 10vh;
+}
+
+.userListItem :hover {
+  cursor: pointer;
+  /* background: var(--wa-bg); */
+}
+
+.chatImage {
+  padding: 0 15px 0 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+.chatDescLatestMsg {
+  flex: 1;
+  padding-right: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-top: 1px solid var(--bb);
+  width: 70%;
+  overflow: hidden;
+}
+
+.usersList:first-child .chatDescLatestMsg {
+  border-top: none;
+  background-color: red;
+}
+
+.chatDescLatestMsg {
+  font-size: 14px;
+}
+
+.chatName {
+  font-size: 20px;
+  color: var(--black);
+  letter-spacing: 1px;
+}
+
+.nameLatestMsg {
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chatNameAndTime,
+.chatDescAndSetting {
+  justify-content: space-between;
+  padding: 2px 0px;
+}
+
+.chatView {
+  width: 100%;
+  justify-content: center;
+  background-color: var(--white);
+}
+
+.chatViewHeader {
+  height: 9vh;
+  display: flex;
+  background-color: var(--wa-bg);
+  padding: 10px 16px;
+
+}
+
+.selectedChatImage {
+  padding-right: 15px;
+}
+
+.selectedChatName {
+  flex-grow: 1;
+}
+
+.selectedChatSetting {
+  flex-grow: 0;
 }
 
 h1 {
@@ -116,24 +338,28 @@ input {
   width: 100%;
   font-family: inherit;
 }
+
 input[type="file"] {
-    display: none;
+  display: none;
 }
+
 .custom-file-upload {
-    border: 1px solid rgb(77, 77, 77);
-    display: inline-block;
-    padding: 8px 12px;
-    cursor: pointer;
-    background-color: #333;
-    border-radius: 6px;
-    font-size: 13px;
-    font-family: 'Nunito', sans-serif !important;
-    width: 100%;
-    margin: 8px 0px;
+  border: 1px solid rgb(77, 77, 77);
+  display: inline-block;
+  padding: 8px 12px;
+  cursor: pointer;
+  background-color: #333;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: 'Nunito', sans-serif !important;
+  width: 100%;
+  margin: 8px 0px;
 }
-.mainContainerLoginReg h1{
-font-size: 34px;
+
+.mainContainerLoginReg h1 {
+  font-size: 34px;
 }
+
 .container {
   background-color: #fff;
   border-radius: 10px;
@@ -175,26 +401,30 @@ font-size: 34px;
   z-index: 5;
   animation: show 0.6s;
 }
-.imageUpload{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    gap: 10px;
-    position: relative;
+
+.imageUpload {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  position: relative;
 }
-.imageUpload img{
-      height: 40px;
-    width: 48px;
-    border-radius: 5px;
+
+.imageUpload img {
+  height: 40px;
+  width: 48px;
+  border-radius: 5px;
 }
 
 @keyframes show {
+
   0%,
   49.99% {
     opacity: 0;
     z-index: 1;
   }
+
   50%,
   100% {
     opacity: 1;
@@ -268,10 +498,22 @@ font-size: 34px;
   transform: translateY(20%);
 }
 
+@media (max-width: 1024px) {
+  .chatContainer .sidebar {
+    width: 350px;
+  }
+
+  .chatView {
+    width: 700px;
+  }
+}
+
 @media (min-width: 768px) {
   body {
     margin: -20px 0 50px;
   }
+
+
 
   .container {
     width: 768px;
