@@ -506,6 +506,10 @@ input[type="file"] {
   .chatView {
     width: 700px;
   }
+
+  .ant-drawer {
+    width: 350px;
+  }
 }
 
 @media (min-width: 768px) {
