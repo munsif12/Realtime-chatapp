@@ -1,15 +1,32 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Avatar } from '@vechaiui/react'
 import openNotificationWithIcon from './Notification';
 import ChatsLoading from './ChatsLoading';
 import callApi from '../apiCalls';
-
+import { useDispatch } from 'react-redux';
+import { myChats, selectedChat } from '../redux/slices/chats'
+// import { useSelector } from 'react-redux';
 
 function UserDesc({ users, search, onClose: closeSideDrawer }) {
+    const dispatch = useDispatch()
+    const [chatLists, setChatLists] = useState([]);
     const [Loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        (async function () {
+            try {
+                setLoading(true);
+                const data = await callApi.apiMethod('getUsers', 'GET');
+                setChatLists(data.users)
+                setLoading(false);
+            } catch (error) {
+                setLoading(false);
+                openNotificationWithIcon('error', error.message)
+            }
+        })();
+    }, []);
+
     async function handleCreateOneToOneChat(id) {
-        console.log('why i am running handleCreateOneToOneChat')
         try {
             const body = {
                 userId: id
@@ -17,6 +34,8 @@ function UserDesc({ users, search, onClose: closeSideDrawer }) {
             setLoading(true);
             const data = await callApi.apiMethod('createChat', 'POST', body);
             openNotificationWithIcon('success', data.message)
+            dispatch(myChats());
+            dispatch(selectedChat({ id: data.chat._id }));
             setLoading(false);
             closeSideDrawer();
         } catch (error) {
@@ -26,7 +45,7 @@ function UserDesc({ users, search, onClose: closeSideDrawer }) {
     }
     if (Loading) return <ChatsLoading />
     return (
-        users
+        chatLists
             .filter(chat => (
                 chat.name.toLowerCase().includes(search.toLowerCase()) ||
                 chat.email.toLowerCase().includes(search.toLowerCase())
