@@ -1,13 +1,18 @@
 
 import axios from '../config/axios'
 let apiEndpoints = {
-    getChats: '/user',
-    createChat: '/chat'
+    getUsers: '/user',
+    createChat: '/chat',
+    getChats: '/chat',
 }
 let callApi = {}
-callApi.apiMethod = async function (requestName, method, body = null) {
+callApi.apiMethod = async function (requestName, method, body = null, params = null) {
+    let Url = apiEndpoints[requestName];
+    if (params) {
+        Url = `${apiEndpoints[requestName]}${params}`
+    }
     try {
-        const { data } = await axios({ method, url: apiEndpoints[requestName], data: body })
+        const { data } = await axios({ method, url: Url, data: body })
         return data;
     } catch (error) {
         throw new Error(error.message);
