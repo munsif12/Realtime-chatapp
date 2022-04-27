@@ -1,24 +1,21 @@
 import React, { useState } from 'react'
 import { Avatar, FormControl, Input } from '@vechaiui/react'
 import { useNavigate } from 'react-router-dom';
-import { dummyChats } from '../constant';
 import { IoMdMore, IoMdNotificationsOutline } from "react-icons/io";
 import { MdMessage } from "react-icons/md";
 import { Dropdown, Menu } from 'antd';
 import DrawerNewChat from './DrawerNewChat';
 import ChatDesc from './ChatDesc';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Logout } from '../redux/slices/auth';
-
 function ChatSidebar() {
-    const navigate = useNavigate();
     const [visible, setVisible] = useState(false);
     const [searchUser, setSearchUser] = useState('');
-    const dispatch = useDispatch()
-    const showDrawer = () => {
-        setVisible(true);
-    };
 
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
+    const { user } = useSelector(state => state.auth)
+    const showDrawer = () => setVisible(true);
     function handleSettings(key) {
         switch (key) {
             case 'logout':
@@ -27,7 +24,6 @@ function ChatSidebar() {
                 localStorage.removeItem('user')
                 navigate('/')
                 break;
-
             default:
                 break;
         }
@@ -55,12 +51,14 @@ function ChatSidebar() {
     );
 
 
+
     //useEffect to fetch all chats in which user exists
     //make t redux state
     return (
-        <div className="sidebar w-1/3 flex  text-2xl ">
+        <div className="sidebar w-[40%] flex  text-2xl ">
+            {/* Chats Header */}
             <div className='sidebarHeader py-2 px-4 w-full flex justify-between items-center'>
-                <Avatar src="https://images.unsplash.com/photo-1494790108377-be9c29b29330" size="2xl" />
+                <Avatar src={user.profileImage} size="2xl" />
                 <div className="settings flex gap-3 items-center">
                     <div className="settingNotifica">
                         {/* <Badge
@@ -93,7 +91,7 @@ function ChatSidebar() {
                 </div>
                 {/* Chat Lists */}
                 <div className="usersList">
-                    <ChatDesc dummyChats={dummyChats} />
+                    <ChatDesc />
                 </div>
             </main>
         </div>

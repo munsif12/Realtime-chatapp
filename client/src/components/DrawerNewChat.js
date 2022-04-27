@@ -4,29 +4,15 @@ import { IoArrowBack } from "react-icons/io5";
 import { FormControl, Input } from '@vechaiui/react';
 import UserDesc from './UserDesc';
 import ChatsLoading from './ChatsLoading';
-import openNotificationWithIcon from './Notification';
-import callApi from '../apiCalls';
+
 
 
 
 const DrawerNewChat = ({ visible, setVisible }) => {
     const [searchUser, setSearchUser] = useState('');
-    const [chatLists, setChatLists] = useState([]);
-    const [Loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        (async function () {
-            try {
-                setLoading(true);
-                const data = await callApi.apiMethod('getChats', 'GET');
-                setChatLists(data.users)
-                setLoading(false);
-            } catch (error) {
-                setLoading(false);
-                openNotificationWithIcon('error', error.message)
-            }
-        })();
-    }, []);
+
+
     const onClose = () => {
         setVisible(false);
     };
@@ -56,12 +42,13 @@ const DrawerNewChat = ({ visible, setVisible }) => {
                     <FormControl >
                         <Input
                             type="text" name="email" placeholder="Search or start  new chat." autoComplete='off'
+                            autoFocus
                             value={searchUser}
                             onChange={(e) => handleSearch(e)}
                         />
                     </FormControl>
                     <div className="searchUserLists">
-                        {!Loading ? <UserDesc users={chatLists} search={searchUser} onClose={onClose} /> : <ChatsLoading />}
+                        <UserDesc search={searchUser} onClose={onClose} />
                     </div>
                 </Drawer>
             </div>
