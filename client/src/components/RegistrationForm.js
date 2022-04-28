@@ -2,15 +2,21 @@ import React, { useEffect } from 'react'
 import { Input, FormControl, Button, Image } from "@vechaiui/react"
 import { useSelector } from 'react-redux'
 import { formTypes } from '../constant';
-function RegistrationForm({ showPassword, handleToggleShowPassword, regFormData, regFormErr, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm }) {
+import useLoginRegStates from '../hooks/useLoginRegStates';
+import loadingGif from '../assets/images/loadingGif.gif'
+function RegistrationForm() {
+    const {
+        showPassword, regFormData, regFormErr,
+        handleToggleShowPassword, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm, isImageLoading
+    } = useLoginRegStates();
 
     const { loading: isLoading, formType, error } = useSelector(state => state.auth)
     useEffect(() => {
         if (formType === formTypes.REGISTER && error.status === 400) {
             alert(error.message)
-            console.log(formType === formTypes.REGISTER && error.status === 400 && error.message)
         }
     }, [error, formType]);
+    console.count("register")
     return (
         <div className="form-container sign-up-container">
             <form>
@@ -52,13 +58,13 @@ function RegistrationForm({ showPassword, handleToggleShowPassword, regFormData,
                         htmlWidth={100}
                         htmlHeight={50}
                         className="object-cover"
-                        src={regFormData.profileImage}
+                        src={!isImageLoading ? regFormData.profileImage : loadingGif}
                     />
                     <FormControl invalid={regFormErr.password && true}>
                         <Input.Group>
                             <label className="custom-file-upload">
                                 <Input type="file" name='profileImage' onChange={handleChangeForBothLoginAndRegForm} />
-                                Upload your profile image
+                                {isImageLoading ? "Uploading your image ...." : "Upload your profile image"}
                             </label>
                         </Input.Group>
                     </FormControl>

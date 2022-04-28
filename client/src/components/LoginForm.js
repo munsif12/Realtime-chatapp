@@ -2,16 +2,22 @@ import React, { useEffect } from 'react'
 import { Input, FormControl, Button } from "@vechaiui/react"
 import { useSelector } from 'react-redux'
 import { formTypes } from '../constant';
+import useLoginRegStates from '../hooks/useLoginRegStates';
 
-function LoginForm({ showPassword, handleToggleShowPassword, loginFormData, loginFormErr, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm }) {
+function LoginForm() {
+    const {
+        showPassword, loginFormData, loginFormErr,
+        handleToggleShowPassword, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm
+    } = useLoginRegStates();
     const { loading: isLoading, formType, error } = useSelector(state => state.auth)
+
     useEffect(() => {
-        if (formType === formTypes.LOGIN && error.status === 400) {
+        if (formType === formTypes.LOGIN && error.status === (400 || 500)) {
             alert(error.message)
-            console.log(formType === formTypes.LOGIN && error.status === 400 && error.message)
         }
     }, [error, formType]);
-    console.log(isLoading, formType)
+
+    console.count('login')
     return (
         <div className="form-container sign-in-container">
             <form>
