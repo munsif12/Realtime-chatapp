@@ -8,14 +8,17 @@ import DrawerNewChat from './DrawerNewChat';
 import ChatDesc from './ChatDesc';
 import { useDispatch, useSelector } from 'react-redux'
 import { Logout } from '../redux/slices/auth';
+import DrawerGroupChat from './DrawerGroupChat';
 function ChatSidebar() {
     const [visible, setVisible] = useState(false);
+    const [showGroupDrawer, setShowGroupDrawer] = useState(false);
     const [searchUser, setSearchUser] = useState('');
 
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const { user } = useSelector(state => state.auth)
     const showDrawer = () => setVisible(true);
+    const showGroupChatDrawer = () => setShowGroupDrawer(true);
     function handleSettings(key) {
         switch (key) {
             case 'logout':
@@ -23,6 +26,10 @@ function ChatSidebar() {
                 localStorage.removeItem('authToken')
                 localStorage.removeItem('user')
                 navigate('/')
+                break;
+            case 'groupChat':
+                console.log("creating group chat")
+                showGroupChatDrawer()
                 break;
             default:
                 break;
@@ -32,11 +39,11 @@ function ChatSidebar() {
     const menu = (
         <Menu
             onClick={(e) => handleSettings(e.key)}
-            className='dropDownSettings pt-4 pb-2 text-2xl text-black'
+            className='dropDownSettings pt-5 pb-5 text-2xl text-black'
             items={[
                 {
-                    label: <span>1st menu item</span>,
-                    key: 0,
+                    label: <span>New group</span>,
+                    key: 'groupChat',
                 },
                 {
                     label: <span >2nd menu item</span>,
@@ -49,11 +56,6 @@ function ChatSidebar() {
             ]}
         />
     );
-
-
-
-    //useEffect to fetch all chats in which user exists
-    //make t redux state
     return (
         <div className="sidebar w-[40%] flex  text-2xl ">
             {/* Chats Header */}
@@ -76,6 +78,7 @@ function ChatSidebar() {
                         </Dropdown>
                     </div>
                     <DrawerNewChat visible={visible} setVisible={setVisible} />
+                    <DrawerGroupChat visible={showGroupDrawer} setVisible={setShowGroupDrawer} />
                 </div>
             </div>
             <main>
@@ -91,7 +94,7 @@ function ChatSidebar() {
                 </div>
                 {/* Chat Lists */}
                 <div className="usersList">
-                    <ChatDesc />
+                    <ChatDesc search={searchUser} />
                 </div>
             </main>
         </div>
