@@ -1,51 +1,38 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Avatar } from '@vechaiui/react'
-import openNotificationWithIcon from './Notification';
 import ChatsLoading from './ChatsLoading';
-import callApi from '../apiCalls';
-import { useDispatch } from 'react-redux';
-import { myChats, selectedChat } from '../redux/slices/chats'
+import { useDispatch, useSelector } from 'react-redux';
+import { getUsers } from '../redux/slices/users';
+import openNotificationWithIcon from './Notification';
 // import { useSelector } from 'react-redux';
 
-function UserDesc({ users, search, onClose: closeSideDrawer }) {
+function UserDesc({ search, onClose: closeSideDrawer, setGroupSelectedUsers }) {
     const dispatch = useDispatch()
-    const [chatLists, setChatLists] = useState([]);
-    const [Loading, setLoading] = useState(false);
 
+    const { loading, users } = useSelector(state => state.users)
     useEffect(() => {
-        (async function () {
-            try {
-                setLoading(true);
-                const data = await callApi.apiMethod('getUsers', 'GET');
-                setChatLists(data.users)
-                setLoading(false);
-            } catch (error) {
-                setLoading(false);
-                openNotificationWithIcon('error', error.message)
-            }
-        })();
-    }, []);
+        dispatch(getUsers())
+    }, [dispatch]);
 
-    async function handleCreateOneToOneChat(id) {
-        try {
-            const body = {
-                userId: id
+    function addUserToGroupChat(user) {
+        setGroupSelectedUsers(preVal => {
+            if (preVal.some(u => u.id === user._id)) {
+                openNotificationWithIcon('error', 'User already added to group chat');
+                return preVal
             }
-            setLoading(true);
-            const data = await callApi.apiMethod('createChat', 'POST', body);
-            openNotificationWithIcon('success', data.message)
-            dispatch(myChats());
-            dispatch(selectedChat({ id: data.chat._id }));
-            setLoading(false);
-            closeSideDrawer();
-        } catch (error) {
-            setLoading(false);
-            openNotificationWithIcon('error', error.message)
-        }
+            return [
+                ...preVal,
+                {
+                    id: user._id,
+                    name: user.name,
+                    profileImage: user.profileImage,
+                }
+            ]
+        })
     }
-    if (Loading) return <ChatsLoading />
+    if (loading) return <ChatsLoading />
     return (
-        chatLists
+        users
             .filter(chat => (
                 chat.name.toLowerCase().includes(search.toLowerCase()) ||
                 chat.email.toLowerCase().includes(search.toLowerCase())
@@ -53,7 +40,7 @@ function UserDesc({ users, search, onClose: closeSideDrawer }) {
             .sort((a, b) => a.name > b.name ? 1 : -1)
             .map((user, index) => {
                 return (
-                    <div className="userListItem flex" key={index} onClick={() => handleCreateOneToOneChat(user._id)}>
+                    <div className="userListItem flex" key={index} onClick={() => addUserToGroupChat(user)}>
                         <div className="chatImage">
                             <Avatar src={user.profileImage} size="2xl" />
                         </div>

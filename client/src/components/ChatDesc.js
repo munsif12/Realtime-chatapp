@@ -5,7 +5,7 @@ import formatTIme from '../helpers/formatTime'
 import { myChats, selectedChat } from '../redux/slices/chats'
 import ChatsLoading from './ChatsLoading'
 import openNotificationWithIcon from './Notification'
-function ChatDesc() {
+function ChatDesc({ search = '' }) {
     const dispatch = useDispatch()
     const {
         loading, chats, error
@@ -23,28 +23,33 @@ function ChatDesc() {
         dispatch(selectedChat({ id: chat._id }))
     }
     if (loading) return <ChatsLoading />
+
     return (
-        chats.map((chat, index) => {
-            return (
-                <div className="userListItem flex" key={index} onClick={() => setSelectedChat(chat)}>
-                    <div className="chatImage">
-                        <Avatar src={chat.isGroupChat ? chat.chatName : chat.users[0].profileImage} size="2xl" />
-                    </div>
-                    <div className="chatDescLatestMsg pr-4">
-                        <div className="chatNameAndTime flex items-center ">
-                            <p className='nameLatestMsg chatName m-0 p-0 text-black text-2xl'>
-                                {chat.isGroupChat ? chat.chatName : chat.users[0].name}</p>
-                            <span className='chatTime m-0 p-0 text-black'>{formatTIme(chat.createdAt)}</span>
+        chats
+            .filter(chat => chat.isGroupChat ?
+                chat.chatName.toLowerCase().includes(search.toLowerCase()) :
+                chat.users.some(user => user.name.toLowerCase().includes(search.toLowerCase())))
+            .map((chat, index) => {
+                return (
+                    <div className="userListItem flex" key={index} onClick={() => setSelectedChat(chat)}>
+                        <div className="chatImage">
+                            <Avatar src={chat.isGroupChat ? chat.chatName : chat.users[0].profileImage} size="2xl" />
                         </div>
-                        <div className="chatDescAndSetting flex items-center">
-                            <p className='nameLatestMsg m-0 p-0 text-black text-2xl'>
-                                {/* chat?.latestMessage  || */'This is dummy text'}</p>
-                            {/* <span className='chatSettingIcon m-0 p-0 text-black'>{chat.time}</span> */}
+                        <div className="chatDescLatestMsg pr-4">
+                            <div className="chatNameAndTime flex items-center ">
+                                <p className='nameLatestMsg chatName m-0 p-0 text-black text-2xl'>
+                                    {chat.isGroupChat ? chat.chatName : chat.users[0].name}</p>
+                                <span className='chatTime m-0 p-0 text-black'>{formatTIme(chat.createdAt)}</span>
+                            </div>
+                            <div className="chatDescAndSetting flex items-center">
+                                <p className='nameLatestMsg m-0 p-0 text-black text-2xl'>
+                                    {/* chat?.latestMessage  || */'This is dummy text'}</p>
+                                {/* <span className='chatSettingIcon m-0 p-0 text-black'>{chat.time}</span> */}
+                            </div>
                         </div>
                     </div>
-                </div>
-            )
-        })
+                )
+            })
 
     )
 }
