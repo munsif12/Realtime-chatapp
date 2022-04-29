@@ -4,7 +4,7 @@ const { detailsToSelect } = require("../../constants");
 const createGropuChat = async (req, res) => {
     //will take chatname nad userIds and will set groupAdmin value to logedin user
     try {
-        const { chatName, userIds } = req.body;
+        const { chatName, userIds, groupChatImage } = req.body;
         if (!chatName || !userIds) {
             return res.status(400).json({
                 success: false,
@@ -25,7 +25,7 @@ const createGropuChat = async (req, res) => {
         })
 
         if (groupChatExists) {
-            return res.status(200).json({
+            return res.status(400).json({
                 success: true,
                 message: 'Chat name already exists',
             });
@@ -35,6 +35,7 @@ const createGropuChat = async (req, res) => {
         let newGroupChat = await Chat.create({
             chatName,
             isGroupChat: true,
+            groupChatImage,
             users: userIds,
             groupAdmin: req.user._id
         })

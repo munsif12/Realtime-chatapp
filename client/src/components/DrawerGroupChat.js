@@ -2,25 +2,35 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Drawer } from 'antd';
 import { IoArrowBack, IoArrowForward } from "react-icons/io5";
 import { FormControl, Input } from '@vechaiui/react';
-import UserDesc from './UserDesc';
 
 import GroupSelectedUserBadge from './GroupSelectedUserBadge';
+import DrawerGroupNameAndImage from './DrawerGroupNameAndImage';
+import SelectUser from './SelectUser';
+import openNotificationWithIcon from './Notification';
 const DrawerGroupChat = ({ visible, setVisible }) => {
     const [searchUser, setSearchUser] = useState('');
+    const [childrenDrawer, setChildrenDrawer] = useState(false)
     const [groupSelectedUsers, setGroupSelectedUsers] = useState([]);
-    const onClose = () => setVisible(false);
+    const onClose = () => {
+        setSearchUser('')
+        setGroupSelectedUsers([])
+        setVisible(false)
+
+    };
     const handleSearch = (e) => setSearchUser(e.target.value);
+    const onChildrenDrawerClose = () => setChildrenDrawer(false)
     const removeGroupSelecteduser = (user) => {
         const remainingUsers = groupSelectedUsers.filter(u => u.id !== user.id)
         setGroupSelectedUsers(remainingUsers)
     }
     useEffect(() => {
-        // if (inputRef.current) {
-        //     inputRef.current.focus()
-        // }
+        // if (inputRef.current) inputRef.current.focus()
 
         inputRef?.current?.focus(); //both will do the same thing
     }, [groupSelectedUsers]);
+    useEffect(() => {
+        openNotificationWithIcon('info', 'Please select atlest 3 users to start chat.')
+    }, [])
 
     const inputRef = useRef(null)
     return (
@@ -56,17 +66,18 @@ const DrawerGroupChat = ({ visible, setVisible }) => {
                     />
                 </FormControl>
                 <div className="searchUserLists">
-                    <UserDesc search={searchUser} onClose={onClose} setGroupSelectedUsers={setGroupSelectedUsers} />
+                    <SelectUser search={searchUser} onClose={onClose} setGroupSelectedUsers={setGroupSelectedUsers} />
                 </div>
                 {
-                    groupSelectedUsers.length > 0 &&
+                    groupSelectedUsers.length > 2 &&
                     <div className="submitSlectedUser flex justify-center">
-                        <span className="groupSubmitBtn" >
+                        <span className="groupSubmitBtn" onClick={() => setChildrenDrawer(true)}>
                             <IoArrowForward />
                         </span>
                     </div>
                 }
             </Drawer>
+            <DrawerGroupNameAndImage childrenDrawer={childrenDrawer} onChildrenDrawerClose={onChildrenDrawerClose} groupSelectedUsers={groupSelectedUsers} onClose={onClose} />
         </div>
     );
 };

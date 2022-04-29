@@ -33,7 +33,7 @@ function ChatDesc({ search = '' }) {
                 return (
                     <div className="userListItem flex" key={index} onClick={() => setSelectedChat(chat)}>
                         <div className="chatImage">
-                            <Avatar src={chat.isGroupChat ? chat.chatName : chat.users[0].profileImage} size="2xl" />
+                            <Avatar src={chat.isGroupChat ? chat?.groupChatImage : chat.users[0].profileImage} size="2xl" />
                         </div>
                         <div className="chatDescLatestMsg pr-4">
                             <div className="chatNameAndTime flex items-center ">
