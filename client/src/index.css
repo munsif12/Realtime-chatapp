@@ -17,7 +17,9 @@
 :root {
   --main-color: #6dd5ed;
   --secondary-color: #2193b0;
+  --wa-primary-color: #008069;
   --wa-bg: #f0f2f5;
+  --waSelectedUserBg: #e9edef;
   --white: #fff;
   --bb: #dfe0e1;
   --black: #000;
@@ -52,7 +54,7 @@ body {
 }
 
 .sidebar {
-  width: 30%;
+  width: 40%;
   flex-direction: column;
   background-color: var(--wa-bg);
 }
@@ -75,14 +77,22 @@ body {
   cursor: pointer;
 }
 
+.dropDownSettings {
+  padding-bottom: 10px !important;
+}
+
+.dropDownSettings ul li:last-child {
+  padding-bottom: 15px !important;
+}
+
 .dropDownSettings li {
-  padding-left: 15px !important;
-  padding-top: 13px !important;
+  padding-left: 25px !important;
+  padding-top: 10px !important;
   padding-right: 50px !important;
 }
 
 .DrawergoBack {
-  padding-right: 45px !important;
+  padding-right: 30px !important;
   cursor: pointer;
 }
 
@@ -97,7 +107,7 @@ body {
 }
 
 .ant-drawer-header {
-  height: 110px !important;
+  height: 120px !important;
   background-color: #008069 !important;
   display: flex;
   justify-content: flex-start;
@@ -111,8 +121,23 @@ body {
   color: White !important;
 }
 
+.ant-drawer-body::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.ant-drawer-body::-webkit-scrollbar-track-piece {
+  background-color: #ffffff;
+}
+
+.ant-drawer-body::-webkit-scrollbar-thumb:vertical {
+  height: 30px;
+  background-color: #ced0d1;
+}
+
 .ant-drawer-body {
   padding: 0px !important;
+  position: relative;
 }
 
 .ant-drawer-body .form-control {
@@ -120,8 +145,8 @@ body {
 }
 
 .searchUserLists::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 0px;
+  height: 0px;
 }
 
 .searchUserLists::-webkit-scrollbar-track-piece {
@@ -221,6 +246,7 @@ body {
   font-size: 20px;
   color: var(--black);
   letter-spacing: 1px;
+  text-transform: capitalize !important;
 }
 
 .nameLatestMsg {
@@ -255,10 +281,130 @@ body {
 
 .selectedChatName {
   flex-grow: 1;
+
+}
+
+.selectedChatName span {
+  font-size: 20px;
+  color: var(--black);
+  letter-spacing: 1px;
+}
+
+.selectedChatName p {
+  font-size: 12px;
+  color: var(--black);
+  letter-spacing: 1px;
+}
+
+.seletedUsersForGroupChat {
+  padding: 0px 15px;
+  max-height: 30vh;
+  overflow: scroll;
+  width: 100%;
+}
+
+.seletedUsersForGroupChat::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.seletedUsersForGroupChat::-webkit-scrollbar-track-piece {
+  background-color: #ffffff;
+}
+
+.seletedUsersForGroupChat::-webkit-scrollbar-thumb:vertical {
+  height: 30px;
+  background-color: #ced0d1;
 }
 
 .selectedChatSetting {
   flex-grow: 0;
+}
+
+.chatViewBody {
+  height: 91% !important;
+}
+
+.nameAndRemoveIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.su_user {
+  width: fit-content;
+  background-color: var(--waSelectedUserBg);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 5px;
+  /* padding: 0px 15px; */
+}
+
+.su_name {
+  font-size: 18px;
+}
+
+.su_remove {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 26px;
+  width: 28px;
+  cursor: pointer;
+  border-radius: 50%;
+  margin-left: 4px;
+  margin-right: 2px;
+  color: #8696a0;
+}
+
+.su_remove:hover {
+  background-color: #ffffff;
+}
+
+.submitSlectedUser {
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  background: #f0f2f5;
+  height: 15vh;
+}
+
+.finalSubmissionSelectedUsers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f0f2f5;
+  height: 15vh;
+}
+
+.noRecordsFound {
+  padding: 50px;
+  text-align: center;
+  color: #8696a0;
+}
+
+.groupSubmitBtn,
+.groupSubmitBtnLoading {
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #00a884;
+  color: white;
+  padding: 0;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(11, 20, 26, .4);
+}
+
+.groupSubmitBtn svg {
+  transform: scale(1.7);
 }
 
 h1 {
@@ -354,6 +500,7 @@ input[type="file"] {
   font-family: 'Nunito', sans-serif !important;
   width: 100%;
   margin: 8px 0px;
+  color: white !important;
 }
 
 .mainContainerLoginReg h1 {
@@ -409,6 +556,67 @@ input[type="file"] {
   width: 100%;
   gap: 10px;
   position: relative;
+}
+
+.groupSubmitBtnLoading svg {
+  animation: spinLoader 0.8s linear infinite !important;
+}
+
+@keyframes spinLoader {
+  0% {
+    transform: scale(1.7) rotate(0deg);
+  }
+
+  100% {
+
+    transform: scale(1.7) rotate(360deg);
+  }
+}
+
+/* .ant-drawer-body {
+  background: var(--wa-bg);
+} */
+.ant-drawer-body .form-control {
+  background-color: var(--white);
+}
+
+.drawer-group-name-and-image .ant-drawer-body {
+  background: var(--wa-bg);
+}
+
+.drawer-group-name-and-image input {
+  background-color: var(--white);
+}
+
+.drawer-group-name-and-image input {
+  background-color: var(--white);
+}
+
+.drawer-group-name-and-image .groupImageUpload {
+  background-color: var(--white);
+}
+
+.groupImageUpload {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  position: relative;
+  padding-top: 17px;
+}
+
+.groupImageUpload img {
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  border: 1px solid black;
+  box-shadow: 0 1px 3px rgba(11, 20, 26, .4);
+}
+
+.custom-file-upload {
+  text-align: center;
 }
 
 .imageUpload img {
@@ -500,7 +708,7 @@ input[type="file"] {
 
 @media (max-width: 1024px) {
   .chatContainer .sidebar {
-    width: 350px;
+    width: 400px;
   }
 
   .chatView {
@@ -508,7 +716,7 @@ input[type="file"] {
   }
 
   .ant-drawer {
-    width: 350px;
+    width: 400px;
   }
 }
 
