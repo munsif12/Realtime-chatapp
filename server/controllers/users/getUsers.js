@@ -18,4 +18,4 @@ const users = async (req, res) => {
         users
     })
 }
-module.exports = users;;
+module.exports = users;

@@ -28,7 +28,6 @@ function ChatSidebar() {
                 navigate('/')
                 break;
             case 'groupChat':
-                console.log("creating group chat")
                 showGroupChatDrawer()
                 break;
             default:

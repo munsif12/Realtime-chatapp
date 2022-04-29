@@ -30,8 +30,6 @@ export const register = createAsyncThunk('auth/login', async (user, thunkAPI) =>
         });
         return data;
     } catch (err) {
-        console.log('----------')
-        console.log({ err })
         if (err.response && err.response.data) {
             return thunkAPI.rejectWithValue({
                 error: err.response.data,
@@ -77,14 +75,18 @@ const authSlice = createSlice({
         loading: false,
     },
     reducers: {
-        ClearError: (state, action) => {
+        Logout: (state) => {
+            state.isLoggedIn = false;
+            state.user = {};
+        },
+        ClearError: (state) => {
             state.error.status = '';
             state.error.success = false;
             state.error.message = '';
         },
     },
     extraReducers: {
-        [login.pending]: (state, action) => {
+        [login.pending]: (state) => {
             state.loading = true;
             state.formType = 'login';
         },
@@ -100,12 +102,11 @@ const authSlice = createSlice({
         [login.rejected]: (state, action) => {
             const { error, status } = action.payload;
             const addErrorStatus = { ...error, status };
-            console.log('------------------')
             state.loading = false;
             state.error = addErrorStatus;
             state.isLoggedIn = false;
         },
-        [register.pending]: (state, action) => {
+        [register.pending]: (state) => {
             state.loading = true;
             state.formType = 'register';
         },
@@ -142,5 +143,5 @@ const authSlice = createSlice({
     }
 })
 const { reducer, actions } = authSlice;
-export const { ClearError } = actions;
+export const { ClearError, Logout } = actions;
 export default reducer;

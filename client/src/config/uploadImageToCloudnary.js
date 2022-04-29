@@ -9,5 +9,4 @@ export default async function uploadImageToCloudinary(CLOUDINARY_URL, data) {
     } catch (error) {
         return error;
     }
-
 } 

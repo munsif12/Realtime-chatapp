@@ -1,6 +1,7 @@
 import { Avatar } from '@vechaiui/react'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { homeChatsFilter } from '../helpers/filterSearchValue'
 import formatTIme from '../helpers/formatTime'
 import { myChats, selectedChat } from '../redux/slices/chats'
 import ChatsLoading from './ChatsLoading'
@@ -24,11 +25,10 @@ function ChatDesc({ search = '' }) {
     }
     if (loading) return <ChatsLoading />
 
+    if (homeChatsFilter(chats, search).length === 0) return <div className="noRecordsFound">Soory! No Chats Available ...</div>
+
     return (
-        chats
-            .filter(chat => chat.isGroupChat ?
-                chat.chatName.toLowerCase().includes(search.toLowerCase()) :
-                chat.users.some(user => user.name.toLowerCase().includes(search.toLowerCase())))
+        homeChatsFilter(chats, search)
             .map((chat, index) => {
                 return (
                     <div className="userListItem flex" key={index} onClick={() => setSelectedChat(chat)}>
