@@ -6,13 +6,24 @@ import { useDispatch } from "react-redux";
 const useLoginRegStates = () => {
     const dispatch = useDispatch();
 
-    const [activeTab, setactiveTab] = useState('right-panel-active');
+    const [activeTab, setactiveTab] = useState(localStorage.getItem("activeForm"));
     const [showPassword, setShowPassword] = useState(false)
     const [regFormData, setRegFormData] = useState({ name: '', email: '', password: '', profileImage: "https://www.jobz.pk/images/pics/2020-09/503889_1_81445.png" })
     const [loginFormData, setLoginFormData] = useState({ email: 'chatapp.demo@gmail.com', password: 'demo' })
     const [regFormErr, setRegFormErr] = useState({})
     const [loginFormErr, setLoginFormErr] = useState({})
 
+    const [isImageLoading, setIsImageLoading] = useState(false)
+
+    function updateFormView() {
+        if (localStorage.getItem("activeForm") === 'right-panel-active') {
+            localStorage.setItem('activeForm', "left-panel-active")
+            setactiveTab("left-panel-active")
+        } else {
+            localStorage.setItem('activeForm', "right-panel-active")
+            setactiveTab("right-panel-active")
+        }
+    }
     function handleToggleShowPassword() { setShowPassword(!showPassword) }
     function validateRegistrationForm() {
         let error = {}
@@ -31,7 +42,7 @@ const useLoginRegStates = () => {
     }
     async function submitBothLoginAndRegistrationForm(e) {
         e.preventDefault()
-        if (activeTab === 'right-panel-active') {
+        if (localStorage.getItem("activeForm") === 'right-panel-active') {
             if (validateRegistrationForm()) {
                 dispatch(register(regFormData))
             }
@@ -43,7 +54,7 @@ const useLoginRegStates = () => {
         }
     }
     async function handleChangeForBothLoginAndRegForm(e) {
-        if (activeTab === 'right-panel-active') {
+        if (localStorage.getItem("activeForm") === 'right-panel-active') {
             setRegFormErr({});
             if (e.target.name === "profileImage") {
                 const file = e.target.files[0];
@@ -56,6 +67,7 @@ const useLoginRegStates = () => {
                     return
                 }
                 // upload image to cloudinary inseted of creating for my own using public api from codesaandbox
+                setIsImageLoading(true)
                 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/demo/image/upload';
                 const CLOUDINARY_UPLOAD_PRESET = 'docs_upload_example_us_preset';
                 const data = new FormData()
@@ -63,6 +75,7 @@ const useLoginRegStates = () => {
                 data.append("upload_preset", CLOUDINARY_UPLOAD_PRESET)
                 const imageUrl = await uploadImageToCloudinary(CLOUDINARY_URL, data)
                 setRegFormData({ ...regFormData, [e.target.name]: imageUrl })
+                setIsImageLoading(false)
 
             } else {
                 setRegFormData({ ...regFormData, [e.target.name]: e.target.value })
@@ -73,11 +86,10 @@ const useLoginRegStates = () => {
             setLoginFormData({ ...loginFormData, [e.target.name]: e.target.value })
         }
     }
-
-    return [
-        activeTab, setactiveTab, showPassword, regFormData, loginFormData, regFormErr, loginFormErr,
-        handleToggleShowPassword, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm,
-    ];
+    return {
+        activeTab, updateFormView, showPassword, regFormData, loginFormData, regFormErr, loginFormErr,
+        handleToggleShowPassword, handleChangeForBothLoginAndRegForm, submitBothLoginAndRegistrationForm, isImageLoading
+    };
 };
 
 export default useLoginRegStates;
