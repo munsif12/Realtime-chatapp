@@ -17,8 +17,8 @@ function ChatDesc({ search = '' }) {
     }, [error.status, error.message]);
 
     useEffect(() => {
-        dispatch(myChats())
-    }, [dispatch]);
+        if (chats.length < 1) dispatch(myChats())
+    }, [dispatch, chats]);
 
     function setSelectedChat(chat) {
         dispatch(selectedChat({ id: chat._id }))

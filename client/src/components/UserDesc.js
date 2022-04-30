@@ -14,8 +14,8 @@ function UserDesc({ search, onClose: closeSideDrawer }) {
     const [Loading, setLoading] = useState(false);
     const { loading, users } = useSelector(state => state.users)
     useEffect(() => {
-        dispatch(getUsers())
-    }, [dispatch]);
+        if (users.length < 1) dispatch(getUsers())
+    }, [dispatch, users]);
 
     async function handleCreateOneToOneChat(id) {
         try {
@@ -35,6 +35,7 @@ function UserDesc({ search, onClose: closeSideDrawer }) {
         }
     }
     if (Loading || loading) return <ChatsLoading />
+
     if (selectUserFilter(users, search).length === 0) return <div className='noRecordsFound'>Soory! No users found.</div>
     return (
 

@@ -11,8 +11,8 @@ function SelectUser({ search, setGroupSelectedUsers }) {
     const dispatch = useDispatch()
     const { loading, users } = useSelector(state => state.users)
     useEffect(() => {
-        dispatch(getUsers())
-    }, [dispatch]);
+        if (users.length < 1) dispatch(getUsers())
+    }, [dispatch, users]);
 
     function addUserToGroupChat(user) {
         setGroupSelectedUsers(preVal => {
