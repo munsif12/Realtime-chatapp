@@ -4,6 +4,7 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const removeFromGroupChat = async (req, res) => {
     try {
         const { userId, groupChatId } = req.body;
+
         if (!userId || !groupChatId) {
             return res.status(400).json({ success: false, message: 'User Id or Group Chat Id required' });
         }
@@ -11,6 +12,10 @@ const removeFromGroupChat = async (req, res) => {
         const isUserAlreadyInGroupChat = await Chat.findOne({ _id: groupChatId, users: { $in: ObjectId(userId) } });
         if (!isUserAlreadyInGroupChat) {
             return res.status(400).json({ success: false, message: 'User not exists in this grouy chat' });
+        }
+
+        if (ObjectId(req.user._id).toString() !== ObjectId(isUserAlreadyInGroupChat.groupAdmin).toString()) {
+            return res.status(400).json({ success: false, message: 'You are not the group admin of this group chat.' });
         }
         let groupChat = await Chat.findByIdAndUpdate({ _id: groupChatId }, { $pull: { users: userId } }, { new: true })
             .populate({

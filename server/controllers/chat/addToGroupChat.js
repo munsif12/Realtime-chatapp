@@ -8,11 +8,10 @@ const addToGroupChat = async (req, res) => {
             return res.status(400).json({ success: false, message: 'User Id or Group Chat Id required' });
         }
         //if user already present inthe chat then dont add
-        const isUserAlreadyInGroupChat = await Chat.findOne({ _id: groupChatId, users: { $in: ObjectId(userId) } });
+        const isUserAlreadyInGroupChat = await Chat.findOne({ _id: groupChatId, users: { $in: userId } });
         if (isUserAlreadyInGroupChat) {
             return res.status(400).json({ success: false, message: 'User already in group chat' });
         }
-
         let groupChat = await Chat.findByIdAndUpdate({ _id: groupChatId }, { $push: { users: userId } }, { new: true })
             .populate({
                 path: 'users',
