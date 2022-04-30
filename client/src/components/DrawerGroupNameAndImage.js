@@ -9,7 +9,7 @@ import openNotificationWithIcon from './Notification';
 import { useSelector, useDispatch } from 'react-redux'
 import callApi from '../apiCalls';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { myChats } from '../redux/slices/chats';
+import { selectedChat, setChats } from '../redux/slices/chats';
 function DrawerGroupNameAndImage({ groupSelectedUsers, onChildrenDrawerClose, childrenDrawer, onClose: parentDrawerClose }) {
     const [groupName, setGroupName] = useState('');
     const [groupImage, setGroupImage] = useState('https://robohash.org/nequeodiosapiente.png?size=600x600&set=set1');
@@ -33,7 +33,8 @@ function DrawerGroupNameAndImage({ groupSelectedUsers, onChildrenDrawerClose, ch
         try {
             setGroupChatLoading(true);
             const data = await callApi.apiMethod('createGroupChat', 'POST', body);
-            dispatch(myChats())
+            dispatch(setChats({ chat: data.chat }))
+            dispatch(selectedChat({ id: data.chat._id }));
             onChildrenDrawerClose();
             parentDrawerClose();
             openNotificationWithIcon('success', data.message)
