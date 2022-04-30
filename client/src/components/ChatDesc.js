@@ -25,7 +25,7 @@ function ChatDesc({ search = '' }) {
     }
     if (loading) return <ChatsLoading />
 
-    if (homeChatsFilter(chats, search).length === 0) return <div className="noRecordsFound">Soory! No Chats Available ...</div>
+    if (homeChatsFilter(chats, search).length === 0) return <div className="noRecordsFound">Soory! No Chats Available.</div>
 
     return (
         homeChatsFilter(chats, search)

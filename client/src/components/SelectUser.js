@@ -31,7 +31,7 @@ function SelectUser({ search, setGroupSelectedUsers }) {
         })
     }
     if (loading) return <ChatsLoading />
-    if (selectUserFilter(users, search).length === 0) return <div className="noRecordsFound">Soory! No Users Available ...</div>
+    if (selectUserFilter(users, search).length === 0) return <div className="noRecordsFound">Soory! No Users Available.</div>
     return (
         selectUserFilter(users, search)
             .sort((a, b) => a.name > b.name ? 1 : -1)
