@@ -9,6 +9,8 @@ import ChatDesc from './ChatDesc';
 import { useDispatch, useSelector } from 'react-redux'
 import { Logout } from '../redux/slices/auth';
 import DrawerGroupChat from './DrawerGroupChat';
+import { chatsLogout } from '../redux/slices/chats';
+import { usersLogout } from '../redux/slices/users';
 function ChatSidebar() {
     const [visible, setVisible] = useState(false);
     const [showGroupDrawer, setShowGroupDrawer] = useState(false);
@@ -23,6 +25,8 @@ function ChatSidebar() {
         switch (key) {
             case 'logout':
                 dispatch(Logout())
+                dispatch(usersLogout())
+                dispatch(chatsLogout())
                 localStorage.removeItem('authToken')
                 localStorage.removeItem('user')
                 navigate('/')

@@ -23,16 +23,16 @@ const DrawerGroupChat = ({ visible, setVisible }) => {
         const remainingUsers = groupSelectedUsers.filter(u => u.id !== user.id)
         setGroupSelectedUsers(remainingUsers)
     }
+    const inputRef = useRef(null)
     useEffect(() => {
         // if (inputRef.current) inputRef.current.focus()
-
         inputRef?.current?.focus(); //both will do the same thing
     }, [groupSelectedUsers]);
     useEffect(() => {
         openNotificationWithIcon('info', 'Please select atlest 3 users to start chat.')
     }, [])
 
-    const inputRef = useRef(null)
+
     return (
         <div className="groupChatSideDrawer">
             <Drawer

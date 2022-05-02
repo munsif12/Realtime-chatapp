@@ -104,7 +104,7 @@ function DrawerGroupNameAndImage({ groupSelectedUsers, onChildrenDrawerClose, ch
                     </Input.Group>
                 </FormControl>
             </div>
-            <FormControl >
+            <FormControl className='inputGroupName'>
                 <Input
                     autoFocus
                     type="text" name="email" placeholder="Group Subject" autoComplete='off'

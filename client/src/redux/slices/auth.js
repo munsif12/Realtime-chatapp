@@ -78,6 +78,7 @@ const authSlice = createSlice({
         Logout: (state) => {
             state.isLoggedIn = false;
             state.user = {};
+            state.error = {};
         },
         ClearError: (state) => {
             state.error.status = '';
