@@ -19,7 +19,10 @@
   --secondary-color: #2193b0;
   --wa-primary-color: #008069;
   --wa-bg: #f0f2f5;
+  --wa-span: #8696a0;
   --waSelectedUserBg: #e9edef;
+  --wa-link-color: #009de2;
+  --drawer-boxshadow: 0px 1px 3px rgba(11, 20, 26, 0.08);
   --white: #fff;
   --bb: #dfe0e1;
   --black: #000;
@@ -99,7 +102,10 @@ body {
 .dropDownSettings span {
   font-size: 18px !important;
   color: #54656f !important;
+}
 
+.dropDownSettings span .dangerBtn:hover {
+  color: white !important;
 }
 
 .ant-drawer-header-title {
@@ -114,6 +120,52 @@ body {
   align-items: end;
   padding-top: 12px;
   padding-bottom: 20px;
+}
+
+.ant-modal-header {
+  background-color: #008069 !important;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.ant-modal-title {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.listOfUsersForAddParticipents {
+  margin-top: 20px;
+  max-height: 50vh;
+  min-height: 50vh;
+  overflow-y: scroll;
+}
+
+.listOfUsersForAddParticipents::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.listOfUsersForAddParticipents::-webkit-scrollbar-track-piece {
+  background-color: #ffffff;
+}
+
+.listOfUsersForAddParticipents::-webkit-scrollbar-thumb:vertical {
+  height: 30px;
+  background-color: #ced0d1;
+}
+
+.addPartiModal .seletedUsersForGroupChat {
+  display: flex !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+}
+
+.ant-checkbox-inner {
+  border: 1px solid black !important;
+  height: 20px !important;
+  width: 20px !important;
 }
 
 .ant-drawer-title {
@@ -251,6 +303,15 @@ body {
 
 .nameLatestMsg {
   max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ChatHeaderGroupParticipents {
+  width: 800px;
+  min-width: 500px;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -401,6 +462,17 @@ body {
   padding: 0;
   border-radius: 50%;
   box-shadow: 0 1px 3px rgba(11, 20, 26, .4);
+}
+
+.addPartiModal {
+  position: relative;
+}
+
+.addPartiModal .groupSubmitBtn,
+.groupSubmitBtnLoading {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 .groupSubmitBtn svg {
@@ -562,6 +634,7 @@ input[type="file"] {
   animation: spinLoader 0.8s linear infinite !important;
 }
 
+
 @keyframes spinLoader {
   0% {
     transform: scale(1.7) rotate(0deg);
@@ -571,6 +644,122 @@ input[type="file"] {
 
     transform: scale(1.7) rotate(360deg);
   }
+}
+
+.d_groupName {
+  background-color: var(--white);
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: capitalize;
+  padding-top: 10px;
+  box-shadow: var(--drawer-boxshadow);
+}
+
+.totalParticipants {
+  padding: 0px 10px 10px 10px;
+  background-color: var(--white);
+  text-align: center;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--wa-span);
+  box-shadow: var(--drawer-boxshadow);
+}
+
+.adminAddParticipents .chatDescLatestMsg {
+  border: none;
+}
+
+.groupParticipentsList {
+  padding: 17px 30px;
+  margin-top: 10px;
+  background-color: var(--white);
+  box-shadow: var(--drawer-boxshadow);
+}
+
+.inputGroupName {
+  box-shadow: var(--drawer-boxshadow);
+}
+
+.par_list .chatDescLatestMsg {
+  border: none;
+}
+
+.par_list .chatImage {
+  padding-left: 0px !important;
+}
+
+.viewAllPaticipents {
+  padding: 10px;
+  font-size: 18px;
+  color: var(--wa-link-color);
+  text-align: center;
+  cursor: pointer;
+}
+
+.customizeViewMore {
+  margin-top: 0px;
+  box-shadow: var(--drawer-boxshadow);
+  border-radius: 7px;
+  margin-top: 0px;
+  background: white;
+}
+
+.customizeViewMore .chatDescLatestMsg {
+  border-top: none !important;
+}
+
+.groupAdminBadge {
+  padding: 3px 7px;
+  background-color: #e7fce3;
+  color: #1b8748;
+  border-radius: 3px;
+  border: 1px solid #e7fce3;
+  font-size: 13px;
+  line-height: 14px;
+  /* height: 16px; */
+}
+
+.exitGroup {
+  margin-top: 10px;
+  color: red;
+  font-size: 16px;
+  background-color: var(--white);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 17px 30px;
+  font-size: 22px;
+  gap: 25px;
+  cursor: pointer;
+}
+
+.exitGroup svg {
+  transform: scale(1.2);
+}
+
+
+
+.addParticipent {
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  background-color: #00a884;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding-right: 3px;
+  padding-bottom: 1px;
+}
+
+.addParticipent svg {
+  transform: scale(1.7);
+}
+
+.showDropDownToRemoveParticipent:hover {
+  display: block;
 }
 
 /* .ant-drawer-body {
@@ -605,6 +794,7 @@ input[type="file"] {
   gap: 10px;
   position: relative;
   padding-top: 17px;
+  /* box-shadow: var(--drawer-boxshadow); */
 }
 
 .groupImageUpload img {
