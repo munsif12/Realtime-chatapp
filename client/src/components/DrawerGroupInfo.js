@@ -11,16 +11,26 @@ import callApi from '../apiCalls';
 import ChatsLoading from './ChatsLoading';
 import { updateSelectedUsers } from '../redux/slices/chats';
 import ModelAddParticipent from './ModelAddParticipent';
+import ChatBasicInfoCard from './ChatBasicInfoCard';
+import ModalViewMore from './ModalViewMore';
 function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
     const [isRemoveUserLoading, setIsRemoveUserLoading] = useState(false);
     const [addParticipentModal, setAddParticipentModal] = useState(false);
-    const dispatch = useDispatch()
     const [removeParticipent, setremoveParticipent] = useState(false);
+    const [viewMoreModal, setViewMoreModal] = useState(false);
+
+    const dispatch = useDispatch();
     const {
         chats: { currSelectedChat },
         auth: { user: loggedInUser }
     } = useSelector(state => state)
 
+    function closeViewMoreModal() {
+        setViewMoreModal(false)
+    }
+    function openViewMoreModal() {
+        setViewMoreModal(true)
+    }
     async function reqToRemoveParticipent(userToRemove) {
         try {
             const body = {
@@ -36,9 +46,6 @@ function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
             setIsRemoveUserLoading(false);
             openNotificationWithIcon('error', error.message)
         }
-    }
-    function removeParticipentFromList() {
-        setremoveParticipent(true)
     }
     function handleSettings(key, userToRemove) {
         switch (key) {
@@ -80,24 +87,8 @@ function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
             placement={'right'}
             width={"30%"}
         >
-            {/* Group Image */}
-            <div className="groupImageUpload">
-                <Image
-                    alt="bruce wayne"
-                    htmlWidth={250}
-                    htmlHeight={250}
-                    className="object-cover"
-                    src={currSelectedChat?.groupChatImage}
-                />
-            </div>
-            {/* Group Name */}
-            <div className="d_groupName bg-white">
-                <h3>{currSelectedChat?.chatName}</h3>
-            </div>
-            {/* No. of total participents in group */}
-            <div className="totalParticipants">
-                <span>Group - {currSelectedChat?.users.length}  participants</span>
-            </div>
+            {/* Group Image,name,no of participents */}
+            <ChatBasicInfoCard currSelectedChat={currSelectedChat} />
             {/* List of actual Participents in roup */}
             <div className="groupParticipentsList mt-3">
                 <div className="totalParticipentsinList" style={{ fontSize: "16px" }}>
@@ -133,7 +124,7 @@ function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
                                         <Avatar src={user?.profileImage} size="2xl" />
                                     </div>
                                     <div className="chatDescLatestMsg pr-4"
-                                        onMouseOver={removeParticipentFromList}
+                                        onMouseOver={() => setremoveParticipent(true)}
                                         onMouseOut={() => setremoveParticipent(false)}>
                                         <div className="chatNameAndTime flex items-center ">
                                             <p className='nameLatestMsg chatName m-0 p-0 text-black text-2xl'>{user?.name}
@@ -165,7 +156,7 @@ function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
                                 </div>
                             ))}
                         {currSelectedChat.users.length > 10 && (
-                            <div className="viewAllPaticipents">
+                            <div className="viewAllPaticipents" onClick={openViewMoreModal}>
                                 View all ({currSelectedChat?.users.length - 10} more)
                             </div>
                         )}
@@ -179,7 +170,16 @@ function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
                 </span>
                 <span>Exit Group</span>
             </div>
-            <ModelAddParticipent addParticipentModal={addParticipentModal} setAddParticipentModal={setAddParticipentModal} />
+            <ModelAddParticipent
+                addParticipentModal={addParticipentModal}
+                setAddParticipentModal={setAddParticipentModal} />
+            <ModalViewMore
+                removeParticipent={removeParticipent}
+                removeParticipentDropdown={removeParticipentDropdown}
+                viewMoreModal={viewMoreModal}
+                closeViewMoreModal={closeViewMoreModal}
+                listToMap={currSelectedChat.users.slice(10, -1)}
+                setremoveParticipent={setremoveParticipent} />
         </Drawer>
     )
 }

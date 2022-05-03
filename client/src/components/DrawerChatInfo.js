@@ -2,23 +2,29 @@ import React, { useEffect, useState } from 'react'
 import { Drawer } from 'antd'
 import { IoArrowBack } from "react-icons/io5";
 import { IoMdExit, } from "react-icons/io";
-import { Avatar, Image } from '@vechaiui/react';
-// import openNotificationWithIcon from './Notification';
+import { Avatar } from '@vechaiui/react';
 import { useSelector, useDispatch } from 'react-redux'
-// import openNotificationWithIcon from './Notification';
-// import callApi from '../apiCalls';
-// import ChatsLoading from './ChatsLoading';
+import ChatBasicInfoCard from './ChatBasicInfoCard';
 import ModelAddParticipent from './ModelAddParticipent';
 import { selectedChat } from '../redux/slices/chats';
+import ModalViewMore from './ModalViewMore';
 function DrawerGroupInfo({ showChatInfoDrawer, closeChatInfoDrawer }) {
     const [addParticipentModal, setAddParticipentModal] = useState(false);
-    const dispatch = useDispatch();
     const [commonGroup, setCommonGroup] = useState([]);
+    const [viewMoreModal, setViewMoreModal] = useState(false);
+    const dispatch = useDispatch();
     const {
         chats: { currSelectedChat, chats: allChats },
         auth: { user: loggedInUser }
     } = useSelector(state => state)
 
+
+    function closeViewMoreModal() {
+        setViewMoreModal(false)
+    }
+    function openViewMoreModal() {
+        setViewMoreModal(true)
+    }
     function setCurrentSelectedChat(chat) {
         closeChatInfoDrawer();
         dispatch(selectedChat({ id: chat._id }));
@@ -38,6 +44,7 @@ function DrawerGroupInfo({ showChatInfoDrawer, closeChatInfoDrawer }) {
             setCommonGroup(arrOfCommonGroups)
         })(allChats);
     }, [allChats, currSelectedChat, loggedInUser]);
+
     return (
         <Drawer
             className='drawer-group-name-and-image'
@@ -53,34 +60,16 @@ function DrawerGroupInfo({ showChatInfoDrawer, closeChatInfoDrawer }) {
             onClose={closeChatInfoDrawer}
             visible={showChatInfoDrawer}
             placement={'right'}
-            width={"30%"}
+            width={"35%"}
         >
-            {/* Group Image */}
-            <div className="groupImageUpload">
-                <Image
-                    alt="bruce wayne"
-                    htmlWidth={250}
-                    htmlHeight={250}
-                    className="object-cover"
-                    src={currSelectedChat?.users[0].profileImage}
-                />
-            </div>
-            {/* Group Name */}
-            <div className="d_groupName bg-white">
-                <h3>{currSelectedChat?.users[0].name}</h3>
-            </div>
-            {/* No. of total participents in group */}
-            <div className="totalParticipants">
-                <span>{currSelectedChat?.users[0].email}</span>
-            </div>
+            {/* user Image,name,email */}
+            <ChatBasicInfoCard currSelectedChat={currSelectedChat} />
             {/* List of actual Participents in roup */}
             <div className="groupParticipentsList mt-3">
                 <div className="totalParticipentsinList" style={{ fontSize: "16px" }}>
                     <span>{commonGroup.length} groups in common</span>
                 </div>
-                {/* if admin then allow him to add participents */}
-                {/* List of participents */}
-
+                {/* List of mutual groups */}
                 <div className="par_list">
                     {commonGroup.map((chat, index) =>
                         <div className="userListItem flex" key={index} onClick={() => setCurrentSelectedChat(chat)}>
@@ -104,21 +93,24 @@ function DrawerGroupInfo({ showChatInfoDrawer, closeChatInfoDrawer }) {
                         </div>
                     )}
                     {commonGroup.length > 10 && (
-                        <div className="viewAllPaticipents">
+                        <div className="viewAllPaticipents" onClick={openViewMoreModal}>
                             View all ({commonGroup.length - 10} more)
                         </div>
                     )}
                 </div>
-
             </div>
             {/* Exit Group */}
             <div className="exitGroup">
-                <span>
-                    <IoMdExit />
-                </span>
+                <span><IoMdExit /></span>
                 <span>Exit Group</span>
             </div>
-            <ModelAddParticipent addParticipentModal={addParticipentModal} setAddParticipentModal={setAddParticipentModal} />
+            <ModelAddParticipent
+                addParticipentModal={addParticipentModal}
+                setAddParticipentModal={setAddParticipentModal} />
+            <ModalViewMore
+                viewMoreModal={viewMoreModal}
+                closeViewMoreModal={closeViewMoreModal}
+                listToMap={commonGroup.slice(10, -1)} />
         </Drawer>
     )
 }
