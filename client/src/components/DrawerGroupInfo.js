@@ -178,7 +178,7 @@ function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
                 removeParticipentDropdown={removeParticipentDropdown}
                 viewMoreModal={viewMoreModal}
                 closeViewMoreModal={closeViewMoreModal}
-                listToMap={currSelectedChat.users.slice(10, -1)}
+                listToMap={currSelectedChat.users.slice(10, currSelectedChat.length)}
                 setremoveParticipent={setremoveParticipent} />
         </Drawer>
     )

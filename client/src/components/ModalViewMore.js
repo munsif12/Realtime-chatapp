@@ -34,26 +34,30 @@ function ModalViewMore({
           listToMap.map((elem, index) => (
             <div className="userListItem flex" key={index}>
               <div className="chatImage">
-                <Avatar src={!currSelectedChat.isGroupChat ? currSelectedChat.groupChatImage : elem?.profileImage} size="2xl" />
+                <Avatar src={currSelectedChat.isGroupChat ? elem?.profileImage : elem.groupChatImage} size="2xl" />
               </div>
               <div className="chatDescLatestMsg pr-4"
-                onMouseOver={() => setremoveParticipent(true)}
-                onMouseOut={() => setremoveParticipent(false)}>
+                onMouseOver={() => { if (currSelectedChat.isGroupChat) setremoveParticipent(true) }}
+                onMouseOut={() => { if (currSelectedChat.isGroupChat) setremoveParticipent(false) }}>
                 <div className="chatNameAndTime flex items-center ">
                   <p className='nameLatestMsg chatName m-0 p-0 text-black text-2xl'>{
-                    !currSelectedChat.isGroupChat ?
-                      currSelectedChat.chatName :
-                      elem?.name}</p>
-                  {!currSelectedChat.isGroupChat && currSelectedChat?.groupAdmin?._id === elem._id &&
+                    currSelectedChat.isGroupChat ? elem?.name : elem.chatName
+                  }</p>
+                  {
+                    !currSelectedChat.isGroupChat && <p className='nameLatestMsg m-0 p-0 text-black text-2xl'>
+                      {elem.users.length} members
+                    </p>
+                  }
+
+                  {currSelectedChat.isGroupChat && currSelectedChat?.groupAdmin?._id === elem._id &&
                     <span className='groupAdminBadge'>
                       Group admin
                     </span>
                   }
                 </div>
                 <div className="chatDescAndSetting flex items-center">
-                  <p className='nameLatestMsg m-0 p-0 text-black text-2xl'>{!currSelectedChat.isGroupChat ?
-                    `${currSelectedChat.users.map(u => u.name).join(',')} group members` :
-                    elem?.email}</p>
+                  <p className='nameLatestMsg m-0 p-0 text-black text-2xl'>{currSelectedChat.isGroupChat ? elem?.email :
+                    `${elem.users.map(u => u.name).join(',')} group members`}</p>
                   {
                     currSelectedChat.isGroupChat && currSelectedChat?.groupAdmin?._id === loggedInUser._id && // to show dropdown if the loggedin user is admin of this group
                     currSelectedChat?.groupAdmin?._id !== elem._id && // to not show dropDown infront of group admin

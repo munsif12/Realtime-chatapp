@@ -71,27 +71,29 @@ function DrawerGroupInfo({ showChatInfoDrawer, closeChatInfoDrawer }) {
                 </div>
                 {/* List of mutual groups */}
                 <div className="par_list">
-                    {commonGroup.map((chat, index) =>
-                        <div className="userListItem flex" key={index} onClick={() => setCurrentSelectedChat(chat)}>
-                            <div className="chatImage" style={{ paddingLeft: "0px" }}>
-                                <Avatar src={chat?.groupChatImage} size="2xl" />
-                            </div>
-                            <div className="chatDescLatestMsg pr-4">
-                                <div className="chatNameAndTime flex items-center ">
-                                    <p className='nameLatestMsg chatName m-0 p-0 text-black text-2xl'>{chat?.chatName}
-                                    </p>
-                                    <p className='nameLatestMsg m-0 p-0 text-black text-2xl'>
-                                        {chat.users.length} members
-                                    </p>
+                    {commonGroup
+                        .slice(0, 10)
+                        .map((chat, index) =>
+                            <div className="userListItem flex" key={index} onClick={() => setCurrentSelectedChat(chat)}>
+                                <div className="chatImage" style={{ paddingLeft: "0px" }}>
+                                    <Avatar src={chat?.groupChatImage} size="2xl" />
                                 </div>
-                                <div className={"chatDescAndSetting flex items-center"} >
-                                    <p className='nameLatestMsg m-0 p-0 text-black text-2xl'>
-                                        {chat.users.map(u => u.name).join(',')} group members
-                                    </p>
+                                <div className="chatDescLatestMsg pr-4">
+                                    <div className="chatNameAndTime flex items-center ">
+                                        <p className='nameLatestMsg chatName m-0 p-0 text-black text-2xl'>{chat?.chatName}
+                                        </p>
+                                        <p className='nameLatestMsg m-0 p-0 text-black text-2xl'>
+                                            {chat.users.length} members
+                                        </p>
+                                    </div>
+                                    <div className={"chatDescAndSetting flex items-center"} >
+                                        <p className='nameLatestMsg m-0 p-0 text-black text-2xl'>
+                                            {chat.users.map(u => u.name).join(',')} group members
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
+                        )}
                     {commonGroup.length > 10 && (
                         <div className="viewAllPaticipents" onClick={openViewMoreModal}>
                             View all ({commonGroup.length - 10} more)
@@ -110,7 +112,7 @@ function DrawerGroupInfo({ showChatInfoDrawer, closeChatInfoDrawer }) {
             <ModalViewMore
                 viewMoreModal={viewMoreModal}
                 closeViewMoreModal={closeViewMoreModal}
-                listToMap={commonGroup.slice(10, -1)} />
+                listToMap={commonGroup.slice(10, commonGroup.length)} />
         </Drawer>
     )
 }
