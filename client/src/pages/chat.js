@@ -7,6 +7,7 @@ import chatbackgroundimage from '../assets/images/chatbackgroundimage.jpg'
 import openNotificationWithIcon from '../components/Notification';
 import { Dropdown, Menu } from 'antd';
 import DrawerGroupInfo from '../components/DrawerGroupInfo';
+import DrawerChatInfo from '../components/DrawerChatInfo'
 const message = (msg) => (
     <div className="loading" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
         <h1>{msg}</h1>
@@ -18,28 +19,25 @@ const message = (msg) => (
 const Chat = () => {
     const { loading, currSelectedChat, error } = useSelector(state => state.chats)
     const [showGroupInfoDrawer, setShowGroupInfoDrawer] = useState(false);
-
+    const [showChatInfoDrawer, setShowChatInfoDrawer] = useState(false);
     useEffect(() => {
         if (error.message !== '') openNotificationWithIcon('error', error.message)
     }, [error.status, error.message]);
 
     const closeGroupInfoDrawer = () => setShowGroupInfoDrawer(false);
+    const closeChatInfoDrawer = () => setShowChatInfoDrawer(false);
     function handleSettings(key, selectedChat) {
         switch (key) {
             case 'groupChat':
                 setShowGroupInfoDrawer(true)
-                console.log('groupChat')
                 break;
             case 'chatInfo':
-                console.log(selectedChat)
-                console.log('chatInfo')
+                setShowChatInfoDrawer(true)
                 break;
             case 'clearMessages':
-                console.log("clearMessages")
                 break;
 
             case 'exitGroup':
-                console.log("exitGroup")
                 break;
             default:
                 break;
@@ -51,19 +49,21 @@ const Chat = () => {
             className='dropDownSettings pt-5 pb-5 text-2xl text-black'
             items={[
                 chatType === 'groupChat' ? {
-                    label: <span>Group info</span>,
+                    label: 'Group info',
                     key: 'groupChat',
                 } : {
-                    label: <span>Chat info</span>,
+                    label: 'Chat info',
                     key: 'chatInfo',
                 },
                 {
-                    label: <span >Clear messages</span>,
+                    label: 'Clear messages',
                     key: 'clearMessages',
                 },
                 {
-                    label: <span >Exist Group</span>,
+                    danger: true,
+                    label: <span className='dangerBtn'>Exist Group</span>,
                     key: 'exitGroup',
+
                 },
             ]}
         />
@@ -77,6 +77,7 @@ const Chat = () => {
                 showGroupInfoDrawer={showGroupInfoDrawer}
                 closeGroupInfoDrawer={closeGroupInfoDrawer}
             />
+            <DrawerChatInfo showChatInfoDrawer={showChatInfoDrawer} closeChatInfoDrawer={closeChatInfoDrawer} />
             <div className='chatViewHeader flex items-center text-2xl' style={{ fontSize: "24px", color: "black" }}>
                 <div className="selectedChatImage">
                     <Avatar src={currSelectedChat.isGroupChat ? currSelectedChat?.groupChatImage : currSelectedChat.users[0].profileImage} size="2xl" />
@@ -85,7 +86,7 @@ const Chat = () => {
                     <span>
                         {currSelectedChat.isGroupChat ? currSelectedChat.chatName : currSelectedChat.users[0].name}
                     </span>
-                    <p className="m-0 p-0">
+                    <p className="ChatHeaderGroupParticipents m-0 p-0">
                         {currSelectedChat.isGroupChat && (
                             currSelectedChat.users.map(user => user.name).join(', ')
                         )}
