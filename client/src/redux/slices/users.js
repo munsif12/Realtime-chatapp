@@ -35,6 +35,11 @@ const usrsSlice = createSlice({
         selectedChat: (state, action) => {
             const { id } = action.payload;
             state.currSelectedChat = state.users.find(chat => chat._id === id) || {};
+        },
+        usersLogout: (state, action) => {
+            state.loading = false;
+            state.users = [];
+            state.error = {};
         }
     },
     extraReducers: {
@@ -56,5 +61,5 @@ const usrsSlice = createSlice({
 })
 
 const { reducer, actions } = usrsSlice;
-export const { selectedChat } = actions;
+export const { selectedChat, usersLogout } = actions;
 export default reducer;

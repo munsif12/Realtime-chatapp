@@ -40,6 +40,16 @@ const ChatsSlice = createSlice({
         },
         setChats: (state, action) => {
             state.chats = [action.payload.chat, ...state.chats];
+        },
+        updateSelectedUsers: (state, action) => {
+            const users = action.payload.users;
+            state.currSelectedChat.users = users;
+        },
+        chatsLogout: (state, action) => {
+            state.loading = false;
+            state.chats = [];
+            state.currSelectedChat = {};
+            state.error = {}
         }
     },
     extraReducers: {
@@ -63,5 +73,5 @@ const ChatsSlice = createSlice({
 })
 
 const { reducer, actions } = ChatsSlice;
-export const { selectedChat, setChats } = actions;
+export const { selectedChat, setChats, updateSelectedUsers, chatsLogout } = actions;
 export default reducer;
