@@ -33,7 +33,7 @@ function ModelAddParticipent({ addParticipentModal, setAddParticipentModal }) {
             }
             setParticipentSubmissionLoading(true);
             const data = await callApi.apiMethod('addParticipentsToGroup', 'POST', body);
-            dispatch(updateSelectedUsers({ users: data.chat.users }))
+            dispatch(updateSelectedUsers({ chat: data.chat }))
             closeAddPartciipentModal()
             openNotificationWithIcon('success', data.message);
             setParticipentSubmissionLoading(false);

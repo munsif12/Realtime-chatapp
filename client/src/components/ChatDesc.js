@@ -17,7 +17,8 @@ function ChatDesc({ search = '' }) {
     }, [error.status, error.message]);
 
     useEffect(() => {
-        if (chats.length < 1) dispatch(myChats())
+        if (chats.length < 1)
+            dispatch(myChats())
     }, [dispatch, chats]);
 
     function setSelectedChat(chat) {
@@ -33,17 +34,18 @@ function ChatDesc({ search = '' }) {
                 return (
                     <div className="userListItem flex" key={index} onClick={() => setSelectedChat(chat)}>
                         <div className="chatImage">
-                            <Avatar src={chat.isGroupChat ? chat?.groupChatImage : chat.users[0].profileImage} size="2xl" />
+                            <Avatar loading='lazy' src={chat.isGroupChat ? chat?.groupChatImage : chat.users[0].profileImage} size="2xl" />
                         </div>
                         <div className="chatDescLatestMsg pr-4">
                             <div className="chatNameAndTime flex items-center ">
                                 <p className='nameLatestMsg chatName m-0 p-0 text-black text-2xl'>
                                     {chat.isGroupChat ? chat.chatName : chat.users[0].name}</p>
-                                <span className='chatTime m-0 p-0 text-black'>{formatTIme(chat.createdAt)}</span>
+                                <span className='chatTime m-0 p-0 text-black'>{formatTIme(chat?.latestMessage?.createdAt ?? chat.createdAt)}</span>
                             </div>
                             <div className="chatDescAndSetting flex items-center">
                                 <p className='nameLatestMsg m-0 p-0 text-black text-2xl'>
-                                    {/* chat?.latestMessage  || */'This is dummy text'}</p>
+                                    {chat?.latestMessage?.message ?? 'No messages available.'}
+                                </p>
                                 {/* <span className='chatSettingIcon m-0 p-0 text-black'>{chat.time}</span> */}
                             </div>
                         </div>

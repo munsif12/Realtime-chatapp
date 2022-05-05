@@ -43,8 +43,16 @@ const ChatsSlice = createSlice({
             state.chats = [...data, ...state.chats];
         },
         updateSelectedUsers: (state, action) => {
-            const users = action.payload.users;
-            state.currSelectedChat.users = users;
+            const chat = action.payload.chat;
+            state.currSelectedChat.users = chat.users;
+            //if only usr is removed 
+            state.chats = state.chats.map(currChat => {
+                if (currChat._id === chat._id) {
+                    currChat.users = chat.users;
+                    return currChat;
+                }
+                else return currChat;
+            });
         },
         chatsLogout: (state, action) => {
             state.loading = false;

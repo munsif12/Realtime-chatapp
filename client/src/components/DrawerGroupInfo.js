@@ -35,7 +35,7 @@ function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
             }
             setIsRemoveUserLoading(true);
             const data = await callApi.apiMethod('removeParticipent', 'PUT', body);
-            dispatch(updateSelectedUsers({ users: data.chat.users }))
+            dispatch(updateSelectedUsers({ chat: data.chat }))
             openNotificationWithIcon('success', data.message);
             setIsRemoveUserLoading(false);
         } catch (error) {

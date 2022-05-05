@@ -34,17 +34,18 @@ function DrawerGroupInfo({ showChatInfoDrawer, closeChatInfoDrawer }) {
             let arrOfCommonGroups = [];
             if (allChats.length > 1) {
                 allChats.forEach((u) => {
-                    let arr = [loggedInUser._id, currSelectedChat.users[0]._id]
-                    let usersInchat = [...u.users.map(u => u._id)]
-                    if (usersInchat.includes(arr[0]) && usersInchat.includes(arr[1])) {
-                        arrOfCommonGroups.push(u);
+                    if (u.isGroupChat) {
+                        let arr = [loggedInUser._id, currSelectedChat.users[0]._id]
+                        let usersInchat = [...u.users.map(u => u._id)]
+                        if (usersInchat.includes(arr[0]) && usersInchat.includes(arr[1])) {
+                            arrOfCommonGroups.push(u);
+                        }
                     }
                 })
             }
             setCommonGroup(arrOfCommonGroups)
         })(allChats);
     }, [allChats, currSelectedChat, loggedInUser]);
-
     return (
         <Drawer
             className='drawer-group-name-and-image'
