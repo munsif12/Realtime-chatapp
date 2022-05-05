@@ -1,2 +1,3 @@
 const sendMessage = require('./sendMessage');
-module.exports = { sendMessage }
+const getAllChatMessages = require('./getAllChatMessages');
+module.exports = { sendMessage, getAllChatMessages }

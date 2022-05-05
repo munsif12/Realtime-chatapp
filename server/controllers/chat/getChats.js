@@ -11,7 +11,7 @@ const getChats = async (req, res) => {
             .populate({
                 path: 'latestMessage',
                 populate: {
-                    path: 'senderId',
+                    path: 'senderId recieverId',
                     select: '-password -__v'
                 }
             })

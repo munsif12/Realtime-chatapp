@@ -1,4 +1,5 @@
-const Message = require('../models/message');
+const Message = require('../../models/message');
+const Chat = require('../../models/chat');
 const sendMessage = async (req, res) => {
     try {
         //which chat is this message going to--which user is sending this message--which user is receiving this message--which message is this
@@ -11,7 +12,7 @@ const sendMessage = async (req, res) => {
         }
 
         //check if chat exists
-        const chatExists = Chat.findOne({ _id: chatId });
+        const chatExists = await Chat.findOne({ _id: chatId });
         if (!chatExists) {
             return res.status(400).json({
                 success: false,
@@ -19,13 +20,22 @@ const sendMessage = async (req, res) => {
             });
         }
 
+        //create new mesage now
         const newMessage = {
             senderId,
             recieverId,
             message,
             chatId
         }
-        const msgCreated = await Message.create(newMessage)
+        const msgCreated = await Message.create(newMessage);
+        if (!msgCreated) {
+            return res.status(400).json({
+                success: false,
+                message: 'Message not created'
+            });
+        }
+
+        const msg = await Message.findOne({ _id: msgCreated._id })
             .populate({
                 path: 'senderId',
                 select: '-password -__v'
@@ -37,11 +47,14 @@ const sendMessage = async (req, res) => {
             .populate({
                 path: 'chatId',
                 populate: {
-                    path: 'users.userId',
+                    path: 'users',
                     select: '-password -__v'
                 }
-            })
-        return res.status(200).json({ success: true, message: 'message Added successfully', chat: { chatId, sender, reciever, message } });
+            });
+        //now update the chat with the lastest message
+        await Chat.findByIdAndUpdate({ _id: chatId }, { latestMessage: msg._id }, { new: true });
+
+        return res.status(200).json({ success: true, message: 'Message created successfully', message: msg });
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message, });
     }
