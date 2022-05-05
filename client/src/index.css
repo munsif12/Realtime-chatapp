@@ -308,13 +308,13 @@ body {
   white-space: nowrap;
 }
 
-.ChatHeaderGroupParticipents {
+/* .ChatHeaderGroupParticipents {
   width: 800px;
   min-width: 500px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
+} */
 
 .chatNameAndTime,
 .chatDescAndSetting {
@@ -901,9 +901,7 @@ input[type="file"] {
     width: 400px;
   }
 
-  .chatView {
-    width: 700px;
-  }
+
 
   .ant-drawer {
     width: 400px;

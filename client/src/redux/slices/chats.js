@@ -39,7 +39,8 @@ const ChatsSlice = createSlice({
             state.currSelectedChat = state.chats.find(chat => chat._id === id) || {};
         },
         setChats: (state, action) => {
-            state.chats = [action.payload.chat, ...state.chats];
+            let data = removeLoggedinUserFromChat([action.payload.chat]);
+            state.chats = [...data, ...state.chats];
         },
         updateSelectedUsers: (state, action) => {
             const users = action.payload.users;

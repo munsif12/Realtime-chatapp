@@ -60,7 +60,7 @@ function DrawerGroupInfo({ showChatInfoDrawer, closeChatInfoDrawer }) {
             onClose={closeChatInfoDrawer}
             visible={showChatInfoDrawer}
             placement={'right'}
-            width={"35%"}
+            width={"30%"}
         >
             {/* user Image,name,email */}
             <ChatBasicInfoCard currSelectedChat={currSelectedChat} />

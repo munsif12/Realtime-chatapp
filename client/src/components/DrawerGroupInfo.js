@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Drawer, Dropdown, Menu } from 'antd'
 import { IoArrowBack, IoPersonAdd } from "react-icons/io5";
 import { IoMdExit, } from "react-icons/io";
-import { Avatar, Image } from '@vechaiui/react';
+import { Avatar } from '@vechaiui/react';
 import { AiOutlineDown } from "react-icons/ai";
 // import openNotificationWithIcon from './Notification';
 import { useSelector, useDispatch } from 'react-redux'
@@ -15,8 +15,8 @@ import ChatBasicInfoCard from './ChatBasicInfoCard';
 import ModalViewMore from './ModalViewMore';
 function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
     const [isRemoveUserLoading, setIsRemoveUserLoading] = useState(false);
-    const [addParticipentModal, setAddParticipentModal] = useState(false);
     const [removeParticipent, setremoveParticipent] = useState(false);
+    const [addParticipentModal, setAddParticipentModal] = useState(false);
     const [viewMoreModal, setViewMoreModal] = useState(false);
 
     const dispatch = useDispatch();
@@ -25,12 +25,8 @@ function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
         auth: { user: loggedInUser }
     } = useSelector(state => state)
 
-    function closeViewMoreModal() {
-        setViewMoreModal(false)
-    }
-    function openViewMoreModal() {
-        setViewMoreModal(true)
-    }
+    const closeViewMoreModal = () => setViewMoreModal(false)
+    const openViewMoreModal = () => setViewMoreModal(true)
     async function reqToRemoveParticipent(userToRemove) {
         try {
             const body = {
@@ -98,7 +94,8 @@ function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
                 {
                     currSelectedChat?.groupAdmin?._id === loggedInUser._id && (
                         <div className="adminAddParticipents" >
-                            <div className="userListItem flex" onClick={() => setAddParticipentModal(true)}>
+                            <div className="userListItem flex"
+                                onClick={() => setAddParticipentModal(true)}>
                                 <div className="chatImage" style={{ paddingLeft: "0px" }}>
                                     <span className='addParticipent'>
                                         <IoPersonAdd />
