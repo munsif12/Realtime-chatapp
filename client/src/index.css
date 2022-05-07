@@ -384,6 +384,71 @@ body {
 
 .chatViewBody {
   height: 91% !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  flex-direction: column;
+}
+
+.chatMessages {
+  height: 90%;
+}
+
+.footerWriteNewMessage {
+  width: 100%;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: var(--wa-bg);
+}
+
+.footerWriteNewMessage__send {
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: #54656f;
+}
+
+.footerWriteNewMessage__input {
+  flex: 1;
+}
+
+.footerWriteNewMessage__input input {
+  height: 42px;
+}
+
+.footerWriteNewMessage__send svg {
+  transform: scale(2);
+}
+
+.chatMessages__message__item__content__text {
+  color: #111b21;
+}
+
+.chatMessages__message__item__content {
+  background-color: var(--white);
+  border-radius: 7px;
+  margin-top: 5px;
+  box-shadow: 0 1px 3px rgba(11, 20, 26, .4);
+}
+
+.chatMessages__message__item__content {
+  display: flex;
+  min-width: 80px;
+  padding: 8px;
+  max-width: 35%;
+
+}
+
+
+.chatMessages__message__item__content__time {
+  width: 50px;
+  color: #667781;
+  font-size: 11px;
 }
 
 .nameAndRemoveIcon {

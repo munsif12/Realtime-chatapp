@@ -6,7 +6,8 @@ let apiEndpoints = {
     getChats: '/chat',
     createGroupChat: '/chat/group',
     removeParticipent: '/chat/remove-from-groupchat',
-    addParticipentsToGroup: '/chat/add-to-groupchat'
+    addParticipentsToGroup: '/chat/add-to-groupchat',
+    getMessagesOfChat: '/message',
 }
 let callApi = {}
 callApi.apiMethod = async function (requestName, method, body = null, params = null) {

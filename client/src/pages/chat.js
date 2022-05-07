@@ -8,6 +8,7 @@ import openNotificationWithIcon from '../components/Notification';
 import { Dropdown, Menu } from 'antd';
 import DrawerGroupInfo from '../components/DrawerGroupInfo';
 import DrawerChatInfo from '../components/DrawerChatInfo'
+import ChatMessages from '../components/ChatMessages';
 const message = (msg) => (
     <div className="loading" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
         <h1>{msg}</h1>
@@ -107,6 +108,7 @@ const Chat = () => {
             </div>
             <main className="chatViewBody"
                 style={{ backgroundImage: `url(${chatbackgroundimage})`, width: "100%" }}>
+                <ChatMessages />
             </main>
         </>
     )
