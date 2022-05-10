@@ -1,26 +1,17 @@
 import { Avatar } from '@vechaiui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { IoMdMore } from "react-icons/io";
 import { HiOutlineSearch } from "react-icons/hi";
 import { useSelector } from 'react-redux';
-import openNotificationWithIcon from '../components/Notification';
 import { Dropdown, Menu } from 'antd';
 import DrawerGroupInfo from '../components/DrawerGroupInfo';
 import DrawerChatInfo from '../components/DrawerChatInfo'
 
-const message = (msg) => (
-    <div className="loading" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-        <h1>{msg}</h1>
-    </div>
-)
-
 function ChatViewHeader() {
-    const { loading, currSelectedChat, error } = useSelector(state => state.chats)
+    const { currSelectedChat } = useSelector(state => state.chats)
     const [showGroupInfoDrawer, setShowGroupInfoDrawer] = useState(false);
     const [showChatInfoDrawer, setShowChatInfoDrawer] = useState(false);
-    useEffect(() => {
-        if (error.message !== '') openNotificationWithIcon('error', error.message)
-    }, [error.status, error.message]);
+
 
     const closeGroupInfoDrawer = () => setShowGroupInfoDrawer(false);
     const closeChatInfoDrawer = () => setShowChatInfoDrawer(false);
@@ -65,10 +56,6 @@ function ChatViewHeader() {
                 },
             ]}
         />
-
-    if (Object.keys(currSelectedChat).length <= 0) return message('Please Select a Chat')
-
-    if (loading) return message('Loading...')
     return (
         <>
             <DrawerGroupInfo

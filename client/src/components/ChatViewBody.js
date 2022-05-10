@@ -1,22 +1,31 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import callApi from '../apiCalls';
 import openNotificationWithIcon from './Notification'
 import formatTime from '../helpers/formatTime'
 import chatbackgroundimage from '../assets/images/whatsapp-chat-background-image-lighter.jpg'
+
+// import React from 'react'
+import { Input } from '@vechaiui/react'
+import { MdSend } from "react-icons/md";
 function ChatViewBody() {
     // const dispatch = useDispatch();
-    const [chatsLoading, setChatsLoading] = useState(false);
     const [messages, setAllMessages] = useState([]);
+    const [chatsLoading, setChatsLoading] = useState(false);
+
+    //form state
+    const [newMessage, setNewMessage] = useState('');
+    const [newMessageLoading, setnewMessageLoading] = useState(false);
+    const inputRef = useRef(null)
     const {
         auth: { user: loggedInUser },
         chats: { currSelectedChat } } = useSelector(state => state);
     useEffect(() => {
-        (async function name(currSelectedChat) {
+        (async function fetchMessages(currSelectedChat) {
             try {
+                if (Object.keys(currSelectedChat).length < 1) return
                 setChatsLoading(true);
                 const { messages } = await callApi.apiMethod('getMessagesOfChat', 'GET', null, `/${currSelectedChat._id}`);
-                console.log('messages', messages);
                 setAllMessages(messages);
                 setChatsLoading(false);
             } catch (error) {
@@ -25,35 +34,88 @@ function ChatViewBody() {
             }
         })(currSelectedChat);
     }, [currSelectedChat]);
+    useEffect(() => {
+        inputRef?.current?.focus();
+    }, [messages]);
+
+    function enterHandler(event) {
+        if (event.code === "Enter" || event.code === "NumpadEnter") {
+            event.preventDefault();
+            sendNewMessage();
+        }
+    }
+
+    async function sendNewMessage() {
+        try {
+            if (newMessageLoading) return
+            if (newMessage.trim() === '') {
+                openNotificationWithIcon('error', 'Please enter a message');
+                return;
+            }
+            const body = {
+                chatId: currSelectedChat._id,
+                senderId: loggedInUser._id,
+                recieverId: currSelectedChat.users[0]._id,
+                message: newMessage
+            }
+            setnewMessageLoading(true);
+            setNewMessage('')
+            const { message } = await callApi.apiMethod('sendNewMessage', 'POST', body, null);
+            setAllMessages(prevMessages => {
+                return [...prevMessages, message]
+            });
+            setnewMessageLoading(false);
+        } catch (error) {
+            setnewMessageLoading(false);
+            openNotificationWithIcon('error', error.message)
+        }
+    }
     return (
-        <main className="chatViewBody"
-            style={{ backgroundImage: `url(${chatbackgroundimage})`, width: "100%" }}>
-            {chatsLoading && <div className="loader">Loading...</div>}
-            <div className="chatMessages">
-                <div className="chatMessages__message">
-                    {
-                        messages.map((message, index) => {
-                            return (
-                                <div key={index}
-                                    className="chatMessages__message__item__content"
-                                    style={
-                                        loggedInUser._id === message.senderId._id ?
-                                            { backgroundColor: "#d9fdd3", color: "#000", alignSelf: "end" } :
-                                            { backgroundColor: "#fff", color: "#000" }}
-                                >
-                                    <div className="chatMessages__message__item__content__text">
-                                        {message.message}
+        <>
+            <main className="chatViewBody"
+                style={{ backgroundImage: `url(${chatbackgroundimage})`, width: "100%" }}>
+                {chatsLoading && <div className="loader">Loading...</div>}
+                <div className="chatMessages">
+                    <div className="chatMessages__message">
+                        {
+                            messages.map((message, index) => {
+                                return (
+                                    <div key={index}
+                                        className="chatMessages__message__item__content"
+                                        style={
+                                            loggedInUser._id === message.senderId._id ?
+                                                { backgroundColor: "#d9fdd3", color: "#000", alignSelf: "end" } :
+                                                { backgroundColor: "#fff", color: "#000" }}
+                                    >
+                                        <div className="chatMessages__message__item__content__text">
+                                            {message.message}
+                                        </div>
+                                        <div className="chatMessages__message__item__content__time">
+                                            {formatTime(message.createdAt)}
+                                        </div>
                                     </div>
-                                    <div className="chatMessages__message__item__content__time">
-                                        {formatTime(message.createdAt)}
-                                    </div>
-                                </div>
-                            )
-                        })
-                    }
+                                )
+                            })
+                        }
+                    </div>
+                </div>
+            </main>
+            <div className="footerWriteNewMessage">
+                <div className="footerWriteNewMessage__input">
+                    <Input
+                        ref={inputRef}
+                        type="text"
+                        placeholder={newMessageLoading ? "Sending..." : "Write new message"}
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                        onKeyDown={enterHandler}
+                    />
+                </div>
+                <div className="footerWriteNewMessage__send">
+                    <MdSend onClick={sendNewMessage} />
                 </div>
             </div>
-        </main>
+        </>
     )
 }
 
