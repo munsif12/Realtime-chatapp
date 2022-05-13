@@ -397,6 +397,10 @@ body {
   padding: 20px 85px;
 }
 
+.ChatsRightView {
+  border-right: 1px solid #ddddde;
+}
+
 .chatMessages__message {
   display: flex;
   flex-direction: column;

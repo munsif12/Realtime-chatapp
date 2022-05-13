@@ -84,7 +84,7 @@ function ChatSidebar() {
                     <DrawerGroupChat visible={showGroupDrawer} setVisible={setShowGroupDrawer} />
                 </div>
             </div>
-            <main>
+            <main className='ChatsRightView'>
                 {/* Chat Search */}
                 <div className="userSearchBox">
                     <FormControl >
