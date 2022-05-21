@@ -16,7 +16,10 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
             });
         } else {
             return thunkAPI.rejectWithValue({
-                error: "Network Error",
+                error: {
+                    success: false,
+                    message: "Network Error"
+                }
             });
         }
     }
@@ -37,7 +40,10 @@ export const register = createAsyncThunk('auth/login', async (user, thunkAPI) =>
             });
         } else {
             return thunkAPI.rejectWithValue({
-                error: "Network Error",
+                error: {
+                    success: false,
+                    message: "Network Error"
+                }
             });
         }
     }
@@ -54,7 +60,10 @@ export const checkToken = createAsyncThunk('auth/checkToken', async (thunkAPI) =
             });
         } else {
             return thunkAPI.rejectWithValue({
-                error: "Network Error",
+                error: {
+                    success: false,
+                    message: "Network Error"
+                }
             });
         }
     }

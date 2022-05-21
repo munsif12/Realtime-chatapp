@@ -13,7 +13,10 @@ export const getUsers = createAsyncThunk('getUsers', async (thunkAPI) => {
             });
         } else {
             return thunkAPI.rejectWithValue({
-                error: "Network Error",
+                error: {
+                    success: false,
+                    message: "Network Error"
+                }
             });
         }
     }

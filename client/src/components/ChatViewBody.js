@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import callApi from '../apiCalls';
 import openNotificationWithIcon from './Notification'
 import formatTime from '../helpers/formatTime'
@@ -8,8 +8,9 @@ import chatbackgroundimage from '../assets/images/whatsapp-chat-background-image
 // import React from 'react'
 import { Input } from '@vechaiui/react'
 import { MdSend } from "react-icons/md";
+import { setLatestMessageForOneToOneChat } from '../redux/slices/chats';
 function ChatViewBody() {
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const [messages, setAllMessages] = useState([]);
     const [chatsLoading, setChatsLoading] = useState(false);
 
@@ -64,6 +65,7 @@ function ChatViewBody() {
             setAllMessages(prevMessages => {
                 return [...prevMessages, message]
             });
+            dispatch(setLatestMessageForOneToOneChat({ chatId: currSelectedChat._id, message }));
             setnewMessageLoading(false);
         } catch (error) {
             setnewMessageLoading(false);

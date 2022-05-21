@@ -14,7 +14,10 @@ export const myChats = createAsyncThunk('chats/myChats', async (thunkAPI) => {
             });
         } else {
             return thunkAPI.rejectWithValue({
-                error: "Network Error",
+                error: {
+                    success: false,
+                    message: "Network Error"
+                }
             });
         }
     }
@@ -54,6 +57,16 @@ const ChatsSlice = createSlice({
                 else return currChat;
             });
         },
+        setLatestMessageForOneToOneChat: (state, action) => {
+            const { chatId, message } = action.payload;
+            state.chats = state.chats.map(currChat => {
+                if (currChat._id === chatId) {
+                    currChat.latestMessage = message;
+                    return currChat;
+                }
+                else return currChat;
+            });
+        },
         chatsLogout: (state, action) => {
             state.loading = false;
             state.chats = [];
@@ -82,5 +95,5 @@ const ChatsSlice = createSlice({
 })
 
 const { reducer, actions } = ChatsSlice;
-export const { selectedChat, setChats, updateSelectedUsers, chatsLogout } = actions;
+export const { selectedChat, setChats, updateSelectedUsers, chatsLogout, setLatestMessageForOneToOneChat } = actions;
 export default reducer;
