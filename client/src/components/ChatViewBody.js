@@ -26,12 +26,16 @@ function ChatViewBody() {
             try {
                 if (Object.keys(currSelectedChat).length < 1) return
                 setChatsLoading(true);
-                const { messages } = await callApi.apiMethod('getMessagesOfChat', 'GET', null, `/${currSelectedChat._id}`);
-                setAllMessages(messages);
+                const data = await callApi.apiMethod('getMessagesOfChat', 'GET', null, `/${currSelectedChat._id}`);
+                if (data.error) {
+                    throw data
+                }
+                setAllMessages(data.messages);
                 setChatsLoading(false);
             } catch (error) {
+                const { error: backendError } = error
                 setChatsLoading(false);
-                openNotificationWithIcon('error', error.message)
+                openNotificationWithIcon('error', backendError.message)
             }
         })(currSelectedChat);
     }, [currSelectedChat]);
@@ -61,15 +65,19 @@ function ChatViewBody() {
             }
             setnewMessageLoading(true);
             setNewMessage('')
-            const { message } = await callApi.apiMethod('sendNewMessage', 'POST', body, null);
+            const data = await callApi.apiMethod('sendNewMessage', 'POST', body, null);
+            if (data.error) {
+                throw data
+            }
             setAllMessages(prevMessages => {
-                return [...prevMessages, message]
+                return [...prevMessages, data.message]
             });
-            dispatch(setLatestMessageForOneToOneChat({ chatId: currSelectedChat._id, message }));
+            dispatch(setLatestMessageForOneToOneChat({ chatId: currSelectedChat._id, message: data.message }));
             setnewMessageLoading(false);
         } catch (error) {
+            const { error: backendError } = error
             setnewMessageLoading(false);
-            openNotificationWithIcon('error', error.message)
+            openNotificationWithIcon('error', backendError.message)
         }
     }
     return (

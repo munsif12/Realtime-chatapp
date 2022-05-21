@@ -35,12 +35,16 @@ function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
             }
             setIsRemoveUserLoading(true);
             const data = await callApi.apiMethod('removeParticipent', 'PUT', body);
+            if (data.error) {
+                throw data
+            }
             dispatch(updateSelectedUsers({ chat: data.chat }))
             openNotificationWithIcon('success', data.message);
             setIsRemoveUserLoading(false);
         } catch (error) {
+            const { error: backendError } = error
             setIsRemoveUserLoading(false);
-            openNotificationWithIcon('error', error.message)
+            openNotificationWithIcon('error', backendError.message)
         }
     }
     function handleSettings(key, userToRemove) {

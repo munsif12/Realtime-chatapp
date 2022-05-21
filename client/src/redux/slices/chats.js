@@ -43,7 +43,11 @@ const ChatsSlice = createSlice({
         },
         setChats: (state, action) => {
             let data = removeLoggedinUserFromChat([action.payload.chat]);
-            state.chats = [...data, ...state.chats];
+            // check if chat already exists
+            let ifChatExists = state.chats.filter(chat => chat._id === data[0]._id);
+            if (ifChatExists.length === 0) {
+                state.chats = [...data, ...state.chats];
+            }
         },
         updateSelectedUsers: (state, action) => {
             const chat = action.payload.chat;

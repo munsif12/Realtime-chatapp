@@ -33,6 +33,9 @@ function DrawerGroupNameAndImage({ groupSelectedUsers, onChildrenDrawerClose, ch
         try {
             setGroupChatLoading(true);
             const data = await callApi.apiMethod('createGroupChat', 'POST', body);
+            if (data.error) {
+                throw data
+            }
             dispatch(setChats({ chat: data.chat }))
             dispatch(selectedChat({ id: data.chat._id }));
             onChildrenDrawerClose();
@@ -40,7 +43,10 @@ function DrawerGroupNameAndImage({ groupSelectedUsers, onChildrenDrawerClose, ch
             openNotificationWithIcon('success', data.message)
             setGroupChatLoading(false);
         } catch (error) {
-            openNotificationWithIcon('error', error.message)
+            const { error: backendError } = error
+            setGroupChatLoading(false)
+            openNotificationWithIcon('error', backendError.message)
+
         }
     }
     async function uploadGroupImage(e) {

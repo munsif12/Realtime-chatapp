@@ -787,6 +787,13 @@ input[type="file"] {
   padding-left: 0px !important;
 }
 
+.chatImage .ant-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #d4d4d8
+}
+
 .viewAllPaticipents {
   padding: 10px;
   font-size: 18px;

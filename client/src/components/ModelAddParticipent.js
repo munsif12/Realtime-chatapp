@@ -33,12 +33,17 @@ function ModelAddParticipent({ addParticipentModal, setAddParticipentModal }) {
             }
             setParticipentSubmissionLoading(true);
             const data = await callApi.apiMethod('addParticipentsToGroup', 'POST', body);
+            if (data.error) {
+                throw data
+            }
             dispatch(updateSelectedUsers({ chat: data.chat }))
             closeAddPartciipentModal()
             openNotificationWithIcon('success', data.message);
             setParticipentSubmissionLoading(false);
         } catch (error) {
-            openNotificationWithIcon('error', error.message)
+            const { error: backendError } = error
+            setParticipentSubmissionLoading(false);
+            openNotificationWithIcon('error', backendError.message)
         }
     }
     function closeAddPartciipentModal() {

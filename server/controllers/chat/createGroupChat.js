@@ -26,7 +26,7 @@ const createGropuChat = async (req, res) => {
 
         if (groupChatExists) {
             return res.status(400).json({
-                success: true,
+                success: false,
                 message: 'Chat name already exists',
             });
         }

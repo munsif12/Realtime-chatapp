@@ -24,14 +24,18 @@ function UserDesc({ search, onClose: closeSideDrawer }) {
             }
             setLoading(true);
             const data = await callApi.apiMethod('createChat', 'POST', body);
+            if (data.error) {
+                throw data
+            }
             openNotificationWithIcon('success', data.message)
             dispatch(setChats({ chat: data.chat }))
             dispatch(selectedChat({ id: data.chat._id }));
             setLoading(false);
             closeSideDrawer();
         } catch (error) {
+            const { error: backendError } = error
             setLoading(false);
-            openNotificationWithIcon('error', error.message)
+            openNotificationWithIcon('error', backendError.message)
         }
     }
     if (Loading || loading) return <ChatsLoading />
