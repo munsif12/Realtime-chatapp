@@ -71,6 +71,9 @@ const ChatsSlice = createSlice({
                 else return currChat;
             });
         },
+        closeCurrSelectedChat: (state) => {
+            state.currSelectedChat = {};
+        },
         chatsLogout: (state, action) => {
             state.loading = false;
             state.chats = [];
@@ -99,5 +102,5 @@ const ChatsSlice = createSlice({
 })
 
 const { reducer, actions } = ChatsSlice;
-export const { selectedChat, setChats, updateSelectedUsers, chatsLogout, setLatestMessageForOneToOneChat } = actions;
+export const { selectedChat, setChats, updateSelectedUsers, chatsLogout, setLatestMessageForOneToOneChat, closeCurrSelectedChat } = actions;
 export default reducer;

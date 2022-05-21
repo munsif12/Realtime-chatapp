@@ -2,12 +2,14 @@ import { Avatar } from '@vechaiui/react'
 import React, { useState } from 'react'
 import { IoMdMore } from "react-icons/io";
 import { HiOutlineSearch } from "react-icons/hi";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown, Menu } from 'antd';
 import DrawerGroupInfo from '../components/DrawerGroupInfo';
 import DrawerChatInfo from '../components/DrawerChatInfo'
+import { closeCurrSelectedChat } from '../redux/slices/chats';
 
 function ChatViewHeader() {
+    const dispatch = useDispatch();
     const { currSelectedChat } = useSelector(state => state.chats)
     const [showGroupInfoDrawer, setShowGroupInfoDrawer] = useState(false);
     const [showChatInfoDrawer, setShowChatInfoDrawer] = useState(false);
@@ -23,10 +25,14 @@ function ChatViewHeader() {
             case 'chatInfo':
                 setShowChatInfoDrawer(true)
                 break;
+            case 'closeChat':
+                dispatch(closeCurrSelectedChat())
+                break;
             case 'clearMessages':
                 break;
-
             case 'exitGroup':
+                break;
+            case 'deleteChat':
                 break;
             default:
                 break;
@@ -45,14 +51,21 @@ function ChatViewHeader() {
                     key: 'chatInfo',
                 },
                 {
+                    label: 'Close chat',
+                    key: 'closeChat',
+                },
+                {
                     label: 'Clear messages',
                     key: 'clearMessages',
                 },
-                {
+                chatType === 'groupChat' ? {
                     danger: true,
                     label: <span className='dangerBtn'>Exist Group</span>,
                     key: 'exitGroup',
-
+                } : {
+                    danger: true,
+                    label: <span className='dangerBtn'>Delete Chat</span>,
+                    key: 'deleteChat',
                 },
             ]}
         />

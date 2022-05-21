@@ -20,7 +20,10 @@ function ChatViewBody() {
     const inputRef = useRef(null)
     const {
         auth: { user: loggedInUser },
-        chats: { currSelectedChat } } = useSelector(state => state);
+        chats: { currSelectedChat }
+    } = useSelector(state => state);
+
+
     useEffect(() => {
         (async function fetchMessages(currSelectedChat) {
             try {
