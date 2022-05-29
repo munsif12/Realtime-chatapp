@@ -11,6 +11,7 @@ import { Logout } from '../redux/slices/auth';
 import DrawerGroupChat from './DrawerGroupChat';
 import { chatsLogout } from '../redux/slices/chats';
 import { usersLogout } from '../redux/slices/users';
+import openNotificationWithIcon from './Notification';
 function ChatSidebar() {
     const [visible, setVisible] = useState(false);
     const [showGroupDrawer, setShowGroupDrawer] = useState(false);
@@ -20,7 +21,10 @@ function ChatSidebar() {
     const navigate = useNavigate();
     const { user } = useSelector(state => state.auth)
     const showDrawer = () => setVisible(true);
-    const showGroupChatDrawer = () => setShowGroupDrawer(true);
+    const showGroupChatDrawer = () => {
+        setShowGroupDrawer(true)
+        openNotificationWithIcon('info', 'Please select atlest 3 users to start chat.')
+    };
     function handleSettings(key) {
         switch (key) {
             case 'logout':

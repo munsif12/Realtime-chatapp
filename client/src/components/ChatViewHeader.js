@@ -14,7 +14,6 @@ function ChatViewHeader() {
     const [showGroupInfoDrawer, setShowGroupInfoDrawer] = useState(false);
     const [showChatInfoDrawer, setShowChatInfoDrawer] = useState(false);
 
-
     const closeGroupInfoDrawer = () => setShowGroupInfoDrawer(false);
     const closeChatInfoDrawer = () => setShowChatInfoDrawer(false);
     function handleSettings(key, selectedChat) {
@@ -71,11 +70,10 @@ function ChatViewHeader() {
         />
     return (
         <>
-            <DrawerGroupInfo
-                showGroupInfoDrawer={showGroupInfoDrawer}
-                closeGroupInfoDrawer={closeGroupInfoDrawer}
-            />
+            {/* Drawers */}
+            <DrawerGroupInfo showGroupInfoDrawer={showGroupInfoDrawer} closeGroupInfoDrawer={closeGroupInfoDrawer} />
             <DrawerChatInfo showChatInfoDrawer={showChatInfoDrawer} closeChatInfoDrawer={closeChatInfoDrawer} />
+            {/* Main Content */}
             <div className='chatViewHeader flex items-center text-2xl' style={{ fontSize: "24px", color: "black" }}>
                 <div className="selectedChatImage">
                     <Avatar src={currSelectedChat.isGroupChat ? currSelectedChat?.groupChatImage : currSelectedChat.users[0].profileImage} size="2xl" />
@@ -99,7 +97,6 @@ function ChatViewHeader() {
                             overlay={ChatDropdown(currSelectedChat.isGroupChat && "groupChat", currSelectedChat)} trigger={['click']} >
                             <IoMdMore />
                         </Dropdown>
-
                     </div>
                 </div>
             </div>

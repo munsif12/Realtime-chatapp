@@ -6,16 +6,15 @@ import { FormControl, Input } from '@vechaiui/react';
 import GroupSelectedUserBadge from './GroupSelectedUserBadge';
 import DrawerGroupNameAndImage from './DrawerGroupNameAndImage';
 import SelectUser from './SelectUser';
-import openNotificationWithIcon from './Notification';
 const DrawerGroupChat = ({ visible, setVisible }) => {
     const [searchUser, setSearchUser] = useState('');
     const [childrenDrawer, setChildrenDrawer] = useState(false)
     const [groupSelectedUsers, setGroupSelectedUsers] = useState([]);
+    const inputRef = useRef(null)
     const onClose = () => {
         setSearchUser('')
         setGroupSelectedUsers([])
         setVisible(false)
-
     };
     const handleSearch = (e) => setSearchUser(e.target.value);
     const onChildrenDrawerClose = () => setChildrenDrawer(false)
@@ -23,14 +22,13 @@ const DrawerGroupChat = ({ visible, setVisible }) => {
         const remainingUsers = groupSelectedUsers.filter(u => u.id !== user.id)
         setGroupSelectedUsers(remainingUsers)
     }
-    const inputRef = useRef(null)
     useEffect(() => {
         // if (inputRef.current) inputRef.current.focus()
         inputRef?.current?.focus(); //both will do the same thing
+        return () => {
+            console.log('DrawerGroupChat :: I am unmounting ')
+        }
     }, [groupSelectedUsers]);
-    useEffect(() => {
-        openNotificationWithIcon('info', 'Please select atlest 3 users to start chat.')
-    }, [])
 
 
     return (
@@ -41,7 +39,7 @@ const DrawerGroupChat = ({ visible, setVisible }) => {
                         <span className='DrawergoBack gap-6 pr-4 pointer'>
                             <IoArrowBack onClick={onClose} />
                         </span>
-                        Add group participents
+                        Add group participants
                     </div>
                 }
                 placement={'left'}

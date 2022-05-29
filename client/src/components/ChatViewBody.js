@@ -44,7 +44,10 @@ function ChatViewBody() {
     }, [currSelectedChat]);
     useEffect(() => {
         inputRef?.current?.focus();
-    }, [messages]);
+        return () => {
+            console.log('ChatViewBody :: unmounting')
+        }
+    }, []);
 
     function enterHandler(event) {
         if (event.code === "Enter" || event.code === "NumpadEnter") {
