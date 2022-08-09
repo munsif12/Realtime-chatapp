@@ -42,12 +42,13 @@ function ChatViewBody() {
             }
         })(currSelectedChat);
     }, [currSelectedChat]);
+
     useEffect(() => {
         inputRef?.current?.focus();
         return () => {
             console.log('ChatViewBody :: unmounting')
         }
-    }, []);
+    }, [currSelectedChat]);
 
     function enterHandler(event) {
         if (event.code === "Enter" || event.code === "NumpadEnter") {

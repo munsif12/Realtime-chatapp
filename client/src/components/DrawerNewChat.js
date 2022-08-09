@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Drawer } from 'antd';
 import { IoArrowBack } from "react-icons/io5";
 import { FormControl, Input } from '@vechaiui/react';
@@ -7,6 +7,12 @@ const DrawerNewChat = ({ visible, setVisible }) => {
     const [searchUser, setSearchUser] = useState('');
     const onClose = () => setVisible(false);
     const handleSearch = (e) => setSearchUser(e.target.value);
+    useEffect(() => {
+        console.log('NewChat Drawer :: Mounted')
+        return () => {
+            console.log('NewChat Drawer :: Unounted')
+        };
+    }, []);
     return (
         <div className="newChatSideDrawer">
             <Drawer

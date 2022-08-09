@@ -84,8 +84,8 @@ function ChatSidebar() {
                             <IoMdMore />
                         </Dropdown>
                     </div>
-                    <DrawerNewChat visible={visible} setVisible={setVisible} />
-                    <DrawerGroupChat visible={showGroupDrawer} setVisible={setShowGroupDrawer} />
+                    {visible && <DrawerNewChat visible={visible} setVisible={setVisible} />}
+                    {showGroupDrawer && <DrawerGroupChat visible={showGroupDrawer} setVisible={setShowGroupDrawer} />}
                 </div>
             </div>
             <main className='ChatsRightView'>

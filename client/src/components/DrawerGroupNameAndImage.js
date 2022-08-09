@@ -1,5 +1,5 @@
+import React, { useState, useEffect } from 'react'
 import { Drawer } from 'antd'
-import React, { useState } from 'react'
 import { IoArrowBack } from "react-icons/io5";
 import { FormControl, Image, Input } from '@vechaiui/react';
 import loadingGif from '../assets/images/loadingGif.gif'
@@ -75,6 +75,12 @@ function DrawerGroupNameAndImage({ groupSelectedUsers, onChildrenDrawerClose, ch
             openNotificationWithIcon('error', `Error uploading image ${error.message}`);
         }
     }
+    useEffect(() => {
+        console.log('Group Name and Image  Drawer :: Mounted')
+        return () => {
+            console.log('Group Name and Image  Drawer :: Unounted')
+        };
+    }, []);
 
     return (
         <Drawer

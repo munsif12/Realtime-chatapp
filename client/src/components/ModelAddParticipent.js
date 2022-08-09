@@ -13,6 +13,7 @@ function ModelAddParticipent({ addParticipentModal, setAddParticipentModal }) {
     const [searchUser, setSearchUser] = useState('');
     const [groupSelectedUsers, setGroupSelectedUsers] = useState([]);
     const [participentSubmissionLoading, setParticipentSubmissionLoading] = useState(false);
+
     const dispatch = useDispatch();
     const {
         chats: { currSelectedChat },
@@ -47,13 +48,20 @@ function ModelAddParticipent({ addParticipentModal, setAddParticipentModal }) {
         }
     }
     function closeAddPartciipentModal() {
-        setAddParticipentModal(false);
         setGroupSelectedUsers([])
         setSearchUser('')
+        setAddParticipentModal(false);
     }
     useEffect(() => {
         inputRef?.current?.focus();
     }, [groupSelectedUsers]);
+
+    useEffect(() => {
+        console.log('Add participent component :: Mounted')
+        return () => {
+            console.log('Add participent component :: Unmounted')
+        };
+    }, []);
 
 
     return (

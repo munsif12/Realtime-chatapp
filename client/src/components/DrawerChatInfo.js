@@ -46,6 +46,13 @@ function DrawerGroupInfo({ showChatInfoDrawer, closeChatInfoDrawer }) {
             setCommonGroup(arrOfCommonGroups)
         })(allChats);
     }, [allChats, currSelectedChat, loggedInUser]);
+
+    useEffect(() => {
+        console.log('ChatInfo Drawer :: Mounted')
+        return () => {
+            console.log('ChatInfo Drawer :: Unounted')
+        };
+    }, []);
     return (
         <Drawer
             className='drawer-group-name-and-image'
@@ -107,13 +114,8 @@ function DrawerGroupInfo({ showChatInfoDrawer, closeChatInfoDrawer }) {
                 <span><IoMdExit /></span>
                 <span>Exit Group</span>
             </div>
-            <ModelAddParticipent
-                addParticipentModal={addParticipentModal}
-                setAddParticipentModal={setAddParticipentModal} />
-            <ModalViewMore
-                viewMoreModal={viewMoreModal}
-                closeViewMoreModal={closeViewMoreModal}
-                listToMap={commonGroup.slice(10, commonGroup.length)} />
+            {addParticipentModal && <ModelAddParticipent addParticipentModal={addParticipentModal} setAddParticipentModal={setAddParticipentModal} />}
+            {viewMoreModal && <ModalViewMore viewMoreModal={viewMoreModal} closeViewMoreModal={closeViewMoreModal} listToMap={commonGroup.slice(10, commonGroup.length)} />}
         </Drawer>
     )
 }

@@ -11,14 +11,14 @@ import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <VechaiProvider theme={theme} colorScheme="light">
-          <App />
-        </VechaiProvider>
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <Provider store={store}>
+    <BrowserRouter>
+      <VechaiProvider theme={theme} colorScheme="light">
+        <App />
+      </VechaiProvider>
+    </BrowserRouter>
+  </Provider>
+  // </React.StrictMode>
 );
 

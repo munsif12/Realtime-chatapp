@@ -71,8 +71,8 @@ function ChatViewHeader() {
     return (
         <>
             {/* Drawers */}
-            <DrawerGroupInfo showGroupInfoDrawer={showGroupInfoDrawer} closeGroupInfoDrawer={closeGroupInfoDrawer} />
-            <DrawerChatInfo showChatInfoDrawer={showChatInfoDrawer} closeChatInfoDrawer={closeChatInfoDrawer} />
+            {showGroupInfoDrawer && <DrawerGroupInfo showGroupInfoDrawer={showGroupInfoDrawer} closeGroupInfoDrawer={closeGroupInfoDrawer} />}
+            {showChatInfoDrawer && <DrawerChatInfo showChatInfoDrawer={showChatInfoDrawer} closeChatInfoDrawer={closeChatInfoDrawer} />}
             {/* Main Content */}
             <div className='chatViewHeader flex items-center text-2xl' style={{ fontSize: "24px", color: "black" }}>
                 <div className="selectedChatImage">

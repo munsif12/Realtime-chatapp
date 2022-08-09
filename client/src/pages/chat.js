@@ -1,5 +1,4 @@
 import ChatViewBody from '../components/ChatViewBody';
-import ChatViewFooter from '../components/ChatViewFooter';
 import ChatViewHeader from '../components/ChatViewHeader';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
@@ -19,8 +18,7 @@ const Chat = () => {
     return (
         <>
             <ChatViewHeader />
-            <ChatViewBody messages={null} />
-            <ChatViewFooter />
+            <ChatViewBody />
         </>
     )
 }

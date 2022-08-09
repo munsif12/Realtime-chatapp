@@ -56,4 +56,4 @@ function ChatDesc({ search = '' }) {
     )
 }
 
-export default ChatDesc
+export default React.memo(ChatDesc)

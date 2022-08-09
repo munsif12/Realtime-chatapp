@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
-import { Drawer, Dropdown, Menu } from 'antd'
+import React, { useState, useEffect } from 'react'
+import { Drawer, Menu } from 'antd'
 import { IoArrowBack, IoPersonAdd } from "react-icons/io5";
 import { IoMdExit, } from "react-icons/io";
-import { Avatar } from '@vechaiui/react';
-import { AiOutlineDown } from "react-icons/ai";
+
 // import openNotificationWithIcon from './Notification';
 import { useSelector, useDispatch } from 'react-redux'
 import openNotificationWithIcon from './Notification';
@@ -13,6 +12,7 @@ import { updateSelectedUsers } from '../redux/slices/chats';
 import ModelAddParticipent from './ModelAddParticipent';
 import ChatBasicInfoCard from './ChatBasicInfoCard';
 import ModalViewMore from './ModalViewMore';
+import AdminUserCard from './AdminUserCard';
 function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
     const [isRemoveUserLoading, setIsRemoveUserLoading] = useState(false);
     const [removeParticipent, setremoveParticipent] = useState(false);
@@ -69,6 +69,30 @@ function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
             ]}
         />
 
+    const AdminAddParticipent = () => (
+        <div className="adminAddParticipents" >
+            <div className="userListItem flex"
+                onClick={() => setAddParticipentModal(true)}>
+                <div className="chatImage" style={{ paddingLeft: "0px" }}>
+                    <span className='addParticipent'>
+                        <IoPersonAdd />
+                    </span>
+                </div>
+                <div className="chatDescLatestMsg pr-4">
+                    <div className="chatNameAndTime flex items-center ">
+                        <p className='nameLatestMsg chatName m-0 p-0 text-black text-2xl'>Add Paticipent</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+
+    useEffect(() => {
+        console.log('GroupInfo Drawer :: Mounted')
+        return () => {
+            console.log('GroupInfo Drawer :: Unounted')
+        };
+    }, []);
 
     return (
         <Drawer
@@ -97,21 +121,7 @@ function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
                 {/* if admin then allow him to add participents */}
                 {
                     currSelectedChat?.groupAdmin?._id === loggedInUser._id && (
-                        <div className="adminAddParticipents" >
-                            <div className="userListItem flex"
-                                onClick={() => setAddParticipentModal(true)}>
-                                <div className="chatImage" style={{ paddingLeft: "0px" }}>
-                                    <span className='addParticipent'>
-                                        <IoPersonAdd />
-                                    </span>
-                                </div>
-                                <div className="chatDescLatestMsg pr-4">
-                                    <div className="chatNameAndTime flex items-center ">
-                                        <p className='nameLatestMsg chatName m-0 p-0 text-black text-2xl'>Add Paticipent</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <AdminAddParticipent />
                     )
                 }
                 {/* List of participents */}
@@ -120,41 +130,7 @@ function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
                         {currSelectedChat.users
                             .slice(0, 10)
                             .map((user, index) => (
-                                <div className="userListItem flex" key={index}>
-                                    <div className="chatImage" style={{ paddingLeft: "0px" }}>
-                                        <Avatar src={user?.profileImage} size="2xl" />
-                                    </div>
-                                    <div className="chatDescLatestMsg pr-4"
-                                        onMouseOver={() => setremoveParticipent(true)}
-                                        onMouseOut={() => setremoveParticipent(false)}>
-                                        <div className="chatNameAndTime flex items-center ">
-                                            <p className='nameLatestMsg chatName m-0 p-0 text-black text-2xl'>{user?.name}
-                                            </p>
-                                            {currSelectedChat?.groupAdmin?._id === user._id &&
-                                                <span className='groupAdminBadge'>
-                                                    Group admin
-                                                </span>
-                                            }
-                                        </div>
-                                        <div className={"chatDescAndSetting flex items-center"} >
-                                            <p className='nameLatestMsg m-0 p-0 text-black text-2xl'>
-                                                {user?.email}
-                                            </p>
-                                            {
-                                                currSelectedChat?.groupAdmin?._id === loggedInUser._id && // to show dropdown if the loggedin user is admin of this group
-                                                currSelectedChat?.groupAdmin?._id !== user._id && // to not show dropDown infront of group admin
-                                                removeParticipent && <div
-                                                    className="showDropDownToRemoveParticipent">
-                                                    <Dropdown
-                                                        overlay={() => removeParticipentDropdown(user)}
-                                                        trigger={['click']} >
-                                                        <AiOutlineDown />
-                                                    </Dropdown>
-                                                </div>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
+                                <AdminUserCard user={user} key={index} removeParticipentDropdown={removeParticipentDropdown} />
                             ))}
                         {currSelectedChat.users.length > 10 && (
                             <div className="viewAllPaticipents" onClick={openViewMoreModal}>
@@ -171,18 +147,16 @@ function DrawerGroupInfo({ showGroupInfoDrawer, closeGroupInfoDrawer }) {
                 </span>
                 <span>Exit Group</span>
             </div>
-            <ModelAddParticipent
-                addParticipentModal={addParticipentModal}
-                setAddParticipentModal={setAddParticipentModal} />
-            <ModalViewMore
+            {addParticipentModal && <ModelAddParticipent addParticipentModal={addParticipentModal} setAddParticipentModal={setAddParticipentModal} />}
+            {viewMoreModal && <ModalViewMore
                 removeParticipent={removeParticipent}
                 removeParticipentDropdown={removeParticipentDropdown}
                 viewMoreModal={viewMoreModal}
                 closeViewMoreModal={closeViewMoreModal}
                 listToMap={currSelectedChat.users.slice(10, currSelectedChat.length)}
-                setremoveParticipent={setremoveParticipent} />
+                setremoveParticipent={setremoveParticipent} />}
         </Drawer>
     )
 }
 
-export default DrawerGroupInfo
+export default React.memo(DrawerGroupInfo)

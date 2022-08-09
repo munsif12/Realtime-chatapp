@@ -25,11 +25,14 @@ const DrawerGroupChat = ({ visible, setVisible }) => {
     useEffect(() => {
         // if (inputRef.current) inputRef.current.focus()
         inputRef?.current?.focus(); //both will do the same thing
-        return () => {
-            console.log('DrawerGroupChat :: I am unmounting ')
-        }
     }, [groupSelectedUsers]);
 
+    useEffect(() => {
+        console.log('GroupChat Drawer :: Mounted')
+        return () => {
+            console.log('GroupChat Drawer :: Unounted')
+        };
+    }, []);
 
     return (
         <div className="groupChatSideDrawer">
@@ -75,7 +78,7 @@ const DrawerGroupChat = ({ visible, setVisible }) => {
                     </div>
                 }
             </Drawer>
-            <DrawerGroupNameAndImage childrenDrawer={childrenDrawer} onChildrenDrawerClose={onChildrenDrawerClose} groupSelectedUsers={groupSelectedUsers} onClose={onClose} />
+            {childrenDrawer && <DrawerGroupNameAndImage childrenDrawer={childrenDrawer} onChildrenDrawerClose={onChildrenDrawerClose} groupSelectedUsers={groupSelectedUsers} onClose={onClose} />}
         </div>
     );
 };
