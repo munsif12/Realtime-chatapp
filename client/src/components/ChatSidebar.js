@@ -12,10 +12,12 @@ import DrawerGroupChat from './DrawerGroupChat';
 import { chatsLogout } from '../redux/slices/chats';
 import { usersLogout } from '../redux/slices/users';
 import openNotificationWithIcon from './Notification';
+import DrawerUserProfile from './DrawerUserProfile';
 function ChatSidebar() {
+    const [searchUser, setSearchUser] = useState('');
     const [visible, setVisible] = useState(false);
     const [showGroupDrawer, setShowGroupDrawer] = useState(false);
-    const [searchUser, setSearchUser] = useState('');
+    const [userProfileDrawer, setUserProfileDrawer] = useState(false);
 
     const dispatch = useDispatch()
     const navigate = useNavigate();
@@ -67,7 +69,7 @@ function ChatSidebar() {
         <div className="sidebar w-[40%] flex  text-2xl ">
             {/* Chats Header */}
             <div className='sidebarHeader py-2 px-4 w-full flex justify-between items-center'>
-                <Avatar src={user.profileImage} size="2xl" />
+                <Avatar className="settingUserProfileAvatar" src={user.profileImage} size="2xl" onClick={() => setUserProfileDrawer(true)} />
                 <div className="settings flex gap-3 items-center">
                     <div className="settingNotifica">
                         {/* <Badge
@@ -86,6 +88,7 @@ function ChatSidebar() {
                     </div>
                     {visible && <DrawerNewChat visible={visible} setVisible={setVisible} />}
                     {showGroupDrawer && <DrawerGroupChat visible={showGroupDrawer} setVisible={setShowGroupDrawer} />}
+                    {userProfileDrawer && <DrawerUserProfile visible={userProfileDrawer} setVisible={setUserProfileDrawer} />}
                 </div>
             </div>
             <main className='ChatsRightView'>

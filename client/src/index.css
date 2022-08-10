@@ -20,8 +20,9 @@
   --wa-primary-color: #008069;
   --wa-bg: #f0f2f5;
   --wa-span: #8696a0;
-  --waSelectedUserBg: #e9edef;
   --wa-link-color: #009de2;
+  --wa-edit-text-color: #008069;
+  --waSelectedUserBg: #e9edef;
   --drawer-boxshadow: 0px 1px 3px rgba(11, 20, 26, 0.08);
   --white: #fff;
   --bb: #dfe0e1;
@@ -66,6 +67,10 @@ body {
   justify-content: space-between;
   height: 9vh;
   border-right: 1px solid #d7d7d7;
+}
+
+.settingUserProfileAvatar {
+  cursor: pointer;
 }
 
 .settingVerticalEllipse,
@@ -1000,12 +1005,93 @@ input[type="file"] {
   transform: translateY(20%);
 }
 
+
+
+.imageOverlayContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.profileImageOverlayIcons {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+}
+
+.userProfileImageOverlay {
+  position: absolute;
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  z-index: 9999;
+
+}
+
+.userProfileDrawer {
+  background: var(--wa-bg) !important;
+}
+
+.imageOverlaychangeImage {
+  font-size: 13px;
+  margin-top: 10px !important;
+  text-transform: uppercase;
+  width: 115px;
+  text-align: center;
+}
+
+.userProfile {
+  background-color: var(--wa-bg);
+  padding: 30px 0px;
+}
+
+.userUpdateAbheFields {
+  background-color: var(--wa-bg);
+}
+
+.userProfileEditName {
+  background-color: var(--white);
+  padding: 14px 30px 10px;
+  box-shadow: 0 1px 3px var(--drawer-boxshadow)
+}
+
+.userProfileName {
+  color: var(--wa-edit-text-color);
+  margin-top: 0px !important;
+  font-size: 16px;
+}
+
+.userProfileNameEditInput {
+  /* style input field having background none border botton gren */
+  all: unset !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid var(--wa-edit-text-color) !important;
+  border-radius: 0px !important;
+  font-size: 24px !important;
+  padding-left: 0px !important;
+}
+
+/* on input focus border botton grren with animation */
+.userProfileNameEditInput:focus {
+  border-bottom: 2px solid var(--wa-edit-text-color) !important;
+  border-radius: 0px !important;
+  padding-left: 0px !important;
+}
+
+.userNameAlertMessage {
+  color: #8696a0;
+  font-size: 14px;
+  padding: 10px 20px 28px 30px !important;
+  margin: 0px !important;
+
+}
+
 @media (max-width: 1024px) {
   .chatContainer .sidebar {
     width: 400px;
   }
-
-
 
   .ant-drawer {
     width: 400px;
