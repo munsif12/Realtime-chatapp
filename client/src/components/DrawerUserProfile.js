@@ -7,12 +7,22 @@ import loadingGif from '../assets/images/loadingGif.gif'
 import openNotificationWithIcon from './Notification';
 import uploadImageToCloudinary from '../config/uploadImageToCloudnary';
 import { AiFillCamera } from "react-icons/ai";
+import { MdEdit } from "react-icons/md";
+import { HiOutlineCheck } from "react-icons/hi";
+
 
 function DrawerUserProfile({ visible, setVisible }) {
     const { user } = useSelector(state => state.auth)
-    const [userName, setUserName] = useState(user.name);
+    const [userName, setUserName] = useState({
+        value: user.name,
+        active: false
+    });
+    const [userAbout, setUserAbout] = useState({
+        value: 'this is dummmy text',
+        active: false
+    });
     const [showImageOverlay, setShowImageOverlay] = useState(false);
-    const [groupImage, setGroupImage] = useState('');
+    const [groupImage, setGroupImage] = useState(user.profileImage);
     const [isImageLoading, setisImageLoading] = useState(false)
     const onClose = () => setVisible(false);
     async function uploadGroupImage(e) {
@@ -94,6 +104,19 @@ function DrawerUserProfile({ visible, setVisible }) {
             ]}
         />
     );
+    const ToggleEditNameButton = (cb) => {
+        setUserName(p => ({ ...p, active: !userName.active }))
+
+        if (typeof cb === 'function') cb()
+    }
+    const ToggleEditAboutButton = (cb) => {
+        setUserAbout(p => ({ ...p, active: !userAbout.active }))
+        if (typeof cb === 'function') cb()
+    }
+
+    const updateUserNewName = async () => {
+        console.log(' hello call update api and update user name')
+    }
     useEffect(() => {
         console.log('User Profile Drawer :: Mounted')
         return () => {
@@ -136,36 +159,54 @@ function DrawerUserProfile({ visible, setVisible }) {
                         htmlWidth={250}
                         htmlHeight={250}
                         className="object-cover"
-                        src={!isImageLoading ? user.profileImage : loadingGif}
+                        src={!isImageLoading ? groupImage : loadingGif}
                     />
                 </div>
                 <div className="userUpdateAbheFields">
                     <div className="userProfileEditName">
                         <p className='mb-1 p-0 mt-0 userProfileName'>Your name</p>
-                        <FormControl className='p-0'>
-                            <Input
-                                className='userProfileNameEditInput'
-                                autoFocus
-                                type="text" name="email" placeholder="Group Subject" autoComplete='off'
-                                value={userName}
-                                onChange={(e) => setUserName(e.target.value)}
-                            />
-                        </FormControl>
+                        <div className="editUserProfileName" onClick={() => { }}>
+                            <FormControl className='p-0'>
+                                <Input
+                                    className='userProfileNameEditInput'
+                                    autoFocus
+                                    type="text" name="email" placeholder="Group Subject" autoComplete='off'
+                                    value={userName.value}
+                                    onChange={(e) => userName.active && setUserName(p => ({ ...p, value: e.target.value }))}
+                                />
+                            </FormControl>
+                            {
+                                userName.active ? (
+                                    <HiOutlineCheck className="editIconUserProfile" onClick={() => ToggleEditNameButton(updateUserNewName)} />
+                                ) : (
+                                    <MdEdit className="editIconUserProfile" onClick={ToggleEditNameButton} />
+                                )
+                            }
+                        </div>
                     </div>
                     <div className="">
                         <p className=' p-0 mt-0 userNameAlertMessage'>This is not your username or pin. This name will be visible to your WhatsApp contacts.</p>
                     </div>
                     <div className="userProfileEditName">
                         <p className='mb-1 p-0 mt-0 userProfileName'>About</p>
-                        <FormControl className='p-0'>
-                            <Input
-                                className='userProfileNameEditInput'
-                                autoFocus
-                                type="text" name="email" placeholder="Group Subject" autoComplete='off'
-                                value={'this is dummy about text' || userName}
-                                onChange={(e) => setUserName(e.target.value)}
-                            />
-                        </FormControl>
+                        <div className="editUserProfileName" onClick={() => { }}>
+                            <FormControl className='p-0'>
+                                <Input
+                                    className='userProfileNameEditInput'
+                                    autoFocus
+                                    type="text" name="email" placeholder="Group Subject" autoComplete='off'
+                                    value={userAbout.value}
+                                    onChange={(e) => userAbout.active && setUserAbout(p => ({ ...p, value: e.target.value }))}
+                                />
+                            </FormControl>
+                            {
+                                userAbout.active ? (
+                                    <HiOutlineCheck className="editIconUserProfile" onClick={() => ToggleEditAboutButton(updateUserNewName)} />
+                                ) : (
+                                    <MdEdit className="editIconUserProfile" onClick={ToggleEditAboutButton} />
+                                )
+                            }
+                        </div>
                     </div>
                 </div>
             </Drawer>
