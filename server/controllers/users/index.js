@@ -1,2 +1,3 @@
 const users = require('./getUsers');
-module.exports = { users }
+const updateUser = require('./updateUser');
+module.exports = { users, updateUser }

@@ -2,11 +2,12 @@
 const express = require('express');
 
 const {
-    users
+    users,
+    updateUser
 } = require('../controllers/users');
 
 const router = express.Router();
-
-router.get('/', users);
-
+router.route('/')
+    .get(users)
+    .put(updateUser);
 module.exports = router;

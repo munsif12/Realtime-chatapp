@@ -21,6 +21,26 @@ export const getUsers = createAsyncThunk('getUsers', async (thunkAPI) => {
         }
     }
 });
+export const updateUser = createAsyncThunk('updateUser', async (thunkAPI) => {
+    try {
+        const data = await callApi.apiMethod('getUsers', 'GET');
+        return data;
+    } catch (err) {
+        if (err.response && err.response.data) {
+            return thunkAPI.rejectWithValue({
+                error: err.response.data,
+                status: err.response.status,
+            });
+        } else {
+            return thunkAPI.rejectWithValue({
+                error: {
+                    success: false,
+                    message: "Network Error"
+                }
+            });
+        }
+    }
+});
 
 
 const usrsSlice = createSlice({
