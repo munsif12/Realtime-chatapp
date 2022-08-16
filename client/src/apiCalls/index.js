@@ -9,6 +9,7 @@ let apiEndpoints = {
     addParticipentsToGroup: '/chat/add-to-groupchat',
     getMessagesOfChat: '/message', //with parmas
     sendNewMessage: '/message', //with body
+    updateUser: '/user',
 }
 let callApi = {}
 callApi.apiMethod = function (requestName, method, body = null, params = null) {

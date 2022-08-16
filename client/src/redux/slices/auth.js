@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import callApi from "../../apiCalls";
 import axios from "../../config/axios";
+
 export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
     try {
         const { data } = await axios.post('/auth/login', user, {
@@ -51,6 +53,26 @@ export const register = createAsyncThunk('auth/login', async (user, thunkAPI) =>
 export const checkToken = createAsyncThunk('auth/checkToken', async (thunkAPI) => {
     try {
         const { data } = await axios.get('/auth/checktoken');
+        return data;
+    } catch (err) {
+        if (err.response && err.response.data) {
+            return thunkAPI.rejectWithValue({
+                error: err.response.data,
+                status: err.response.status,
+            });
+        } else {
+            return thunkAPI.rejectWithValue({
+                error: {
+                    success: false,
+                    message: "Network Error"
+                }
+            });
+        }
+    }
+});
+export const updateUser = createAsyncThunk('auth/updateUser', async (user, thunkAPI) => {
+    try {
+        const data = await callApi.apiMethod('updateUser', 'PUT', user);
         return data;
     } catch (err) {
         if (err.response && err.response.data) {
@@ -149,7 +171,20 @@ const authSlice = createSlice({
             state.loading = false;
             state.isLoggedIn = false;
             state.user = {};
-        }
+        },
+        [updateUser.pending]: (state) => {
+            // state.loading = true;
+        },
+        [updateUser.fulfilled]: (state, action) => {
+            // state.loading = false;
+            state.user.name = action.payload.user.name;
+        },
+        [updateUser.rejected]: (state, action) => {
+            const { error, status } = action.payload;
+            const addErrorStatus = { ...error, status };
+            state.loading = false;
+            state.error = addErrorStatus;
+        },
     }
 })
 const { reducer, actions } = authSlice;

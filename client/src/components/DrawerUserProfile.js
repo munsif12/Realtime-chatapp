@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Drawer, Dropdown, Menu } from 'antd'
 import { IoArrowBack } from "react-icons/io5";
 import { FormControl, Image, Input } from '@vechaiui/react';
+import { updateUser } from '../redux/slices/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import loadingGif from '../assets/images/loadingGif.gif'
 import openNotificationWithIcon from './Notification';
@@ -12,7 +13,8 @@ import { HiOutlineCheck } from "react-icons/hi";
 
 
 function DrawerUserProfile({ visible, setVisible }) {
-    const { user } = useSelector(state => state.auth)
+    const dispatch = useDispatch()
+    const { user, error, loading } = useSelector(state => state.auth)
     const [userName, setUserName] = useState({
         value: user.name,
         active: false
@@ -25,6 +27,7 @@ function DrawerUserProfile({ visible, setVisible }) {
     const [groupImage, setGroupImage] = useState(user.profileImage);
     const [isImageLoading, setisImageLoading] = useState(false)
     const onClose = () => setVisible(false);
+
     async function uploadGroupImage(e) {
         try {
             setisImageLoading(true);
@@ -51,15 +54,6 @@ function DrawerUserProfile({ visible, setVisible }) {
             openNotificationWithIcon('error', `Error uploading image ${error.message}`);
         }
     }
-    const imageOverLayStyle = {
-        cursor: 'pointer',
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        transition: 'opacity 0.5s ease-in-out',
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: 'white',
-    }
 
     function handleSettings(key) {
         switch (key) {
@@ -76,7 +70,11 @@ function DrawerUserProfile({ visible, setVisible }) {
                 break;
         }
     }
-
+    useEffect(() => {
+        if (error.success) {
+            openNotificationWithIcon('success', error.message);
+        }
+    }, [error]);
     const menu = (
         <Menu
             onClick={(e) => handleSettings(e.key)}
@@ -115,7 +113,11 @@ function DrawerUserProfile({ visible, setVisible }) {
     }
 
     const updateUserNewName = async () => {
-        console.log(' hello call update api and update user name')
+        if (userName.value === user.name) {
+            openNotificationWithIcon('error', 'You have not changed your name');
+            return
+        }
+        dispatch(updateUser({ name: userName.value }))
     }
     useEffect(() => {
         console.log('User Profile Drawer :: Mounted')
@@ -214,4 +216,13 @@ function DrawerUserProfile({ visible, setVisible }) {
     )
 }
 
+const imageOverLayStyle = {
+    cursor: 'pointer',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    transition: 'opacity 0.5s ease-in-out',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: 'white',
+}
 export default DrawerUserProfile

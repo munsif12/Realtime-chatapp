@@ -97,6 +97,7 @@ function ChatViewBody() {
                         {
                             messages.map((message, index) => {
                                 return (
+
                                     <div key={index}
                                         className="chatMessages__message__item__content"
                                         style={
@@ -104,6 +105,12 @@ function ChatViewBody() {
                                                 { backgroundColor: "#d9fdd3", color: "#000", alignSelf: "end" } :
                                                 { backgroundColor: "#fff", color: "#000" }}
                                     >
+                                        {message.chatId.isGroupChat && (
+                                            <div className="ifGroupShowSenderName">
+                                                {message.senderId.name}
+                                            </div>
+                                        )}
+
                                         <div className="chatMessages__message__item__content__text">
                                             {message.message}
                                         </div>
