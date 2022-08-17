@@ -87,6 +87,20 @@ function ChatViewBody() {
             openNotificationWithIcon('error', backendError.message)
         }
     }
+    const StyleButton = (loggedInUser, message) => {
+        let style = { color: "#000" }
+        if (currSelectedChat.isGroupChat && loggedInUser._id !== message.senderId._id) {
+            style.paddingTop = "25px";
+        }
+        if (loggedInUser._id === message.senderId._id) {
+            style.backgroundColor = "#d9fdd3";
+            style.alignSelf = "end"
+        }
+        if (loggedInUser._id !== message.senderId._id) {
+            style.backgroundColor = "#fff"
+        }
+        return style;
+    };
     return (
         <>
             <main className="chatViewBody"
@@ -100,12 +114,9 @@ function ChatViewBody() {
 
                                     <div key={index}
                                         className="chatMessages__message__item__content"
-                                        style={
-                                            loggedInUser._id === message.senderId._id ?
-                                                { backgroundColor: "#d9fdd3", color: "#000", alignSelf: "end" } :
-                                                { backgroundColor: "#fff", color: "#000" }}
+                                        style={StyleButton(loggedInUser, message)}
                                     >
-                                        {message.chatId.isGroupChat && (
+                                        {message.chatId.isGroupChat && loggedInUser._id !== message.senderId._id && (
                                             <div className="ifGroupShowSenderName">
                                                 {message.senderId.name}
                                             </div>

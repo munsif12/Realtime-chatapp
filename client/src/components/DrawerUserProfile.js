@@ -228,15 +228,24 @@ function DrawerUserProfile({ visible, setVisible }) {
             </Drawer>
             {
                 isModalVisible && (
-                    <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} size={"large"}>
-                        <Image
-                            alt="bruce wayne"
-                            htmlWidth={250}
-                            htmlHeight={250}
-                            className="object-cover"
-                            src={user.profileImage}
-                            footer={null}
-                        />
+                    <Modal
+                        title="Profile Image"
+                        visible={isModalVisible}
+                        onOk={handleOk}
+                        onCancel={handleCancel}
+                        footer={null}
+                        closable={false}
+                    >
+                        <div className="userViewImageCont">
+                            <Image
+                                alt="bruce wayne"
+                                htmlWidth={"100%"}
+                                htmlHeight={"100%"}
+                                className="object-cover userViewImage"
+                                src={groupImage || user.profileImage}
+
+                            />
+                        </div>
                     </Modal>
                 )
             }
