@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Drawer, Dropdown, Menu } from 'antd'
+import { Drawer, Dropdown, Menu, Modal } from 'antd'
 import { IoArrowBack } from "react-icons/io5";
 import { FormControl, Image, Input } from '@vechaiui/react';
 import { updateUser } from '../redux/slices/auth';
@@ -26,6 +26,7 @@ function DrawerUserProfile({ visible, setVisible }) {
     const [showImageOverlay, setShowImageOverlay] = useState(false);
     const [groupImage, setGroupImage] = useState(user.profileImage);
     const [isImageLoading, setisImageLoading] = useState(false)
+    const [isModalVisible, setIsModalVisible] = useState(false);
     const onClose = () => setVisible(false);
 
     async function uploadGroupImage(e) {
@@ -58,7 +59,7 @@ function DrawerUserProfile({ visible, setVisible }) {
     function handleSettings(key) {
         switch (key) {
             case 'viewPhoto':
-                console.log('view photo')
+                showModal()
                 break;
             case 'uploadPhoto':
                 console.log('uploadPhoto')
@@ -119,6 +120,19 @@ function DrawerUserProfile({ visible, setVisible }) {
         }
         dispatch(updateUser({ name: userName.value }))
     }
+
+
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
     useEffect(() => {
         console.log('User Profile Drawer :: Mounted')
         return () => {
@@ -212,6 +226,20 @@ function DrawerUserProfile({ visible, setVisible }) {
                     </div>
                 </div>
             </Drawer>
+            {
+                isModalVisible && (
+                    <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} size={"large"}>
+                        <Image
+                            alt="bruce wayne"
+                            htmlWidth={250}
+                            htmlHeight={250}
+                            className="object-cover"
+                            src={user.profileImage}
+                            footer={null}
+                        />
+                    </Modal>
+                )
+            }
         </div>
     )
 }
