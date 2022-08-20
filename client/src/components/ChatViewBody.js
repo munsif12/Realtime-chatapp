@@ -9,6 +9,7 @@ import chatbackgroundimage from '../assets/images/whatsapp-chat-background-image
 import { Input } from '@vechaiui/react'
 import { MdSend } from "react-icons/md";
 import { setLatestMessageForOneToOneChat } from '../redux/slices/chats';
+import ChatMessage from './ChatMessage';
 function ChatViewBody() {
     const dispatch = useDispatch();
     const [messages, setAllMessages] = useState([]);
@@ -56,7 +57,6 @@ function ChatViewBody() {
             sendNewMessage();
         }
     }
-
     async function sendNewMessage() {
         try {
             if (newMessageLoading) return
@@ -88,6 +88,7 @@ function ChatViewBody() {
         }
     }
     const StyleButton = (loggedInUser, message) => {
+
         let style = { color: "#000" }
         if (currSelectedChat.isGroupChat && loggedInUser._id !== message.senderId._id) {
             style.paddingTop = "25px";
@@ -101,6 +102,7 @@ function ChatViewBody() {
         }
         return style;
     };
+
     return (
         <>
             <main className="chatViewBody"
@@ -109,28 +111,7 @@ function ChatViewBody() {
                 <div className="chatMessages">
                     <div className="chatMessages__message">
                         {
-                            messages.map((message, index) => {
-                                return (
-
-                                    <div key={index}
-                                        className="chatMessages__message__item__content"
-                                        style={StyleButton(loggedInUser, message)}
-                                    >
-                                        {message.chatId.isGroupChat && loggedInUser._id !== message.senderId._id && (
-                                            <div className="ifGroupShowSenderName">
-                                                {message.senderId.name}
-                                            </div>
-                                        )}
-
-                                        <div className="chatMessages__message__item__content__text">
-                                            {message.message}
-                                        </div>
-                                        <div className="chatMessages__message__item__content__time">
-                                            {formatTime(message.createdAt)}
-                                        </div>
-                                    </div>
-                                )
-                            })
+                            messages.map((message, index) => <ChatMessage key={index} message={message} loggedInUser={loggedInUser} isGroupChat={currSelectedChat.isGroupChat} />)
                         }
                     </div>
                 </div>
