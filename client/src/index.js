@@ -15,7 +15,9 @@ root.render(
   <Provider store={store}>
     <BrowserRouter>
       <VechaiProvider theme={theme} colorScheme="light">
-        <App />
+        <div className="mainApp">
+          <App />
+        </div>
       </VechaiProvider>
     </BrowserRouter>
   </Provider>
