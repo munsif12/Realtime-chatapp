@@ -18,7 +18,7 @@ const Home = () => {
 
     useEffect(() => {
         const exists = localStorage.getItem("activeForm")
-        localStorage.setItem('activeForm', exists ? exists : "right-panel-active");
+        localStorage.setItem('activeForm', exists ? exists : "left-panel-active");
     }, [activeTab]);
 
     useEffect(() => {
@@ -27,6 +27,7 @@ const Home = () => {
             navigate('/chat')
         }
     }, [isLoggedIn, dispatch, navigate]);
+
     return (
         <div className="auth">
             <div className={`container ${activeTab} mainContainerLoginReg`} id='container'>

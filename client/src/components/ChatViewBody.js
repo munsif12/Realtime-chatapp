@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import callApi from '../apiCalls';
 import openNotificationWithIcon from './Notification'
-import formatTime from '../helpers/formatTime'
+import InputEmoji from 'react-input-emoji'
 import chatbackgroundimage from '../assets/images/whatsapp-chat-background-image-lighter.jpg'
 
 // import React from 'react'
@@ -87,21 +87,6 @@ function ChatViewBody() {
             openNotificationWithIcon('error', backendError.message)
         }
     }
-    const StyleButton = (loggedInUser, message) => {
-
-        let style = { color: "#000" }
-        if (currSelectedChat.isGroupChat && loggedInUser._id !== message.senderId._id) {
-            style.paddingTop = "25px";
-        }
-        if (loggedInUser._id === message.senderId._id) {
-            style.backgroundColor = "#d9fdd3";
-            style.alignSelf = "end"
-        }
-        if (loggedInUser._id !== message.senderId._id) {
-            style.backgroundColor = "#fff"
-        }
-        return style;
-    };
 
     return (
         <>
@@ -118,13 +103,14 @@ function ChatViewBody() {
             </main>
             <div className="footerWriteNewMessage">
                 <div className="footerWriteNewMessage__input">
-                    <Input
+                    <InputEmoji
                         ref={inputRef}
                         type="text"
                         placeholder={newMessageLoading ? "Sending..." : "Write new message"}
                         value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
+                        onChange={setNewMessage}
                         onKeyDown={enterHandler}
+                        borderRadius={8}
                     />
                 </div>
                 <div className="footerWriteNewMessage__send">
