@@ -1,5 +1,6 @@
 
 import axios from '../config/axios'
+
 let apiEndpoints = {
     getUsers: '/user',
     createChat: '/chat',
