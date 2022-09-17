@@ -2,7 +2,8 @@ import { Avatar } from '@vechaiui/react'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { homeChatsFilter } from '../helpers/filterSearchValue'
-import formatTIme from '../helpers/formatTime'
+// import formatTIme from '../helpers/formatTime'
+import { MessageDateFormatter } from '../helpers/MessageDateFormatter'
 import { myChats, selectedChat } from '../redux/slices/chats'
 import ChatsLoading from './ChatsLoading'
 import openNotificationWithIcon from './Notification'
@@ -30,6 +31,7 @@ function ChatDesc({ search = '' }) {
 
     return (
         homeChatsFilter(chats, search)
+            .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
             .map((chat, index) => {
                 return (
                     <div className="userListItem flex" key={index} onClick={() => setSelectedChat(chat)}>
@@ -40,7 +42,8 @@ function ChatDesc({ search = '' }) {
                             <div className="chatNameAndTime flex items-center ">
                                 <p className='nameLatestMsg chatName m-0 p-0 text-black text-2xl'>
                                     {chat.isGroupChat ? chat.chatName : chat.users[0].name}</p>
-                                <span className='chatTime m-0 p-0 text-black'>{formatTIme(chat?.latestMessage?.createdAt ?? chat.createdAt)}</span>
+                                {/* <span className='chatTime m-0 p-0 text-black'>{formatTIme(chat?.latestMessage?.createdAt ?? chat.createdAt)}</span> */}
+                                <span className='chatTime m-0 p-0 text-black'>{MessageDateFormatter(chat?.latestMessage?.createdAt ?? chat.createdAt)}</span>
                             </div>
                             <div className="chatDescAndSetting flex items-center">
                                 <p className='nameLatestMsg m-0 p-0 text-black text-2xl'>
