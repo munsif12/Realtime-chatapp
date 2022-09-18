@@ -13,6 +13,6 @@ router.get('/checkRoutes', async (req, res) => {
 router.use('/auth', AuthApis);
 router.use('/user', authMiddleware, UsersApis);
 router.use('/chat', authMiddleware, ChatAndGroupApis);
-router.use('/message', messageApis);
+router.use('/message', authMiddleware, messageApis);
 
 module.exports = router;
