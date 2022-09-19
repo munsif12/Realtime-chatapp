@@ -313,13 +313,12 @@ body {
   white-space: nowrap;
 }
 
-/* .ChatHeaderGroupParticipents {
-  width: 800px;
-  min-width: 500px;
+.ChatHeaderGroupParticipents {
+  width: 40vw;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-} */
+}
 
 .chatNameAndTime,
 .chatDescAndSetting {
@@ -466,6 +465,11 @@ body {
   height: auto;
   word-break: break-all;
 
+}
+
+.messageBasicInfo {
+  display: flex;
+  flex-direction: column;
 }
 
 .ifGroupShowSenderName {
