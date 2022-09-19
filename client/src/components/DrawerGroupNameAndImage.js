@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Drawer } from 'antd'
 import { IoArrowBack } from "react-icons/io5";
 import { FormControl, Image, Input } from '@vechaiui/react';
@@ -15,6 +15,7 @@ function DrawerGroupNameAndImage({ groupSelectedUsers, onChildrenDrawerClose, ch
     const [groupImage, setGroupImage] = useState('https://robohash.org/nequeodiosapiente.png?size=600x600&set=set1');
     const [isImageLoading, setisImageLoading] = useState(false)
     const [groupChatLoading, setGroupChatLoading] = useState(false)
+    const inputRef = useRef(null)
     const dispatch = useDispatch()
     const { user } = useSelector(state => state.auth)
     async function handleGroupCreationSubmmit() {
@@ -81,6 +82,9 @@ function DrawerGroupNameAndImage({ groupSelectedUsers, onChildrenDrawerClose, ch
             console.log('Group Name and Image  Drawer :: Unounted')
         };
     }, []);
+    useEffect(() => {
+        inputRef?.current?.focus();
+    }, []);
 
     return (
         <Drawer
@@ -118,6 +122,7 @@ function DrawerGroupNameAndImage({ groupSelectedUsers, onChildrenDrawerClose, ch
             </div>
             <FormControl className='inputGroupName'>
                 <Input
+                    ref={inputRef}
                     autoFocus
                     type="text" name="email" placeholder="Group Subject" autoComplete='off'
                     value={groupName}

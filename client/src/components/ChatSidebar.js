@@ -13,20 +13,25 @@ import { chatsLogout } from '../redux/slices/chats';
 import { usersLogout } from '../redux/slices/users';
 import openNotificationWithIcon from './Notification';
 import DrawerUserProfile from './DrawerUserProfile';
+import DrawerStarredMessages from './DrawerStarredMessages';
 function ChatSidebar() {
     const [searchUser, setSearchUser] = useState('');
     const [visible, setVisible] = useState(false);
     const [showGroupDrawer, setShowGroupDrawer] = useState(false);
     const [userProfileDrawer, setUserProfileDrawer] = useState(false);
+    const [showStarredMessageDrawer, setShowStarredMessageDrawer] = useState(false);
 
     const dispatch = useDispatch()
     const navigate = useNavigate();
+
     const { user } = useSelector(state => state.auth)
     const showDrawer = () => setVisible(true);
     const showGroupChatDrawer = () => {
         setShowGroupDrawer(true)
         openNotificationWithIcon('info', 'Please select atlest 3 users to start chat.')
     };
+    const openStarredMessageDrawer = () => setShowStarredMessageDrawer(true)
+
     function handleSettings(key) {
         switch (key) {
             case 'logout':
@@ -36,6 +41,9 @@ function ChatSidebar() {
                 localStorage.removeItem('authToken')
                 localStorage.removeItem('user')
                 navigate('/')
+                break;
+            case 'starredMessages':
+                openStarredMessageDrawer()
                 break;
             case 'groupChat':
                 showGroupChatDrawer()
@@ -49,20 +57,7 @@ function ChatSidebar() {
         <Menu
             onClick={(e) => handleSettings(e.key)}
             className='dropDownSettings pt-5 pb-5 text-2xl text-black'
-            items={[
-                {
-                    label: <span>New group</span>,
-                    key: 'groupChat',
-                },
-                {
-                    label: <span >2nd menu item</span>,
-                    key: 1,
-                },
-                {
-                    label: <span >Logout</span>,
-                    key: 'logout',
-                },
-            ]}
+            items={mainDropDownItems}
         />
     );
     return (
@@ -89,6 +84,7 @@ function ChatSidebar() {
                     {visible && <DrawerNewChat visible={visible} setVisible={setVisible} />}
                     {showGroupDrawer && <DrawerGroupChat visible={showGroupDrawer} setVisible={setShowGroupDrawer} />}
                     {userProfileDrawer && <DrawerUserProfile visible={userProfileDrawer} setVisible={setUserProfileDrawer} />}
+                    {showStarredMessageDrawer && <DrawerStarredMessages visible={showStarredMessageDrawer} setVisible={setShowStarredMessageDrawer} />}
                 </div>
             </div>
             <main className='ChatsRightView'>
@@ -112,3 +108,20 @@ function ChatSidebar() {
 }
 
 export default ChatSidebar
+
+
+
+const mainDropDownItems = [
+    {
+        label: <span>New group</span>,
+        key: 'groupChat',
+    },
+    {
+        label: <span >Starred messages</span>,
+        key: 'starredMessages',
+    },
+    {
+        label: <span >Logout</span>,
+        key: 'logout',
+    },
+]
