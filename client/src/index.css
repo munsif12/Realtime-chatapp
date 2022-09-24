@@ -488,7 +488,6 @@ body {
 
 .ifGroupShowSenderName {
   font-size: 14px;
-  color: var(--wa-edit-text-color);
   letter-spacing: 1px;
   text-transform: capitalize;
   font-weight: bold;
