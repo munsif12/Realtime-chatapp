@@ -105,7 +105,7 @@ function ChatMessage({ message, loggedInUser, isGroupChat, allMessages, setAllMe
         >
             <div className="messageBasicInfo">
                 {forStarDrawerShowSenderName && message.chatId.isGroupChat && loggedInUser._id !== message.senderId._id && (
-                    <div className="ifGroupShowSenderName">
+                    <div className="ifGroupShowSenderName" style={{ color: message.senderId.color ? message.senderId.color : '#008069' }}>
                         {message.senderId.name}
                     </div>
                 )}
@@ -119,15 +119,17 @@ function ChatMessage({ message, loggedInUser, isGroupChat, allMessages, setAllMe
                 </div>
             </div>
             {/* dropdown to remove message or other actions */}
-            {MessageHover && (
-                <Dropdown
-                    className='messageSettingsDropdown'
-                    overlay={() => removeParticipentDropdown(message)}
-                    trigger={['click']} >
-                    <AiOutlineDown />
-                </Dropdown>
-            )}
-        </div>
+            {
+                MessageHover && (
+                    <Dropdown
+                        className='messageSettingsDropdown'
+                        overlay={() => removeParticipentDropdown(message)}
+                        trigger={['click']} >
+                        <AiOutlineDown />
+                    </Dropdown>
+                )
+            }
+        </div >
     )
 }
 
