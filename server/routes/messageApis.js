@@ -3,7 +3,8 @@ const express = require('express');
 const {
     sendMessage,
     getAllChatMessages,
-    getAllStarredMessages
+    getAllStarredMessages,
+    starMessage
 } = require('../controllers/messages');
 
 const router = express.Router();
@@ -11,4 +12,5 @@ const router = express.Router();
 router.post('/', sendMessage);
 router.get('/starred', getAllStarredMessages);
 router.get('/:chatId', getAllChatMessages);
+router.post('/star/:messageId', starMessage);
 module.exports = router;

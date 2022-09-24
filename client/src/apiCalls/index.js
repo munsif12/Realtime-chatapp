@@ -12,6 +12,7 @@ let apiEndpoints = {
     sendNewMessage: '/message', //with body
     updateUser: '/user',
     starredMessages: '/message/starred',
+    starMessage: '/message/star/',
 }
 let callApi = {}
 callApi.apiMethod = function (requestName, method, body = null, params = null) {

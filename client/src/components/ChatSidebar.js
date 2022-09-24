@@ -3,7 +3,7 @@ import { Avatar, FormControl, Input } from '@vechaiui/react'
 import { useNavigate } from 'react-router-dom';
 import { IoMdMore, IoMdNotificationsOutline } from "react-icons/io";
 import { MdMessage } from "react-icons/md";
-import { Badge, Dropdown, Menu } from 'antd';
+import { /*Badge,*/ Dropdown, Menu } from 'antd';
 import DrawerNewChat from './DrawerNewChat';
 import ChatDesc from './ChatDesc';
 import { useDispatch, useSelector } from 'react-redux'

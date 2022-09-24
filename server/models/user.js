@@ -1,7 +1,7 @@
 const res = require('express/lib/response');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-
+const generateRandomColor = () => '#' + Math.floor(Math.random() * 16777215).toString(16);
 const userSchema = mongoose.Schema({
     name: {
         type: String,
@@ -20,6 +20,11 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
         default: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/avatar-659651_960_720.png'
+    },
+    color: {
+        type: String,
+        required: true,
+        default: generateRandomColor()
     }
 }, {
     timestamps: true,

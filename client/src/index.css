@@ -30,6 +30,7 @@
   --gradient: linear-gradient(135deg,
       var(--main-color),
       var(--secondary-color));
+  --wa-drawer-bg: #E7E9EC#E7E9EC
 }
 
 * {
@@ -448,22 +449,35 @@ body {
 .chatMessages__message__item__content__text {
   color: #111b21;
   font-size: 16px;
+  line-height: 18px;
+  padding-right: 50px;
 }
 
 .chatMessages__message__item__content {
   position: relative;
-  background-color: var(--white);
   border-radius: 7px;
   margin-top: 5px;
   box-shadow: 0 1px 3px rgba(11, 20, 26, .4);
-  display: flex;
-  flex-direction: column;
   min-width: 80px;
   padding: 8px;
   max-width: 50%;
   width: fit-content;
   height: auto;
   word-break: break-all;
+  display: flex;
+  flex-direction: revert;
+
+}
+
+.messageSettingsDropdown {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  height: 18px;
+  width: 18px;
+  margin: "0px 0px 5px 5px";
+  cursor: "pointer"
 
 }
 
@@ -473,15 +487,15 @@ body {
 }
 
 .ifGroupShowSenderName {
-  position: absolute;
-  top: 0px;
-  left: 8px;
   font-size: 14px;
   color: var(--wa-edit-text-color);
   letter-spacing: 1px;
   text-transform: capitalize;
-  padding-top: 4px;
   font-weight: bold;
+}
+
+.mesgContAndDropDown {
+  display: flex;
 }
 
 .chatViewBody::-webkit-scrollbar {
@@ -506,6 +520,15 @@ body {
   color: #667781;
   font-size: 11px;
   margin-bottom: -8px;
+  display: flex;
+  gap: 5px;
+  align-items: start;
+}
+
+.messageStarIcon svg {
+  height: 15px;
+  width: 15px;
+  color: #95A3AC;
 }
 
 .nameAndRemoveIcon {
@@ -1109,6 +1132,36 @@ input[type="file"] {
 
 .userViewImage {
   object-fit: cover !important;
+}
+
+.profileImgFromAndTo {
+  display: flex;
+  align-items: flex-start;
+}
+
+.starredMessageInfo {
+  padding: 10px 10px 12px 15px;
+  border-bottom: 1px solid rgb(214 214 214);
+}
+
+.starMessage_info {
+  margin-bottom: 7px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.commomStyling {
+  align-self: center;
+  font-size: 15px;
+}
+
+.senderImage {
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.mainStarredMessageDrawer {
+  background: #E7E9EC
 }
 
 .editUserProfileName {

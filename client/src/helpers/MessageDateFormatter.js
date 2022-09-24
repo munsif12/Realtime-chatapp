@@ -9,7 +9,7 @@ export const MessageDateFormatter = (date) => {
         formattedDate = moment(date).format('dddd')
     }
     else {
-        formattedDate = moment(date).subtract(10, 'days').format('DD/MM/YYYY');
+        formattedDate = moment(date).format('DD/MM/YYYY');
     }
     return formattedDate;
 }

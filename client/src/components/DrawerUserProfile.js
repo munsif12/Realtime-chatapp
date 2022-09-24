@@ -14,7 +14,7 @@ import { HiOutlineCheck } from "react-icons/hi";
 
 function DrawerUserProfile({ visible, setVisible }) {
     const dispatch = useDispatch()
-    const { user, error, loading } = useSelector(state => state.auth)
+    const { user, error } = useSelector(state => state.auth)
     const [userName, setUserName] = useState({
         value: user.name,
         active: false

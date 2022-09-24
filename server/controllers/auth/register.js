@@ -3,7 +3,7 @@ const signJwtToken = require('../../utils/signJWT');
 const SEND_SANITIZED_SUCCESS_RESPONSE = require('../../utils/sendSanitizedSuccessResponse');
 
 
-
+const generateRandomColor = () => '#' + Math.floor(Math.random() * 16777215).toString(16);
 async function register(req, res) {
     const { name, email, password, profileImage } = req.body;
 

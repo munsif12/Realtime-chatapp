@@ -30,6 +30,7 @@ const ChatsSlice = createSlice({
         loading: false,
         chats: [],
         currSelectedChat: {},
+        messagesCurrSelectedChat: [],
         error: {
             status: '',
             success: false,

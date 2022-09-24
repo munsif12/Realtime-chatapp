@@ -2,17 +2,22 @@ import React, { useState } from 'react'
 import { Dropdown, Menu } from 'antd';
 import formatTime from '../helpers/formatTime'
 import { AiOutlineDown } from "react-icons/ai";
+import callApi from '../apiCalls';
+import { RiStarSFill } from "react-icons/ri";
 
-const StyleButton = (loggedInUser, message, isGroupChat) => {
+const StyleButton = (loggedInUser, message, isGroupChat, forStarDrawerShowSenderName) => {
     let style = { color: "#000" }
     if (isGroupChat && loggedInUser._id !== message.senderId._id) {
-        style.paddingTop = "25px";
+        //if the messaege in in group chat and not send by the logged in user 
+    }
+    if (!forStarDrawerShowSenderName) {
+        style.maxWidth = '100%';
+        style.marginTop = '0px';
+        style.margin = "0 !important"
     }
     if (loggedInUser._id === message.senderId._id) {
         style.backgroundColor = "#d9fdd3";
         style.alignSelf = "end"
-        style.display = "flex"
-        style.flexDirection = "revert"
     }
     if (loggedInUser._id !== message.senderId._id) {
         style.backgroundColor = "#fff"
@@ -21,54 +26,85 @@ const StyleButton = (loggedInUser, message, isGroupChat) => {
 };
 
 
-function ChatMessage({ message, loggedInUser, isGroupChat }) {
+function ChatMessage({ message, loggedInUser, isGroupChat, allMessages, setAllMessages, forStarDrawerShowSenderName = true }) {
     const [MessageHover, setMessageHover] = useState(false);
     const toggleMouseHover = () => setMessageHover(!MessageHover)
 
     function deleteMessage(messageId) {
         console.log("delete message", messageId)
     }
-    function starMessage(messageId) {
-        console.log('starred message', messageId)
+    async function starMessage(star, messageId) {
+        const isStar = star ? false : true;
+        const staredMessage = await callApi.apiMethod('starMessage', 'post', null, `${messageId}?star=${isStar}`);
+        //find message in allMessages and update it
+        if (!forStarDrawerShowSenderName) {//means remove the star message from strredMessageDrawer
+            //filter all messages and update the message
+            const updatedMessages = allMessages.filter((message) => message._id !== staredMessage.starredMessage._id);
+            setAllMessages(updatedMessages);
+        } else {
+            const updatedMessages = allMessages.map(msg => {
+                if (msg._id === staredMessage.starredMessage._id) {
+                    return { ...msg, star: staredMessage.starredMessage.star }
+                }
+                return msg
+            })
+            setAllMessages(updatedMessages)
+        }
+
     }
 
-    function handleSettings(key, messageId) {
+    function handleSettings(key, message) {
         switch (key) {
             case 'deleteMessage':
-                deleteMessage(messageId)
+                deleteMessage(message._id)
                 break;
             case 'starMessage':
-                starMessage(messageId)
+                starMessage(message.star, message._id)
                 break;
             default:
                 break;
         }
     }
-    const removeParticipentDropdown = (messageId) =>
-        <Menu
-            onClick={(e) => handleSettings(e.key, messageId)}
+    const removeParticipentDropdown = (message) => {
+        const menuItems = [{
+            label: <span>Delete message</span>,
+            key: 'deleteMessage',
+        },
+        {
+            label: <span>{message.star ? "Unstar message" : "Star message"}</span>,
+            key: 'starMessage',
+        }]
+        //if the message is not sent by the logged in user
+        if (loggedInUser._id !== message.senderId._id) {
+            menuItems.push({
+                label: <span>Blur message</span>,
+                key: 'blurMessage',
+            })
+            menuItems.push({
+                label: <span>Report message</span>,
+                key: 'reportMessage',
+            })
+            menuItems.push({
+                label: <span>Block user</span>,
+                key: 'blockUser',
+            })
+        }
+        return <Menu
+            onClick={(e) => handleSettings(e.key, message)}
             className='dropDownSettings pt-5 pb-5 text-2xl text-black'
-            items={[
-                {
-                    label: <span>Remove</span>,
-                    key: 'deleteMessage',
-                },
-                {
-                    label: <span>Start message</span>,
-                    key: 'starMessage',
-                },
-            ]}
+            items={menuItems}
         />
+    }
 
     return (
         <div
             className="chatMessages__message__item__content"
-            style={StyleButton(loggedInUser, message, isGroupChat)}
+            style={StyleButton(loggedInUser, message, isGroupChat, forStarDrawerShowSenderName)}
             onMouseEnter={toggleMouseHover}
             onMouseLeave={toggleMouseHover}
         >
             <div className="messageBasicInfo">
-                {message.chatId.isGroupChat && loggedInUser._id !== message.senderId._id && (
+                {forStarDrawerShowSenderName && message.chatId.isGroupChat && loggedInUser._id !== message.senderId._id && (
                     <div className="ifGroupShowSenderName">
                         {message.senderId.name}
                     </div>
@@ -78,15 +114,17 @@ function ChatMessage({ message, loggedInUser, isGroupChat }) {
                     {message.message}
                 </div>
                 <div className="chatMessages__message__item__content__time">
+                    {message?.star && <span className='messageStarIcon'><RiStarSFill /></span>}
                     {formatTime(message.createdAt)}
                 </div>
             </div>
             {/* dropdown to remove message or other actions */}
-            {MessageHover && loggedInUser._id === message.senderId._id && (
+            {MessageHover && (
                 <Dropdown
-                    overlay={() => removeParticipentDropdown(message._id)}
+                    className='messageSettingsDropdown'
+                    overlay={() => removeParticipentDropdown(message)}
                     trigger={['click']} >
-                    <AiOutlineDown style={{ margin: "0px 0px 5px 5px", cursor: "pointer" }} />
+                    <AiOutlineDown />
                 </Dropdown>
             )}
         </div>

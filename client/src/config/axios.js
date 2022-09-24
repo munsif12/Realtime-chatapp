@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Navigate } from "react-router-dom";
 axios.defaults.baseURL = process.env.REACT_APP_URL || "http://localhost:4000/api/";
 axios.interceptors.request.use(
     (config) => {

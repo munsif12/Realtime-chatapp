@@ -1,10 +1,19 @@
 import { Drawer } from 'antd'
 import React, { useEffect, useState } from 'react'
+import { Image } from '@vechaiui/react';
 import { IoArrowBack } from 'react-icons/io5'
+import { useSelector } from 'react-redux';
 import callApi from '../apiCalls';
+import ChatMessage from './ChatMessage';
+import { MdArrowRight } from "react-icons/md";
+import { MessageDateFormatter } from '../helpers/MessageDateFormatter';
 
 function DrawerStarredMessages({ visible, setVisible }) {
     const [starredMessages, setStarredMessages] = useState([])
+    const {
+        auth: { user: loggedInUser },
+        chats: { currSelectedChat }
+    } = useSelector(state => state);
     useEffect(() => {
         console.log('Starred Message Drawer :: Mounted')
         return () => {
@@ -41,20 +50,63 @@ function DrawerStarredMessages({ visible, setVisible }) {
                 visible={visible}
                 closable={false}
             >
+                <div className="mainStarredMessageDrawer">
+                    {
+                        starredMessages
+                            .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                            .map((message, index) => {
+                                return (
+                                    <div className="starredMessageInfo" key={index}>
+                                        <div className="starMessage_info">
+                                            <div className="profileImgFromAndTo">
+                                                {/* sender image */}
+                                                <Image
+                                                    alt="bruce wayne"
+                                                    htmlWidth={"25px"}
+                                                    htmlHeight={"25px"}
+                                                    className="object-cover userViewImage senderImage"
+                                                    src={message.senderId.profileImage}
 
-
-                <div className="starredMessages">
-                    <h1>Hello Starred Drawer</h1>
+                                                />
+                                                {/* sender name */}
+                                                <span className='SenderName commomStyling'>
+                                                    {message.senderId._id === loggedInUser._id ?
+                                                        'You' :
+                                                        message.senderId.name}
+                                                </span>
+                                                {/* arrow icon */}
+                                                <span className='arrow commomStyling'><MdArrowRight /></span>
+                                                {/* receiver name or groupname */}
+                                                <span className='SenderName commomStyling'>
+                                                    {message.chatId.isGroupChat ?
+                                                        message.chatId.chatName :
+                                                        message.recieverId[0]._id === loggedInUser._id ?
+                                                            'You' :
+                                                            message.recieverId[0].name}
+                                                </span>
+                                            </div>
+                                            <div className="starredDate">
+                                                {MessageDateFormatter(message.updatedAt)}
+                                            </div>
+                                            {/* <div className="gotoStarMessage"></div> */}
+                                        </div>
+                                        {/* message which is starred */}
+                                        <div className="starMessageComponent">
+                                            <ChatMessage
+                                                key={index}
+                                                message={message}
+                                                loggedInUser={loggedInUser}
+                                                isGroupChat={currSelectedChat.isGroupChat}
+                                                setAllMessages={setStarredMessages}
+                                                allMessages={starredMessages}
+                                                forStarDrawerShowSenderName={false}
+                                            />
+                                        </div>
+                                    </div>
+                                )
+                            })
+                    }
                 </div>
-                {
-                    starredMessages.map((message, index) => {
-                        return (
-                            <div key={index} className="starredMessage">
-                                <h1>{message.message}</h1>
-                            </div>
-                        )
-                    })
-                }
             </Drawer>
         </div>
     )

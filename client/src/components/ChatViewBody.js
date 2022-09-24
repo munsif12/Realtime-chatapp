@@ -6,13 +6,12 @@ import InputEmoji from 'react-input-emoji'
 import chatbackgroundimage from '../assets/images/whatsapp-chat-background-image-lighter.jpg'
 
 // import React from 'react'
-import { Input } from '@vechaiui/react'
 import { MdSend } from "react-icons/md";
 import { setLatestMessageForOneToOneChat } from '../redux/slices/chats';
 import ChatMessage from './ChatMessage';
 function ChatViewBody() {
     const dispatch = useDispatch();
-    const [messages, setAllMessages] = useState([]);
+    const [allMessages, setAllMessages] = useState([]);
     const [chatsLoading, setChatsLoading] = useState(false);
 
     //form state
@@ -96,7 +95,14 @@ function ChatViewBody() {
                 <div className="chatMessages">
                     <div className="chatMessages__message">
                         {
-                            messages.map((message, index) => <ChatMessage key={index} message={message} loggedInUser={loggedInUser} isGroupChat={currSelectedChat.isGroupChat} />)
+                            allMessages.map((message, index) => <ChatMessage
+                                key={index}
+                                message={message}
+                                loggedInUser={loggedInUser}
+                                isGroupChat={currSelectedChat.isGroupChat}
+                                setAllMessages={setAllMessages}
+                                allMessages={allMessages}
+                            />)
                         }
                     </div>
                 </div>
