@@ -1,7 +1,11 @@
 const Message = require('../../models/message');
 const getAllStarredMessages = async (req, res) => {
     try {
-        const starredMessages = await Message.find({ star: true })
+        const { _id: userId } = req.user;
+        //give all message where stars array contains userId
+        const messages = await Message.find({ stars: userId })
+
+        const starredMessages = await Message.find({ stars: userId })
             .populate({
                 path: 'senderId',
                 select: '-password -__v'
