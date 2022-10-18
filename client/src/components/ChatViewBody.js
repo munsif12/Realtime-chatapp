@@ -9,6 +9,7 @@ import chatbackgroundimage from '../assets/images/whatsapp-chat-background-image
 import { MdSend } from "react-icons/md";
 import { setLatestMessageForOneToOneChat } from '../redux/slices/chats';
 import ChatMessage from './ChatMessage';
+import ChatsLoading from './ChatsLoading';
 function ChatViewBody() {
     const dispatch = useDispatch();
     const [allMessages, setAllMessages] = useState([]);
@@ -91,8 +92,8 @@ function ChatViewBody() {
         <>
             <main className="chatViewBody"
                 style={{ backgroundImage: `url(${chatbackgroundimage})`, width: "100%" }}>
-                {chatsLoading && <div className="loader">Loading...</div>}
-                <div className="chatMessages">
+                {/* {chatsLoading && <ChatsLoading noOfSkeletons={10} />} */}
+                < div className="chatMessages">
                     <div className="chatMessages__message">
                         {
                             allMessages.map((message, index) => <ChatMessage

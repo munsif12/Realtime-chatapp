@@ -1,9 +1,9 @@
 import { Skeleton } from 'antd'
 import React from 'react'
 
-function ChatsLoading() {
+function ChatsLoading({ noOfSkeletons = 10 }) {
     return (
-        [...Array(10)].map((item, index) => (
+        [...Array(noOfSkeletons)].map((item, index) => (
             <div className="userListItem flex" style={{ marginTop: '3px' }} key={index}>
                 <div className="chatImage">
                     <Skeleton.Avatar active={true} size={"large"} shape={"circle"} />
