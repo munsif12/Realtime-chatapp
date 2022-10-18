@@ -6,7 +6,7 @@ const messageSchema = Schema(
         message: { type: String, trim: true },
         chatId: { type: Schema.Types.ObjectId, ref: "chat" },
         recieverId: [{ type: Schema.Types.ObjectId, ref: "user" }],
-        star: { type: Boolean, default: false }
+        stars: [{ type: Schema.Types.ObjectId, ref: "user" }]
     },
     { timestamps: true }
 );

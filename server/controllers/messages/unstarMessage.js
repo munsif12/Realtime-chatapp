@@ -1,5 +1,5 @@
 const Message = require('../../models/message');
-const starMessage = async (req, res) => {
+const unstarMessage = async (req, res) => {
     try {
         const { messageId } = req.params;
         const { _id: userId } = req.user;
@@ -9,7 +9,7 @@ const starMessage = async (req, res) => {
 
         if (!message) return res.status(400).json({ success: false, message: 'Message not found' });
 
-        const starred = await Message.findOneAndUpdate({ _id: messageId, stars: { $ne: userId } }, { $push: { stars: userId } }, { new: true })
+        const unStarred = await Message.findOneAndUpdate({ _id: messageId, stars: userId }, { $pull: { stars: userId } }, { new: true })
             .populate({
                 path: 'senderId',
                 select: '-password -__v'
@@ -22,15 +22,16 @@ const starMessage = async (req, res) => {
                 path: 'chatId',
                 select: '-users -__v'
             });
-        if (!starred) return res.status(400).json({ success: false, message: 'Message already starred' });
+
+        if (!unStarred) return res.status(400).json({ success: false, message: 'Message already unstarred' });
 
         return res.status(200).json({
             success: true,
             message: 'Chat messages send successfully',
-            starredMessage: starred
+            starredMessage: unStarred
         })
     } catch (error) {
         return res.status(500).json({ success: true, message: error.message });
     }
 }
-module.exports = starMessage;
+module.exports = unstarMessage;
