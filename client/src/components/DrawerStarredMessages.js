@@ -7,8 +7,10 @@ import callApi from '../apiCalls';
 import ChatMessage from './ChatMessage';
 import { MdArrowRight } from "react-icons/md";
 import { MessageDateFormatter } from '../helpers/MessageDateFormatter';
+import ChatsLoading from './ChatsLoading';
 
 function DrawerStarredMessages({ visible, setVisible }) {
+    const [Loading, setLoading] = useState(false);
     const [starredMessages, setStarredMessages] = useState([])
     const {
         auth: { user: loggedInUser },
@@ -22,9 +24,12 @@ function DrawerStarredMessages({ visible, setVisible }) {
     }, []);
     async function getAllStarredMessages() {
         try {
+            setLoading(true);
             const data = await callApi.apiMethod('starredMessages', 'GET', null, null);
             setStarredMessages(data.starredMessages);
+            setLoading(false);
         } catch (error) {
+            setLoading(false);
             console.log(error.message)
         }
     }
@@ -50,9 +55,11 @@ function DrawerStarredMessages({ visible, setVisible }) {
                 visible={visible}
                 closable={false}
             >
-                <div className="mainStarredMessageDrawer">
+                {Loading && <ChatsLoading noOfSkeletons={4} />}
+                {starredMessages.length && !Loading <= 0 && <div className='noRecordsFound'>You have'nt starred any message..</div>}
+                {starredMessages.length > 0 && <div className="mainStarredMessageDrawer">
                     {
-                        starredMessages
+                        starredMessages.length > 0 && starredMessages
                             .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
                             .map((message, index) => {
                                 return (
@@ -107,6 +114,7 @@ function DrawerStarredMessages({ visible, setVisible }) {
                             })
                     }
                 </div>
+                }
             </Drawer>
         </div>
     )

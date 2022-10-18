@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Dropdown, Menu } from 'antd';
 import formatTime from '../helpers/formatTime'
 import { AiOutlineDown } from "react-icons/ai";
@@ -28,14 +28,17 @@ const StyleButton = (loggedInUser, message, isGroupChat, forStarDrawerShowSender
 
 function ChatMessage({ message, loggedInUser, isGroupChat, allMessages, setAllMessages, forStarDrawerShowSenderName = true }) {
     const [MessageHover, setMessageHover] = useState(false);
+    const [starred, setStarred] = useState(false);
     const toggleMouseHover = () => setMessageHover(!MessageHover)
 
     function deleteMessage(messageId) {
         console.log("delete message", messageId)
     }
-    async function starMessage(star, messageId) {
-        const isStar = star ? false : true;
-        const staredMessage = await callApi.apiMethod('starMessage', 'post', null, `${messageId}?star=${isStar}`);
+    async function starMessage(message) {
+        //check if userdId is in stars array
+        const isStarred = message.stars.includes(loggedInUser._id);
+        let messageStatus = isStarred ? 'unstarMessage' : 'starMessage';
+        const staredMessage = await callApi.apiMethod(messageStatus, 'post', null, `${message._id}`);
         //find message in allMessages and update it
         if (!forStarDrawerShowSenderName) {//means remove the star message from strredMessageDrawer
             //filter all messages and update the message
@@ -44,7 +47,7 @@ function ChatMessage({ message, loggedInUser, isGroupChat, allMessages, setAllMe
         } else {
             const updatedMessages = allMessages.map(msg => {
                 if (msg._id === staredMessage.starredMessage._id) {
-                    return { ...msg, star: staredMessage.starredMessage.star }
+                    return { ...msg, stars: [...staredMessage.starredMessage.stars] }
                 }
                 return msg
             })
@@ -59,7 +62,7 @@ function ChatMessage({ message, loggedInUser, isGroupChat, allMessages, setAllMe
                 deleteMessage(message._id)
                 break;
             case 'starMessage':
-                starMessage(message.star, message._id)
+                starMessage(message)
                 break;
             default:
                 break;
@@ -71,7 +74,7 @@ function ChatMessage({ message, loggedInUser, isGroupChat, allMessages, setAllMe
             key: 'deleteMessage',
         },
         {
-            label: <span>{message.star ? "Unstar message" : "Star message"}</span>,
+            label: <span>{message?.stars.includes(loggedInUser._id) ? "Unstar message" : "Star message"}</span>,
             key: 'starMessage',
         }]
         //if the message is not sent by the logged in user
@@ -96,6 +99,14 @@ function ChatMessage({ message, loggedInUser, isGroupChat, allMessages, setAllMe
         />
     }
 
+    useEffect(() => {
+        //instead of checking before evering condition we can check here only once
+        message?.stars.includes(loggedInUser._id) ?
+            setStarred(true) :
+            setStarred(false)
+
+    }, [message?.stars, loggedInUser]);
+
     return (
         <div
             className="chatMessages__message__item__content"
@@ -114,7 +125,7 @@ function ChatMessage({ message, loggedInUser, isGroupChat, allMessages, setAllMe
                     {message.message}
                 </div>
                 <div className="chatMessages__message__item__content__time">
-                    {message?.star && <span className='messageStarIcon'><RiStarSFill /></span>}
+                    {starred && <span className='messageStarIcon'><RiStarSFill /></span>}
                     {formatTime(message.createdAt)}
                 </div>
             </div>
