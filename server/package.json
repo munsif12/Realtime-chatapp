@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm test",
-    "start": "nodemon server/index.js"
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
     "express": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.10",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.15"
   }
 }
