@@ -2,14 +2,16 @@ import { Drawer } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Image } from '@vechaiui/react';
 import { IoArrowBack } from 'react-icons/io5'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import callApi from '../apiCalls';
 import ChatMessage from './ChatMessage';
 import { MdArrowRight } from "react-icons/md";
 import { MessageDateFormatter } from '../helpers/MessageDateFormatter';
 import ChatsLoading from './ChatsLoading';
+import { getStarredMessages } from '../redux/slices/chats';
 
 function DrawerStarredMessages({ visible, setVisible }) {
+    const dispatch = useDispatch();
     const [Loading, setLoading] = useState(false);
     const [starredMessages, setStarredMessages] = useState([])
     const {
@@ -25,7 +27,9 @@ function DrawerStarredMessages({ visible, setVisible }) {
     async function getAllStarredMessages() {
         try {
             setLoading(true);
+            dispatch(getStarredMessages());
             const data = await callApi.apiMethod('starredMessages', 'GET', null, null);
+            console.log(data);
             setStarredMessages(data.starredMessages);
             setLoading(false);
         } catch (error) {

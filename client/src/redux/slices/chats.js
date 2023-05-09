@@ -23,6 +23,26 @@ export const myChats = createAsyncThunk('chats/myChats', async (thunkAPI) => {
     }
 });
 
+export const getStarredMessages = createAsyncThunk('chats/getStarredMessages', async (thunkAPI) => {
+    try {
+        const data = await callApi.apiMethod('starredMessages', 'GET', null, null);
+        return data.starredMessages;
+    } catch (err) {
+        if (err.response && err.response.data) {
+            return thunkAPI.rejectWithValue({
+                error: err.response.data,
+                status: err.response.status,
+            });
+        } else {
+            return thunkAPI.rejectWithValue({
+                error: {
+                    success: false,
+                    message: "Network Error"
+                }
+            });
+        }
+    }
+});
 
 const ChatsSlice = createSlice({
     name: "Chats",
@@ -31,6 +51,7 @@ const ChatsSlice = createSlice({
         chats: [],
         currSelectedChat: {},
         messagesCurrSelectedChat: [],
+        starredMessages: [],
         error: {
             status: '',
             success: false,
@@ -99,6 +120,22 @@ const ChatsSlice = createSlice({
             state.chats = [];
             state.error = addErrorStatus
         },
+
+        //get starred messages
+        [getStarredMessages.pending]: (state) => {
+            state.loading = true;
+        },
+        [getStarredMessages.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.starredMessages = [...action.payload];
+        },
+        [getStarredMessages.rejected]: (state, action) => {
+            const { error, status } = action.payload;
+            const addErrorStatus = { ...error, status };
+            state.loading = false;
+            state.starredMessages = [];
+            state.error = addErrorStatus;
+        }
     }
 })
 

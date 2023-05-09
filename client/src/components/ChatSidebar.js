@@ -14,6 +14,7 @@ import { usersLogout } from '../redux/slices/users';
 import openNotificationWithIcon from './Notification';
 import DrawerUserProfile from './DrawerUserProfile';
 import DrawerStarredMessages from './DrawerStarredMessages';
+
 function ChatSidebar() {
     const [searchUser, setSearchUser] = useState('');
     const [visible, setVisible] = useState(false);
