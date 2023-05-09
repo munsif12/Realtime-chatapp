@@ -10,18 +10,7 @@ const starMessage = async (req, res) => {
         if (!message) return res.status(400).json({ success: false, message: 'Message not found' });
 
         const starred = await Message.findOneAndUpdate({ _id: messageId, stars: { $ne: userId } }, { $push: { stars: userId } }, { new: true })
-            .populate({
-                path: 'senderId',
-                select: '-password -__v'
-            })
-            .populate({
-                path: 'recieverId',
-                select: '-password -__v'
-            })
-            .populate({
-                path: 'chatId',
-                select: '-users -__v'
-            });
+
         if (!starred) return res.status(400).json({ success: false, message: 'Message already starred' });
 
         return res.status(200).json({

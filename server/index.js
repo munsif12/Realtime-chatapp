@@ -5,9 +5,14 @@ require('dotenv').config();
 const cors = require('cors');
 const routes = require('./routes');
 const connectToDatabase = require('./config/connDb');
+const morgan = require('morgan');
 
 let PORT = process.env.PORT;
+// import compression from "compression";
 
+
+//logger
+app.use(morgan(':method :url :status - :response-time ms - :res[content-length]'))
 //middlewares
 app.use(cors())
 app.use(express.json());
@@ -20,9 +25,9 @@ app.get('/', (req, res) => {
 app.use('/api', routes);
 
 //connect to Database
-connectToDatabase();
 
 // create a server
 app.listen(PORT, () => {
     console.log(`🔥 Success: Server is running on port ${PORT}.`);
+    connectToDatabase();
 });

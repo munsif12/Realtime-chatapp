@@ -10,18 +10,6 @@ const unstarMessage = async (req, res) => {
         if (!message) return res.status(400).json({ success: false, message: 'Message not found' });
 
         const unStarred = await Message.findOneAndUpdate({ _id: messageId, stars: userId }, { $pull: { stars: userId } }, { new: true })
-            .populate({
-                path: 'senderId',
-                select: '-password -__v'
-            })
-            .populate({
-                path: 'recieverId',
-                select: '-password -__v'
-            })
-            .populate({
-                path: 'chatId',
-                select: '-users -__v'
-            });
 
         if (!unStarred) return res.status(400).json({ success: false, message: 'Message already unstarred' });
 

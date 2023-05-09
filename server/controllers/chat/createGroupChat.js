@@ -47,14 +47,6 @@ const createGropuChat = async (req, res) => {
         }
         //gropuchat is created now populate the user array inside Chat and return to the user
         newGroupChat = await Chat.findOne({ _id: newGroupChat._id })
-            .populate({
-                path: 'users',
-                select: detailsToSelect
-            })
-            .populate({
-                path: 'groupAdmin',
-                select: detailsToSelect
-            })
         return res.status(200).json({
             success: true,
             message: 'Group chat created successfully',

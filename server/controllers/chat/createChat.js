@@ -18,21 +18,6 @@ const createChat = async (req, res) => {
                 $all: [userId, req.user._id] //if both users are present in chat 
             }
         })
-            .populate({
-                path: 'users',
-                select: detailsToSelect
-            })
-            .populate({
-                path: 'latestMessage',
-                populate: {
-                    path: 'senderId',
-                    select: '-password -__v'
-                }
-            })
-            .populate({
-                path: 'groupAdmin',
-                select: detailsToSelect
-            })
 
         if (chatAlreadyExists) {
             return res.status(200).json({

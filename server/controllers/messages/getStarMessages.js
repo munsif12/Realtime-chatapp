@@ -6,18 +6,7 @@ const getAllStarredMessages = async (req, res) => {
         const messages = await Message.find({ stars: userId })
 
         const starredMessages = await Message.find({ stars: userId })
-            .populate({
-                path: 'senderId',
-                select: '-password -__v'
-            })
-            .populate({
-                path: 'recieverId',
-                select: '-password -__v'
-            })
-            .populate({
-                path: 'chatId',
-                select: '-users -__v'
-            });
+
         return res.status(200).json({
             success: true,
             message: 'Chat messages send successfully',

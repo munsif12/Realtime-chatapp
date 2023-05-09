@@ -9,9 +9,39 @@ const chatModel = Schema(
         latestMessage: { type: Schema.Types.ObjectId, ref: "message" },
         groupAdmin: { type: Schema.Types.ObjectId, ref: "user" },
     },
-    { timestamps: true }
+    {
+        timestamps: true
+    }
 );
 
-const Chat = mongoose.model("chat", chatModel);
 
+
+chatModel.pre(/^find/, function (next) {
+    console.log(this.chatName);
+    this.populate({
+        path: 'users',
+        select: "_id name email profileImage"
+    }).populate({
+        path: 'groupAdmin',
+        select: "_id name email profileImage"
+    })
+
+    if (this.latestMessage && this.latestMessage.message) {
+        // Latest message already populated  
+        next();
+        return;
+    }
+
+    // this.populate({
+    //     path: 'latestMessage',
+    //     populate: {
+    //         path: 'senderId recieverId',
+    //         select: '-password -__v'
+    //     }
+    // })
+
+    next();
+})
+
+const Chat = mongoose.model("chat", chatModel);
 module.exports = Chat;

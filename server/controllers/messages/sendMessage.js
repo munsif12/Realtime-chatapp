@@ -36,21 +36,7 @@ const sendMessage = async (req, res) => {
         }
 
         const msg = await Message.findOne({ _id: msgCreated._id })
-            .populate({
-                path: 'senderId',
-                select: '-password -__v'
-            })
-            .populate({
-                path: 'recieverId',
-                select: '-password -__v'
-            })
-            .populate({
-                path: 'chatId',
-                populate: {
-                    path: 'users',
-                    select: '-password -__v'
-                }
-            });
+
         //now update the chat with the lastest message
         await Chat.findByIdAndUpdate({ _id: chatId }, { latestMessage: msg._id }, { new: true });
 

@@ -3,23 +3,10 @@ const { detailsToSelect } = require("../../constants");
 const getChats = async (req, res) => {
     //to get one-to-one Chats
     try {
+        console.log('time to get chats');
         const chats = await Chat.find({ users: { $in: [req.user._id] } })
-            .populate({
-                path: 'users',
-                select: detailsToSelect
-            })
-            .populate({
-                path: 'latestMessage',
-                populate: {
-                    path: 'senderId recieverId',
-                    select: '-password -__v'
-                }
-            })
-            .populate({
-                path: 'groupAdmin',
-                select: detailsToSelect
-            })
             .sort({ createdAt: -1 });
+        console.log('chats', chats.length);
         return res.status(200).json({
             success: true,
             chats

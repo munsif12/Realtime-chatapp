@@ -18,21 +18,6 @@ const removeFromGroupChat = async (req, res) => {
             return res.status(400).json({ success: false, message: 'You are not the group admin of this group chat.' });
         }
         let groupChat = await Chat.findByIdAndUpdate({ _id: groupChatId }, { $pull: { users: userId } }, { new: true })
-            .populate({
-                path: 'users',
-                select: detailsToSelect
-            })
-            .populate({
-                path: 'latestMessage',
-                populate: {
-                    path: 'senderId',
-                    select: '-password -__v'
-                }
-            })
-            .populate({
-                path: 'groupAdmin',
-                select: detailsToSelect
-            })
         if (!groupChat) {
             return res.status(500).json({ success: false, message: 'Chat Removing  failed' });
         }

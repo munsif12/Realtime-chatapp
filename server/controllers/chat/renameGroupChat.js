@@ -7,21 +7,7 @@ const renameGroupChat = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Chat Id  or  Chat Name required' });
         }
         let groupChat = await Chat.findByIdAndUpdate({ _id: groupChatId }, { $set: { chatName: groupChatName } }, { new: true })
-            .populate({
-                path: 'users',
-                select: detailsToSelect
-            })
-            .populate({
-                path: 'latestMessage',
-                populate: {
-                    path: 'senderId',
-                    select: '-password -__v'
-                }
-            })
-            .populate({
-                path: 'groupAdmin',
-                select: detailsToSelect
-            })
+
         if (!groupChat) {
             return res.status(500).json({ success: false, message: 'Chat renaming failed' });
         }

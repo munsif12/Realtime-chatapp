@@ -17,21 +17,7 @@ const getAllChatMessages = async (req, res) => {
             })
         }
         const chatMessages = await Message.find({ chatId })
-            .populate({
-                path: 'senderId',
-                select: '-password -__v'
-            })
-            .populate({
-                path: 'recieverId',
-                select: '-password -__v'
-            })
-            .populate({
-                path: 'chatId',
-                populate: {
-                    path: 'users',
-                    select: '-password -__v'
-                }
-            });;
+
         return res.status(200).json({
             success: true,
             message: 'Chat messages send successfully',
